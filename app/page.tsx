@@ -1,29 +1,27 @@
-import Link from "next/link";
-
 export default function HomePage() {
   return (
-    <main className="min-h-screen bg-white">
-      <div className="sticky top-0 z-50 border-b border-joynity-100 bg-white/95 px-4 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3">
-          <div>
-            <p className="text-xs font-black uppercase tracking-wide text-joynity-700">Joynity Growth Check</p>
-            <h1 className="text-lg font-black text-joynity-900">成長期サポート評価プロトタイプ</h1>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <a className="btn-secondary" href="/growth-check/index.html" target="_blank" rel="noopener">
-              全画面で開く
-            </a>
-            <Link className="btn-primary" href="/login">
-              ログイン版へ
-            </Link>
-          </div>
+    <main className="flex min-h-screen items-center justify-center bg-[#f3fbf8] px-6">
+      <section className="w-full max-w-2xl rounded-3xl border border-[#cce8df] bg-white p-8 text-center shadow-sm">
+        <p className="text-sm font-bold tracking-[0.2em] text-[#4c9f8c]">Joynity Conditioning Studio</p>
+        <h1 className="mt-4 text-4xl font-black text-[#176b5b]">Joynity Growth Check</h1>
+        <p className="mt-4 text-base leading-7 text-slate-600">
+          成長期の身体評価とコンディショニング提案を見える化するWebアプリです。
+        </p>
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
+          <a
+            className="rounded-full bg-[#7ABCA6] px-6 py-3 text-sm font-bold text-white"
+            href="/growth-check/index.html"
+          >
+            Growth Checkを開く
+          </a>
+          <a
+            className="rounded-full border border-[#7ABCA6] px-6 py-3 text-sm font-bold text-[#176b5b]"
+            href="/login"
+          >
+            ログイン画面
+          </a>
         </div>
-      </div>
-      <iframe
-        title="Joynity Growth Check"
-        src="/growth-check/index.html"
-        className="h-[calc(100vh-73px)] w-full border-0"
-      />
+      </section>
     </main>
   );
 }
