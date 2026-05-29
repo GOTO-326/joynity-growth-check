@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Joynity Growth Check</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div>
+        <p class="brand-kicker">Joynity Conditioning Studio</p>
+        <h1>Joynity Growth Check</h1>
+        <p class="header-copy">骨端線エコー評価と身体機能・障害予防・栄養評価を統合し、保護者に伝わる成長期サポートレポートを作成します。</p>
+      </div>
+      <div class="header-panel" aria-label="アプリ概要">
+        <span class="panel-label">Prototype</span>
+        <strong>ブラウザ完結</strong>
+        <small>外部通信・保存・データベースなし</small>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-shell">
+    <nav class="screen-tabs" aria-label="画面切り替え">
+      <button type="button" class="tab-button active" id="inputTab">入力画面</button>
+      <button type="button" class="tab-button" id="reportTab">レポート画面</button>
+    </nav>
+
+    <section class="screen active" id="inputScreen" aria-labelledby="inputTitle">
+      <div class="section-heading">
+        <p>Assessment Form</p>
+        <h2 id="inputTitle">チェック情報入力</h2>
+      </div>
+
+      <form id="growthForm" class="form-grid">
+        <details class="form-card" open>
+          <summary class="card-title-row">
+            <span class="step-badge">1</span>
+            <div>
+              <h3>① 基本情報</h3>
+              <p>必須項目を中心に、選手の基本情報を入力します</p>
+            </div>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="field-grid">
+            <label>選手ID 必須<input name="playerId" type="text" placeholder="例 JY-001" required></label>
+            <label>名前 任意<input name="playerInitial" type="text" placeholder="例 T.K"></label>
+            <label>年齢 必須<input name="age" type="number" min="5" max="18" placeholder="例 11" required></label>
+            <label>学年 必須<input name="grade" type="text" placeholder="例 小学5年" required></label>
+            <label>性別
+              <select name="gender">
+                <option value="">選択してください</option>
+                <option>男児</option>
+                <option>女児</option>
+                <option>その他・回答しない</option>
+              </select>
+            </label>
+            <label>競技 必須<input name="sport" type="text" placeholder="例 サッカー" required></label>
+            <label>ポジション 任意<input name="position" type="text" placeholder="例 MF"></label>
+            <label>身長 cm 必須<input name="height" type="number" min="80" max="220" step="0.1" placeholder="例 145.5" required></label>
+            <label>体重 kg 必須<input name="weight" type="number" min="15" max="120" step="0.1" placeholder="例 38.2" required></label>
+            <label>誕生日 任意<input name="birthDate" type="date"></label>
+            <label>利き足 任意
+              <select name="dominantFoot">
+                <option value="">未入力</option>
+                <option>右足</option>
+                <option>左足</option>
+                <option>両足</option>
+              </select>
+            </label>
+            <label>利き手 任意
+              <select name="dominantHand">
+                <option value="">未入力</option>
+                <option>右手</option>
+                <option>左手</option>
+                <option>両手</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <details class="form-card" open>
+          <summary class="card-title-row">
+            <span class="step-badge">2</span>
+            <div>
+              <h3>② 成長評価（医師評価）</h3>
+              <p>成長フェーズ、身長変化、痛み、骨端線エコー所見</p>
+            </div>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="field-grid">
+            <label>成熟タイプ
+              <select name="maturityType">
+                <option>標準</option>
+                <option>早熟</option>
+                <option>晩熟</option>
+              </select>
+            </label>
+            <label>成長フェーズ
+              <select name="growthPhase">
+                <option>成長前期</option>
+                <option>伸び始め</option>
+                <option>急成長期</option>
+                <option>成長後期</option>
+                <option>安定期</option>
+              </select>
+            </label>
+            <label>成長ピーク目安
+              <select name="peakEstimate">
+                <option>3年以上</option>
+                <option selected>約2年</option>
+                <option>約1年</option>
+                <option>ピーク中</option>
+                <option>成長後</option>
+              </select>
+            </label>
+            <label>身長変化 6ヶ月
+              <input name="heightChange6m" type="number" step="0.1" placeholder="例 3.2">
+            </label>
+            <label>身長変化 1年間
+              <input name="heightChange12m" type="number" step="0.1" placeholder="例 7.5">
+            </label>
+            <label class="wide-field">現在痛み
+              <input name="painArea" type="text" placeholder="例 膝前面、なし">
+            </label>
+            <label class="wide-field">骨端線エコー所見コメント
+              <textarea name="doctorComment" rows="4" placeholder="医師評価コメントを入力してください"></textarea>
+            </label>
+            <label class="wide-field">医師からの注意点
+              <textarea name="doctorCaution" rows="3" placeholder="例 急な練習量増加に注意。膝や踵の痛みが続く場合は再相談。"></textarea>
+            </label>
+          </div>
+        </details>
+
+        <details class="form-card" open>
+          <summary class="card-title-row">
+            <span class="step-badge">3</span>
+            <div>
+              <h3>③ 障害予防リスク</h3>
+              <p>既往歴・練習量・休養・睡眠・疲労・痛みをまとめて確認</p>
+            </div>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="field-grid compact-input-grid">
+            <label>週頻度
+              <select name="practiceFrequency">
+                <option value="">未入力</option>
+                <option>週1〜2回</option>
+                <option>週3〜4回</option>
+                <option>週5回以上</option>
+              </select>
+            </label>
+            <label>1回練習時間
+              <select name="practiceDuration">
+                <option value="">未入力</option>
+                <option>60分未満</option>
+                <option>60〜120分</option>
+                <option>120分以上</option>
+              </select>
+            </label>
+            <label>自主練有無
+              <select name="extraPractice">
+                <option>なし</option>
+                <option>時々あり</option>
+                <option>ほぼ毎日あり</option>
+              </select>
+            </label>
+            <label>平均睡眠時間
+              <input name="legacyAverageSleepHours" type="number" min="0" max="14" step="0.1" placeholder="例 8.0">
+            </label>
+            <label>疲労感
+              <select name="fatigueFeeling">
+                <option>少ない</option>
+                <option>時々残る</option>
+                <option>強く残る</option>
+              </select>
+            </label>
+          </div>
+          <div class="rating-list" data-group="injury"></div>
+        </details>
+
+        <details class="form-card">
+          <summary class="card-title-row">
+            <span class="step-badge">4</span>
+            <div>
+              <h3>④ 動作・身体機能評価</h3>
+              <p>動作点数に加え、可動域・左右差・タイプ分類を記録</p>
+            </div>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="field-grid compact-input-grid">
+            <label>足関節背屈角度
+              <select name="ankleDorsiflexionAngle">
+                <option value="">未入力</option>
+                <option>良好（20度以上）</option>
+                <option>要チェック（10〜19度）</option>
+                <option>個別確認（10度未満）</option>
+              </select>
+            </label>
+            <label>股関節屈曲
+              <select name="hipFlexionRange">
+                <option value="">未入力</option>
+                <option>良好</option>
+                <option>やや制限</option>
+                <option>制限あり</option>
+              </select>
+            </label>
+            <label>SLR
+              <select name="slrRange">
+                <option value="">未入力</option>
+                <option>良好（70度以上）</option>
+                <option>要チェック（60〜69度）</option>
+                <option>個別確認（60度未満）</option>
+              </select>
+            </label>
+            <label>左右差
+              <select name="mobilityAsymmetry">
+                <option>少ない</option>
+                <option>ややあり</option>
+                <option>大きい</option>
+              </select>
+            </label>
+            <label>呼吸タイプ
+              <select name="breathingType">
+                <option value="">未選択</option>
+                <option>胸式優位</option>
+                <option>腹部優位</option>
+                <option>左右差あり</option>
+                <option>肩挙上型</option>
+              </select>
+            </label>
+            <label>姿勢タイプ
+              <select name="postureType">
+                <option value="">未選択</option>
+                <option>反り腰傾向</option>
+                <option>猫背傾向</option>
+                <option>側方偏位</option>
+                <option>回旋傾向</option>
+              </select>
+            </label>
+            <label>体幹タイプ
+              <select name="trunkType">
+                <option value="">未選択</option>
+                <option>片脚不安定</option>
+                <option>骨盤不安定</option>
+                <option>回旋コントロール低下</option>
+              </select>
+            </label>
+            <label class="wide-field">動作・身体機能コメント
+              <textarea name="movementTypeComment" rows="3" placeholder="例 右片脚支持で骨盤が落ちやすい。呼吸は肩挙上が目立つ。"></textarea>
+            </label>
+          </div>
+          <div class="rating-list" data-group="movement"></div>
+        </details>
+
+        <details class="form-card">
+          <summary class="card-title-row">
+            <span class="step-badge">5</span>
+            <div>
+              <h3>⑤ 回復・生活習慣</h3>
+              <p>朝食・補食・水分・睡眠・疲労回復をシンプルに確認</p>
+            </div>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="field-grid compact-input-grid">
+            <label>水分摂取感覚
+              <select name="hydrationSense">
+                <option>十分</option>
+                <option>少ない</option>
+                <option>かなり少ない</option>
+              </select>
+            </label>
+            <label>練習中補給
+              <select name="practiceHydration">
+                <option>できている</option>
+                <option>時々不足</option>
+                <option>不足しやすい</option>
+              </select>
+            </label>
+            <label>就寝時間
+              <input name="legacyBedtime" type="time">
+            </label>
+            <label>起床時間
+              <input name="legacyWakeTime" type="time">
+            </label>
+            <label>寝つき
+              <select name="legacySleepOnset">
+                <option>スムーズ</option>
+                <option>時間がかかる</option>
+                <option>かなり時間がかかる</option>
+              </select>
+            </label>
+            <label>途中覚醒
+              <select name="legacyNightWaking">
+                <option>ほぼなし</option>
+                <option>時々</option>
+                <option>多い</option>
+              </select>
+            </label>
+            <label>起床時の疲労感
+              <select name="legacyMorningFatigue">
+                <option>すっきり</option>
+                <option>少し残る</option>
+                <option>強く残る</option>
+              </select>
+            </label>
+          </div>
+          <div class="rating-list" data-group="nutrition"></div>
+        </details>
+
+        <details class="form-card legacy-detail-card">
+          <summary class="card-title-row">
+            <span class="step-badge">6</span>
+            <div>
+              <h3>旧：睡眠・水分詳細</h3>
+              <p>必要時のみ使用。通常運用では上の回復・生活習慣で十分です。</p>
+            </div>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="field-grid">
+            <label>平均睡眠時間
+              <input name="averageSleepHours" type="number" min="0" max="14" step="0.1" placeholder="例 8.0">
+            </label>
+            <label>就寝時間
+              <input name="bedtime" type="time">
+            </label>
+            <label>起床時間
+              <input name="wakeTime" type="time">
+            </label>
+            <label>寝つき
+              <select name="sleepOnset">
+                <option>スムーズ</option>
+                <option>時間がかかる</option>
+                <option>かなり時間がかかる</option>
+              </select>
+            </label>
+            <label>途中覚醒
+              <select name="nightWaking">
+                <option>ほぼなし</option>
+                <option>時々</option>
+                <option>多い</option>
+              </select>
+            </label>
+            <label>起床時の疲労感
+              <select name="morningFatigue">
+                <option>すっきり</option>
+                <option>少し残る</option>
+                <option>強く残る</option>
+              </select>
+            </label>
+            <label>1日の水分摂取量 ml
+              <input name="dailyWaterMl" type="number" min="0" step="50" placeholder="例 1800">
+            </label>
+            <label>練習中の水分摂取量 ml
+              <input name="practiceWaterMl" type="number" min="0" step="50" placeholder="例 600">
+            </label>
+            <label>練習後の水分摂取量 ml
+              <input name="postPracticeWaterMl" type="number" min="0" step="50" placeholder="例 300">
+            </label>
+            <label>尿の色チェック
+              <select name="urineColor">
+                <option>薄い</option>
+                <option>やや濃い</option>
+                <option>濃い</option>
+              </select>
+            </label>
+            <label>暑熱環境での練習有無
+              <select name="heatPractice">
+                <option>なし</option>
+                <option>あり</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <details class="form-card" open>
+          <summary class="card-title-row">
+            <span class="step-badge">7</span>
+            <div>
+              <h3>⑥ スタッフ詳細メモ（非表示）</h3>
+              <p>保護者向けPDFには出さない内部メモと再評価ポイント</p>
+            </div>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="mission-input-grid">
+            <label class="wide-field">MSI詳細
+              <textarea name="msiDetail" rows="3" placeholder="例 片脚支持で右股関節内旋、膝内側変位。"></textarea>
+            </label>
+            <label class="wide-field">DNS詳細
+              <textarea name="dnsDetail" rows="3" placeholder="例 呼吸は胸式優位、腹圧保持が弱い。"></textarea>
+            </label>
+            <label class="wide-field">医師内部メモ
+              <textarea name="doctorInternalMemo" rows="3" placeholder="保護者向けには表示しない医師・スタッフ共有メモ"></textarea>
+            </label>
+            <label class="wide-field">スタッフ所見・介入ポイント
+              <textarea name="staffObservation" rows="3" placeholder="例 次回は足関節背屈と着地動作を再評価。"></textarea>
+            </label>
+            <label class="wide-field">動画管理
+              <textarea name="videoManagement" rows="2" placeholder="例 足首モビリティ、睡眠ポイント動画を案内"></textarea>
+            </label>
+            <label class="wide-field">再評価項目
+              <textarea name="recheckItemsMemo" rows="2" placeholder="例 身長変化、痛み、片脚スクワット、補食"></textarea>
+            </label>
+            <div class="mission-input">
+              <label>ミッション1<input name="mission1" type="text" placeholder="例 練習前に股関節・足首の準備運動を3分行う"></label>
+              <div class="mini-selects">
+                <label>頻度<select name="mission1Freq"><option>練習日</option><option>毎日</option><option>週3回</option><option>月1回</option></select></label>
+                <label>難易度<select name="mission1Level"><option>かんたん</option><option>ふつう</option><option>チャレンジ</option></select></label>
+                <label>対象<select name="mission1Target"><option>本人</option><option>保護者</option><option>指導者</option></select></label>
+              </div>
+            </div>
+            <div class="mission-input">
+              <label>ミッション2<input name="mission2" type="text" placeholder="例 練習後にふくらはぎ・太もものケアを行う"></label>
+              <div class="mini-selects">
+                <label>頻度<select name="mission2Freq"><option>練習日</option><option>毎日</option><option>週3回</option><option>月1回</option></select></label>
+                <label>難易度<select name="mission2Level"><option>ふつう</option><option>かんたん</option><option>チャレンジ</option></select></label>
+                <label>対象<select name="mission2Target"><option>本人</option><option>保護者</option><option>指導者</option></select></label>
+              </div>
+            </div>
+            <div class="mission-input">
+              <label>ミッション3<input name="mission3" type="text" placeholder="例 身長・体重・痛みの有無を月1回記録する"></label>
+              <div class="mini-selects">
+                <label>頻度<select name="mission3Freq"><option>月1回</option><option>練習日</option><option>毎日</option><option>週3回</option></select></label>
+                <label>難易度<select name="mission3Level"><option>かんたん</option><option>ふつう</option><option>チャレンジ</option></select></label>
+                <label>対象<select name="mission3Target"><option>保護者</option><option>本人</option><option>指導者</option></select></label>
+              </div>
+            </div>
+            <label>次回チェック推奨時期
+              <select name="nextCheckManual">
+                <option value="">自動判定に合わせる</option>
+                <option>2〜3ヶ月後</option>
+                <option>3〜4ヶ月後</option>
+                <option>1ヶ月後に状態確認</option>
+              </select>
+            </label>
+          </div>
+        </details>
+
+        <section class="csv-card">
+          <div>
+            <p class="brand-kicker">Progress CSV</p>
+            <h3>過去データとの経過比較</h3>
+            <p>過去にダウンロードしたCSVを読み込むと、同じ選手IDの初回・前回・今回の変化をレポートに表示できます。</p>
+            <p class="security-note">CSVには個人名を入れず、選手IDで管理してください。ファイルは院内・チーム内で安全に保管し、外部共有しないでください。</p>
+            <p class="security-note">このアプリでは、個人情報の保存を最小限にするため、メールアドレスと生年月日は履歴CSVに保存しません。レポート送信時のみ一時的に使用してください。</p>
+          </div>
+          <div class="csv-actions">
+            <input type="file" id="csvUpload" accept=".csv,text/csv" hidden>
+            <button type="button" class="ghost-button" id="csvUploadButton">過去データCSVを読み込む</button>
+            <p class="csv-status" id="csvStatus">CSVは未読み込みです</p>
+          </div>
+        </section>
+
+        <details class="form-card">
+          <summary class="card-title-row">
+            <span class="step-badge">8</span>
+            <div>
+              <h3>レポート送信用一時入力</h3>
+              <p>メール本文作成にのみ使用し、CSVやブラウザ保存には含めません</p>
+            </div>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="field-grid consent-grid">
+            <label class="wide-field">保護者メールアドレス
+              <input name="parentEmail" type="email" autocomplete="off" placeholder="例 parent@example.com">
+            </label>
+            <label class="check-label wide-field">
+              <input name="reportSendConsent" type="checkbox">
+              <span>保護者へのレポート送信用コピー文を作成することに同意を得ています</span>
+            </label>
+            <label class="check-label wide-field">
+              <input name="privacyConsent" type="checkbox">
+              <span>個人情報は送信時のみ一時的に扱い、CSVやブラウザに保存しない運用に同意を得ています</span>
+            </label>
+            <p class="temporary-note wide-field">現時点では自動送信機能はありません。作成された本文をスタッフが確認し、通常のメールアプリから送信してください。</p>
+          </div>
+        </details>
+
+        <div class="action-bar">
+          <button class="primary-button" type="submit">レポートを作成する</button>
+          <button class="ghost-button" type="reset">入力をリセット</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="screen" id="reportScreen" aria-live="polite" aria-labelledby="reportTitle">
+      <div class="report-empty" id="emptyReport">
+        <div class="empty-icon">Growth</div>
+        <h2>まだレポートは作成されていません</h2>
+        <p>入力画面で評価を入力し、「レポートを作成する」を押すと保護者向けレポートが表示されます。</p>
+        <button type="button" class="primary-button" id="backToInput">入力画面へ戻る</button>
+      </div>
+
+      <article class="report" id="reportContent" hidden>
+        <div class="report-toolbar">
+          <button type="button" class="ghost-button" id="editAgain">入力を修正する</button>
+          <button type="button" class="ghost-button" id="downloadCsv">CSVをダウンロード</button>
+          <button type="button" class="primary-button" id="printReport">印刷・PDF保存</button>
+        </div>
+
+        <section class="report-hero">
+          <div>
+            <p class="brand-kicker">1. 今回の結論</p>
+            <h2 id="reportTitle">今の状態と、今日からやること</h2>
+            <p class="stage-chip" id="stageChip"></p>
+            <p class="stage-message" id="stageMessage"></p>
+            <div class="conclusion-grid" id="conclusionGrid"></div>
+          </div>
+          <div class="hero-verdict">
+            <span>総合判定</span>
+            <strong id="overallVerdict"></strong>
+            <p id="overallLead"></p>
+          </div>
+        </section>
+
+        <section class="report-section timeline-section">
+          <p class="brand-kicker">2. 成長ステージタイムライン</p>
+          <h3>今はここです</h3>
+          <div class="stage-timeline" id="stageTimeline"></div>
+        </section>
+
+        <section class="report-section executive-summary">
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">3. 総合判定</p>
+              <h3>3つの領域で整理</h3>
+            </div>
+            <span class="progress-count">説明用レポート</span>
+          </div>
+          <div class="summary-layout">
+            <div class="player-summary" id="playerSummary"></div>
+            <div class="summary-box doctor-box">
+              <span>医師評価</span>
+              <h4>骨端線エコー評価コメント</h4>
+              <p id="doctorEchoSummary"></p>
+            </div>
+            <div class="summary-box growth-box">
+              <span>Growth Feature</span>
+              <h4>成長期の今の身体的特徴</h4>
+              <p id="growthBodyComment"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-focus-grid">
+          <div class="focus-card reason-card">
+            <span>Why now</span>
+            <h3>今の身体の特徴</h3>
+            <p id="reasonText"></p>
+          </div>
+          <div class="focus-card strength-card">
+            <span>4. Strength</span>
+            <h3>今の強み</h3>
+            <ul class="strength-list" id="strengthList"></ul>
+          </div>
+          <div class="focus-card next-card">
+            <span>Next check</span>
+            <h3>次回チェック時期</h3>
+            <p class="next-check" id="nextCheck"></p>
+          </div>
+        </section>
+
+        <section class="report-section judgement-section">
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">3. Condition Map</p>
+              <h3>コンディション全体像</h3>
+            </div>
+          </div>
+          <div class="condition-overview-layout">
+            <div class="chart-card current-radar-card">
+              <h4>3領域のバランス</h4>
+              <div id="conditionRadarChart" class="radar-chart" aria-label="障害予防・動作機能・回復状態の3軸チャート"></div>
+              <div class="chart-legend">
+                <span><i class="legend-current"></i>今回</span>
+              </div>
+            </div>
+            <div class="condition-summary-copy">
+              <span>一目で見ると</span>
+              <p id="conditionOverviewText"></p>
+            </div>
+          </div>
+          <div class="judgement-grid" id="judgementCards"></div>
+        </section>
+
+        <section class="report-section domain-review-section">
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">Joynity Review</p>
+              <h3>3領域の分かりやすい総評</h3>
+            </div>
+          </div>
+          <div class="domain-review-grid">
+            <div class="domain-review">
+              <span>01</span>
+              <h4>障害予防リスク総評</h4>
+              <p id="injuryReview"></p>
+            </div>
+            <div class="domain-review">
+              <span>02</span>
+              <h4>身体の使い方総評</h4>
+              <p id="movementReview"></p>
+            </div>
+            <div class="domain-review">
+              <span>03</span>
+              <h4>栄養回復総評</h4>
+              <p id="nutritionReview"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-section recovery-section">
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">Sleep & Hydration</p>
+              <h3>睡眠・水分の回復サポート</h3>
+            </div>
+          </div>
+          <div class="recovery-grid">
+            <div class="recovery-card">
+              <span>睡眠評価</span>
+              <strong id="sleepJudgement"></strong>
+              <p id="sleepSummaryText"></p>
+            </div>
+            <div class="recovery-card">
+              <span>水分評価</span>
+              <strong id="hydrationJudgement"></strong>
+              <p id="hydrationSummaryText"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-section nutrition-advice-section">
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">Nutrition & Recovery</p>
+              <h3>栄養・回復アドバイス</h3>
+            </div>
+          </div>
+          <div class="nutrition-advice-grid">
+            <div>
+              <span>① 今必要な栄養テーマ</span>
+              <strong id="nutritionTheme"></strong>
+            </div>
+            <div>
+              <span>今回の栄養評価</span>
+              <strong id="nutritionScoreLabel"></strong>
+            </div>
+            <div class="wide-advice">
+              <span>② なぜ必要か</span>
+              <p id="nutritionAdviceComment"></p>
+            </div>
+            <div>
+              <span>今日の優先</span>
+              <p id="priorityFoodHabit"></p>
+            </div>
+            <div>
+              <span>補食</span>
+              <p id="postPracticeSnack"></p>
+            </div>
+            <div>
+              <span>水分</span>
+              <p id="hydrationAdviceShort"></p>
+            </div>
+            <div>
+              <span>睡眠</span>
+              <p id="sleepAdviceShort"></p>
+            </div>
+            <details class="nutrition-detail-toggle wide-advice">
+              <summary>詳細を見る</summary>
+              <div class="nutrition-detail-grid">
+                <div>
+                  <span>③ おすすめ栄養素</span>
+                  <ul class="compact-list" id="nutritionNutrients"></ul>
+                </div>
+                <div>
+                  <span>④ 食べ物・料理例</span>
+                  <ul class="compact-list" id="nutritionMeals"></ul>
+                </div>
+                <div>
+                  <span>⑤ コンビニ例</span>
+                  <ul class="compact-list" id="nutritionConvenience"></ul>
+                </div>
+                <div>
+                  <span>⑥ 練習前後のおすすめ</span>
+                  <p id="nutritionTiming"></p>
+                </div>
+              </div>
+            </details>
+            <div class="wide-advice">
+              <span>⑧ 保護者向け一言</span>
+              <p id="nutritionParentNote"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-section food-support-section">
+          <p class="brand-kicker">Today Support</p>
+          <h3>今日からできる食事サポート</h3>
+          <div class="support-check-grid" id="foodSupportChecklist"></div>
+        </section>
+
+        <section class="report-columns">
+          <div class="report-block">
+            <h3>5. 確認したいポイント</h3>
+            <ul class="feature-list" id="featureList"></ul>
+          </div>
+          <div class="report-block accent-block action-hero-block">
+            <h3>6. 今日からできる3つ</h3>
+            <ol class="action-list" id="actionList"></ol>
+          </div>
+        </section>
+
+        <section class="report-section routine-section">
+          <p class="brand-kicker">Daily Routine</p>
+          <h3>練習日・家庭で見るポイント</h3>
+          <div class="routine-grid">
+            <div><span>練習前</span><p id="beforePractice"></p></div>
+            <div><span>練習後</span><p id="afterPractice"></p></div>
+            <div><span>家庭で見る</span><p id="homeCheck"></p></div>
+            <div><span>次回まで</span><p id="nextCheckItems"></p></div>
+          </div>
+        </section>
+
+        <section class="report-section mission-section">
+          <p class="brand-kicker">Next Missions</p>
+          <h3>次回までのミッション</h3>
+          <div class="mission-card-grid" id="missionCards"></div>
+        </section>
+
+        <section class="report-section video-section">
+          <p class="brand-kicker">Support Videos</p>
+          <h3>今日やる3つに役立つ動画</h3>
+          <div class="video-grid" id="videoCards"></div>
+        </section>
+
+        <section class="report-section qr-section">
+          <p class="brand-kicker">QR Links</p>
+          <h3>動画・LINE・予約・Instagram</h3>
+          <div class="qr-link-grid" id="qrLinkGrid"></div>
+        </section>
+
+        <section class="report-section generated-comment-section">
+          <div class="generated-comment-card">
+            <div class="section-title-row">
+              <div>
+                <p class="brand-kicker">Doctor Comment</p>
+                <h3>医師コメント欄</h3>
+              </div>
+              <div class="inline-actions">
+                <button type="button" class="ghost-button small-button" id="generateDoctorComment">医師コメントを自動生成</button>
+                <button type="button" class="ghost-button small-button" id="editDoctorComment">編集する</button>
+                <button type="button" class="ghost-button small-button" id="saveDoctorComment">保存</button>
+                <button type="button" class="ghost-button small-button" id="cancelDoctorComment">キャンセル</button>
+              </div>
+            </div>
+            <textarea id="doctorGeneratedComment" rows="7" aria-label="医師コメント"></textarea>
+          </div>
+          <div class="generated-comment-card">
+            <div class="section-title-row">
+              <div>
+                <p class="brand-kicker">Joynity Comment</p>
+                <h3>Joynity機能評価コメント欄</h3>
+              </div>
+              <div class="inline-actions">
+                <button type="button" class="ghost-button small-button" id="generateJoynityComment">Joynityコメントを自動生成</button>
+                <button type="button" class="ghost-button small-button" id="editJoynityComment">編集する</button>
+                <button type="button" class="ghost-button small-button" id="saveJoynityComment">保存</button>
+                <button type="button" class="ghost-button small-button" id="cancelJoynityComment">キャンセル</button>
+              </div>
+            </div>
+            <textarea id="joynityGeneratedComment" rows="7" aria-label="Joynity機能評価コメント"></textarea>
+          </div>
+        </section>
+
+        <section class="report-section challenge-menu-section">
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">Action Menu</p>
+              <h3>次回までの課題メニュー</h3>
+            </div>
+            <div class="inline-actions">
+              <button type="button" class="ghost-button small-button" id="generateChallengeMenu">課題メニューを自動生成</button>
+              <button type="button" class="ghost-button small-button" id="addChallengeMenu">メニューを追加</button>
+              <button type="button" class="ghost-button small-button" id="reorderChallengeMenu">並び替え</button>
+            </div>
+          </div>
+          <p class="soft-comment">評価が「要チェック」「個別サポート推奨」の項目をもとに、次回までの行動を自動提案します。必要に応じてスタッフが編集してください。</p>
+          <div class="challenge-menu-list" id="challengeMenuList"></div>
+        </section>
+
+        <section class="report-section parent-comment-box">
+          <p class="brand-kicker">7. For Parents</p>
+          <h3>保護者向けコメント</h3>
+          <p id="parentComment"></p>
+        </section>
+
+        <section class="report-section staff-detail-section">
+          <button type="button" class="guide-toggle" id="staffDetailToggle" aria-expanded="false">詳細モードを表示</button>
+          <div class="staff-detail-body" id="staffDetailBody" hidden>
+            <div class="staff-detail-grid">
+              <div>
+                <h3>各評価項目の点数と根拠</h3>
+                <div id="staffScoreTable"></div>
+              </div>
+              <div>
+                <h3>保護者説明用の要約</h3>
+                <p id="parentSummaryForStaff"></p>
+                <h3>次回確認すべき評価項目</h3>
+                <ul id="nextStaffItems"></ul>
+                <h3>医師コメント</h3>
+                <p id="staffDoctorComment"></p>
+                <h3>Joynityコメント</h3>
+                <p id="staffJoynityComment"></p>
+                <h3>スタッフ詳細メモ</h3>
+                <div id="staffInternalMemo"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-section progress-section" id="progressSection" hidden>
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">9. Progress Review</p>
+              <h3>経過比較</h3>
+            </div>
+            <span class="progress-count" id="progressCount"></span>
+          </div>
+          <p class="soft-comment" id="progressComment"></p>
+          <div class="progress-insight-grid" id="progressInsights"></div>
+          <div class="progress-layout">
+            <div class="chart-card">
+              <h4>初回と今回の3領域比較</h4>
+              <div id="radarChart" class="radar-chart" aria-label="初回と今回の比較チャート"></div>
+              <div class="chart-legend">
+                <span><i class="legend-first"></i>初回</span>
+                <span><i class="legend-current"></i>今回</span>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="progress-table">
+                <thead>
+                  <tr>
+                    <th>評価日</th>
+                    <th>身長</th>
+                    <th>体重</th>
+                    <th>障害予防</th>
+                    <th>身体の使い方</th>
+                    <th>栄養回復</th>
+                  </tr>
+                </thead>
+                <tbody id="progressTableBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-columns compact-columns">
+          <div class="report-block">
+            <h3>医師コメント欄</h3>
+            <p id="doctorCommentReport"></p>
+          </div>
+          <div class="report-block staff-guide">
+            <button type="button" class="guide-toggle" id="staffGuideToggle" aria-expanded="false">スタッフ用説明ポイントを表示</button>
+            <div class="guide-body" id="staffGuideBody" hidden>
+              <p id="staffGuide"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-section joynity-comment">
+          <h3>Joynity総合コメント欄</h3>
+          <p id="joynityComment"></p>
+        </section>
+
+        <section class="report-section continuity-section">
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">10. Continuity Plan</p>
+              <h3>次回チェック提案</h3>
+            </div>
+          </div>
+          <div class="continuity-layout">
+            <div>
+              <span>次回チェック推奨時期</span>
+              <strong id="proposalTiming"></strong>
+            </div>
+            <div>
+              <span>推奨改善内容</span>
+              <p id="proposalContent"></p>
+            </div>
+          </div>
+        </section>
+
+        <section class="report-section email-section">
+          <div class="section-title-row">
+            <div>
+              <p class="brand-kicker">11. Parent Email</p>
+              <h3>メール送信用コピー文</h3>
+            </div>
+            <button type="button" class="ghost-button" id="createEmailText">メール送信用コピー文を作成</button>
+          </div>
+          <p class="temporary-note">メールアドレスと生年月日はCSVに保存されません。本文作成後、内容を確認して通常のメールアプリから送信してください。</p>
+          <p class="email-status" id="emailStatus"></p>
+          <textarea id="emailText" rows="12" hidden aria-label="保護者向けメール本文"></textarea>
+        </section>
+      </article>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
