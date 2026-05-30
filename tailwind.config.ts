@@ -8,6 +8,7 @@ const config: Config = {
         joynity: {
           50: "#f2fbf8",
           100: "#d9f3ec",
+          200: "#bfe9dd",
           300: "#9fd8c8",
           500: "#7ABCA6",
           700: "#317f70",
