@@ -624,20 +624,6 @@
               </div>
 
               <div class="item-card doctor-card">
-                <div class="item-title">エコー所見 <span class="hint">複数選択可</span></div>
-                <div class="check-grid" id="echoFindings">
-                  <label class="check-option"><input type="checkbox" value="骨端線開存" />骨端線開存</label>
-                  <label class="check-option"><input type="checkbox" value="骨端線閉鎖傾向" />骨端線閉鎖傾向</label>
-                  <label class="check-option"><input type="checkbox" value="骨端線閉鎖" />骨端線閉鎖</label>
-                  <label class="check-option"><input type="checkbox" value="左右差あり" />左右差あり</label>
-                  <label class="check-option"><input type="checkbox" value="炎症所見あり" />炎症所見あり</label>
-                  <label class="check-option"><input type="checkbox" value="圧痛あり" />圧痛あり</label>
-                  <label class="check-option"><input type="checkbox" value="特記事項あり" />特記事項あり</label>
-                  <label class="check-option"><input type="checkbox" value="所見なし" />所見なし</label>
-                </div>
-              </div>
-
-              <div class="item-card doctor-card">
                 <div class="item-title">医師コメント <span class="hint">最大1000文字目安</span></div>
                 <div class="field-grid">
                   <div class="field">
@@ -953,7 +939,7 @@
           "成長準備期（Pre PHV）": "身長が大きく伸びる前の時期です。基本動作や姿勢づくりを学ぶのに適しています。",
           "成長加速期（PHV）": "身長が急激に伸びる時期です。スポーツ障害や柔軟性低下に注意が必要です。",
           "成長安定期（Post PHV）": "身長の伸びが落ち着き、筋力やパワーを高めやすい時期です。",
-          "判定保留": "成長ステージは判定保留です。身長変化やエコー所見を合わせて、次回以降も確認しましょう。"
+          "判定保留": "成長ステージは判定保留です。身長変化や身体の状態を合わせて、次回以降も確認しましょう。"
         },
         growthPeak: {
           "ピーク前": "これから大きく成長する可能性があります。",
@@ -974,10 +960,6 @@
           .replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;")
           .replace(/'/g, "&#039;");
-      }
-
-      function selectedEchoFindings() {
-        return [...document.querySelectorAll("#echoFindings input:checked")].map((input) => input.value);
       }
 
       function updateGrowthDescriptions() {
@@ -1001,12 +983,10 @@
       }
 
       function doctorAssessmentSummary() {
-        const findings = selectedEchoFindings();
         return [
           `成長タイプ: ${value("maturityType")}`,
           `成長ステージ: ${value("growthPhase")}`,
-          `成長ピーク状況: ${value("growthPeak")}`,
-          `エコー所見: ${findings.length ? findings.join("、") : "未選択"}`
+          `成長ピーク状況: ${value("growthPeak")}`
         ].join(" / ");
       }
 
@@ -1036,7 +1016,6 @@
             maturityType: value("maturityType"),
             growthPhase: value("growthPhase"),
             growthPeak: value("growthPeak"),
-            echoFindings: selectedEchoFindings(),
             parentComment: value("doctorParentComment"),
             expertComment: value("doctorExpertComment")
           },
