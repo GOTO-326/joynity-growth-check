@@ -5,51 +5,1200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Joynity Growth Check</title>
     <style>
+      :root {
+        --brand: #7abca6;
+        --brand-dark: #176b5b;
+        --brand-soft: #eefaf6;
+        --line: #d9e8e3;
+        --text: #1f3935;
+        --muted: #667b76;
+        --warn: #c78a2a;
+        --support: #b5685f;
+        --ok: #2f8b72;
+        --bg: #f4fbf8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
       body {
         margin: 0;
-        min-height: 100vh;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.65;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #ffffff 0%, #effaf6 100%);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hero-inner,
+      .shell {
+        width: min(1160px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .hero-inner {
+        padding: 28px 0 22px;
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 1fr auto;
+        align-items: end;
+      }
+
+      .brand-kicker {
+        margin: 0 0 6px;
+        color: var(--brand-dark);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        line-height: 1.2;
+      }
+
+      h1 {
+        color: var(--brand-dark);
+        font-size: clamp(2rem, 5vw, 3.6rem);
+        letter-spacing: 0;
+      }
+
+      .hero-copy {
+        margin: 12px 0 0;
+        color: var(--muted);
+        max-width: 760px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        min-height: 44px;
+        background: var(--brand);
+        color: white;
+        font-weight: 800;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 10px 22px rgba(23, 107, 91, 0.16);
+      }
+
+      .btn.secondary {
+        background: white;
+        color: var(--brand-dark);
+        border: 1px solid var(--line);
+      }
+
+      .shell {
+        padding: 26px 0 50px;
+      }
+
+      .notice {
+        margin-bottom: 18px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: white;
+        padding: 14px 16px;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1.1fr) minmax(340px, 0.9fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .panel {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 18px 50px rgba(23, 69, 62, 0.08);
+        overflow: hidden;
+      }
+
+      details.panel {
+        overflow: clip;
+      }
+
+      summary {
+        list-style: none;
+        cursor: pointer;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      details:not([open]) .panel-head {
+        border-bottom: 0;
+      }
+
+      .panel-head p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .score-pill {
+        white-space: nowrap;
+        border-radius: 999px;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        padding: 8px 12px;
+        font-weight: 900;
+        font-size: 0.9rem;
+      }
+
+      .panel-body {
+        padding: 18px 20px 20px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      .field label,
+      .field > span {
+        color: #344b47;
+        font-size: 0.88rem;
+        font-weight: 800;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid #cededa;
+        border-radius: 12px;
+        background: #fff;
+        color: var(--text);
+        padding: 11px 12px;
+        outline: none;
+      }
+
+      textarea {
+        min-height: 88px;
+        resize: vertical;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--brand);
+        box-shadow: 0 0 0 4px rgba(122, 188, 166, 0.18);
+      }
+
+      .item-card {
+        border: 1px solid #e2ece9;
+        border-radius: 14px;
+        padding: 14px;
+        background: #fbfefd;
+      }
+
+      .doctor-card {
+        background: #f8fbfa;
+        border-color: #d6e5e1;
+      }
+
+      .item-title {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 10px;
+        font-weight: 900;
+        color: var(--brand-dark);
+      }
+
+      .hint {
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      .check-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .check-option {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        border: 1px solid #dce9e5;
+        border-radius: 12px;
+        background: white;
+        padding: 9px 10px;
+        color: #344b47;
+        font-weight: 800;
+        font-size: 0.9rem;
+      }
+
+      .check-option input {
+        width: auto;
+        accent-color: var(--brand);
+      }
+
+      .side {
+        position: sticky;
+        top: 14px;
+        display: grid;
+        gap: 18px;
+      }
+
+      .result-panel {
+        padding: 20px;
+      }
+
+      .total {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 14px;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .total-number {
+        width: 106px;
+        height: 106px;
         display: grid;
         place-items: center;
-        background: #f3fbf8;
-        color: #176b5b;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        border-radius: 50%;
+        background: var(--brand-soft);
+        color: var(--brand-dark);
+        font-size: 2.1rem;
+        font-weight: 1000;
+        border: 8px solid #d7f2ea;
       }
-      main {
-        width: min(640px, calc(100% - 32px));
-        padding: 36px 28px;
-        text-align: center;
-        background: #ffffff;
-        border: 1px solid #cce8df;
-        border-radius: 24px;
-        box-shadow: 0 18px 60px rgba(23, 69, 62, 0.1);
-      }
-      p {
-        color: #4c9f8c;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        margin: 0 0 12px;
-      }
-      h1 {
-        margin: 0;
-        font-size: clamp(32px, 8vw, 48px);
-      }
-      a {
-        display: inline-block;
-        margin-top: 28px;
-        padding: 13px 22px;
+
+      .level-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
         border-radius: 999px;
-        background: #7abca6;
-        color: white;
-        font-weight: 700;
-        text-decoration: none;
+        padding: 6px 10px;
+        background: #eff7f4;
+        color: var(--brand-dark);
+        font-size: 0.82rem;
+        font-weight: 900;
+      }
+
+      .score-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .score-row {
+        display: grid;
+        grid-template-columns: 92px 1fr auto;
+        gap: 10px;
+        align-items: center;
+        font-size: 0.92rem;
+      }
+
+      .bar {
+        height: 10px;
+        border-radius: 999px;
+        background: #e7efec;
+        overflow: hidden;
+      }
+
+      .bar > span {
+        display: block;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--brand);
+      }
+
+      .radar-wrap {
+        display: grid;
+        place-items: center;
+        padding: 8px 0 2px;
+      }
+
+      #radar {
+        width: min(320px, 100%);
+        height: auto;
+      }
+
+      .comment-box {
+        border-radius: 16px;
+        padding: 16px;
+        background: #f8fcfb;
+        border: 1px solid var(--line);
+      }
+
+      .comment-box h3 {
+        color: var(--brand-dark);
+        font-size: 1rem;
+        margin-bottom: 8px;
+      }
+
+      .comment-box ul {
+        margin: 8px 0 0;
+        padding-left: 1.1em;
+      }
+
+      .comment-box li {
+        margin: 4px 0;
+      }
+
+      .weak-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .tag {
+        border-radius: 999px;
+        padding: 7px 10px;
+        background: #fff7e8;
+        color: #8a5a13;
+        font-weight: 900;
+        font-size: 0.83rem;
+      }
+
+      .report-only {
+        display: none;
+      }
+
+      .legacy-link {
+        color: var(--brand-dark);
+        font-weight: 800;
+      }
+
+      @media (max-width: 900px) {
+        .hero-inner,
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-actions {
+          justify-content: flex-start;
+        }
+
+        .side {
+          position: static;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .hero-inner,
+        .shell {
+          width: min(100% - 20px, 1160px);
+        }
+
+        .field-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .check-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .panel-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .score-row {
+          grid-template-columns: 82px 1fr;
+        }
+
+        .score-row strong {
+          grid-column: 2;
+        }
+      }
+
+      @media print {
+        body {
+          background: white;
+        }
+
+        .hero-actions,
+        .notice,
+        .input-area,
+        .legacy-link {
+          display: none !important;
+        }
+
+        .hero {
+          border: 0;
+          background: white;
+        }
+
+        .hero-inner,
+        .shell {
+          width: 100%;
+          padding: 0;
+        }
+
+        .hero-inner {
+          display: block;
+          margin-bottom: 12px;
+        }
+
+        .layout {
+          display: block;
+        }
+
+        .side {
+          position: static;
+        }
+
+        .panel,
+        .comment-box {
+          box-shadow: none;
+          break-inside: avoid;
+        }
+
+        .report-only {
+          display: block;
+        }
       }
     </style>
   </head>
   <body>
-    <main>
-      <p>Joynity Conditioning Studio</p>
-      <h1>Joynity Growth Check</h1>
-      <a href="/growth-check/index.html">Growth Checkを開く</a>
+    <header class="hero">
+      <div class="hero-inner">
+        <div>
+          <p class="brand-kicker">Joynity Conditioning Studio</p>
+          <h1>Joynity Growth Check</h1>
+          <p class="hero-copy">成長期アスリートの身体機能を6分類で評価し、点数化・コメント・レポート出力まで行うブラウザ完結型チェックツールです。</p>
+        </div>
+        <div class="hero-actions">
+          <button class="btn" type="button" id="makeReportTop">結果を作成</button>
+          <button class="btn secondary" type="button" id="printTop">PDF保存</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="shell">
+      <div class="notice">
+        入力は選択式です。評価後にカテゴリー別スコア、70点満点の合計、レベル判定、保護者向けコメント、トレーナー向け改善ポイントを自動作成します。
+        以前のGrowth Checkは <a class="legacy-link" href="/growth-check/index.html">こちら</a> から開けます。
+      </div>
+
+      <div class="layout">
+        <form class="grid input-area" id="assessmentForm">
+          <details class="panel" open>
+            <summary class="panel-head">
+              <div>
+                <h2>基本情報</h2>
+                <p>レポートに表示する最小限の情報です</p>
+              </div>
+              <span class="score-pill">Info</span>
+            </summary>
+            <div class="panel-body field-grid">
+              <div class="field"><label for="athleteId">選手ID</label><input id="athleteId" name="athleteId" placeholder="例 JY-001" /></div>
+              <div class="field"><label for="athleteName">名前・イニシャル</label><input id="athleteName" name="athleteName" placeholder="例 T.K" /></div>
+              <div class="field"><label for="age">年齢</label><input id="age" name="age" type="number" min="5" max="20" placeholder="例 11" /></div>
+              <div class="field"><label for="sport">競技</label><input id="sport" name="sport" placeholder="例 サッカー" /></div>
+            </div>
+          </details>
+
+          <details class="panel" open>
+            <summary class="panel-head">
+              <div>
+                <h2>成長データ</h2>
+                <p>成長段階を保護者へ説明するための補足情報です</p>
+              </div>
+              <span class="score-pill">Growth</span>
+            </summary>
+            <div class="panel-body field-grid">
+              <div class="field"><label for="height">身長 cm</label><input id="height" name="height" type="number" min="80" max="220" step="0.1" placeholder="例 145.5" /></div>
+              <div class="field"><label for="weight">体重 kg</label><input id="weight" name="weight" type="number" min="15" max="120" step="0.1" placeholder="例 38.2" /></div>
+              <div class="field"><label for="heightChange6">6ヶ月の身長変化 cm</label><input id="heightChange6" name="heightChange6" type="number" step="0.1" placeholder="例 3.2" /></div>
+              <div class="field"><label for="heightChange12">1年間の身長変化 cm</label><input id="heightChange12" name="heightChange12" type="number" step="0.1" placeholder="例 6.8" /></div>
+            </div>
+          </details>
+
+          <details class="panel" open>
+            <summary class="panel-head">
+              <div>
+                <h2>医師評価 / Doctor Assessment</h2>
+                <p>点数には加算せず、医学的・成長段階の補足情報として表示します</p>
+              </div>
+              <span class="score-pill">Doctor</span>
+            </summary>
+            <div class="panel-body grid">
+              <div class="item-card doctor-card">
+                <div class="item-title">成長・成熟評価 <span class="hint">医学的補足</span></div>
+                <div class="field-grid">
+                  <div class="field">
+                    <label for="maturityType">成熟タイプ</label>
+                    <select id="maturityType">
+                      <option>標準</option>
+                      <option>早熟</option>
+                      <option>晩熟</option>
+                      <option>判定保留</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="growthPhase">成長フェーズ</label>
+                    <select id="growthPhase">
+                      <option>Pre PHV</option>
+                      <option>PHV</option>
+                      <option>Post PHV</option>
+                      <option>判定保留</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="growthPeak">成長ピーク</label>
+                    <select id="growthPeak">
+                      <option>未到達</option>
+                      <option>到達中</option>
+                      <option>通過後</option>
+                      <option>判定保留</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="item-card doctor-card">
+                <div class="item-title">エコー所見 <span class="hint">複数選択可</span></div>
+                <div class="check-grid" id="echoFindings">
+                  <label class="check-option"><input type="checkbox" value="骨端線開存" />骨端線開存</label>
+                  <label class="check-option"><input type="checkbox" value="骨端線閉鎖傾向" />骨端線閉鎖傾向</label>
+                  <label class="check-option"><input type="checkbox" value="骨端線閉鎖" />骨端線閉鎖</label>
+                  <label class="check-option"><input type="checkbox" value="左右差あり" />左右差あり</label>
+                  <label class="check-option"><input type="checkbox" value="炎症所見あり" />炎症所見あり</label>
+                  <label class="check-option"><input type="checkbox" value="圧痛あり" />圧痛あり</label>
+                  <label class="check-option"><input type="checkbox" value="特記事項あり" />特記事項あり</label>
+                  <label class="check-option"><input type="checkbox" value="所見なし" />所見なし</label>
+                </div>
+              </div>
+
+              <div class="item-card doctor-card">
+                <div class="item-title">医師コメント <span class="hint">最大1000文字目安</span></div>
+                <div class="field-grid">
+                  <div class="field">
+                    <label for="doctorParentComment">保護者向けコメント</label>
+                    <textarea id="doctorParentComment" maxlength="1000" placeholder="保護者に伝える成長段階、注意点、安心材料など"></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="doctorExpertComment">専門家向けコメント</label>
+                    <textarea id="doctorExpertComment" maxlength="1000" placeholder="医師・スタッフ間で共有する所見や再評価ポイントなど"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="panel" open>
+            <summary class="panel-head">
+              <div>
+                <h2>身体機能評価 1. 可動域</h2>
+                <p>胸椎回旋と手をあげてのしゃがみ込みを評価します</p>
+              </div>
+              <span class="score-pill">10点</span>
+            </summary>
+            <div class="panel-body grid">
+              <div class="item-card">
+                <div class="item-title">胸椎回旋 <span class="hint">床と肩峰間距離 / 5点</span></div>
+                <div class="field">
+                  <label for="thoracicRotation">評価</label>
+                  <select id="thoracicRotation">
+                    <option value="5">10cm未満 OK</option>
+                    <option value="1">10cm以上 NG</option>
+                  </select>
+                </div>
+                <p class="hint">条件: 股関節屈曲90度、左右の膝位置がズレない状態で評価。</p>
+              </div>
+              <div class="item-card">
+                <div class="item-title">手をあげてのしゃがみ込み <span class="hint">制限分類 / 5点</span></div>
+                <div class="field">
+                  <label for="romOverheadSquat">制限分類</label>
+                  <select id="romOverheadSquat">
+                    <option value="5">制限なし</option>
+                    <option value="3">足関節制限</option>
+                    <option value="3">股関節制限</option>
+                    <option value="1">足関節・股関節制限</option>
+                    <option value="1">関節協調性制限</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="panel">
+            <summary class="panel-head">
+              <div>
+                <h2>2. 柔軟性</h2>
+                <p>a-SLRとa-HBDを左右別に評価します</p>
+              </div>
+              <span class="score-pill">10点</span>
+            </summary>
+            <div class="panel-body grid">
+              <div class="item-card">
+                <div class="item-title">a-SLR角度 <span class="hint">5点</span></div>
+                <div class="field-grid">
+                  <div class="field">
+                    <label for="aslrRight">右</label>
+                    <select id="aslrRight">
+                      <option value="90">90度</option>
+                      <option value="mid">反対側大腿〜膝蓋骨上縁以上</option>
+                      <option value="low">膝未満</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="aslrLeft">左</label>
+                    <select id="aslrLeft">
+                      <option value="90">90度</option>
+                      <option value="mid">反対側大腿〜膝蓋骨上縁以上</option>
+                      <option value="low">膝未満</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="item-card">
+                <div class="item-title">a-HBD <span class="hint">10cm未満 OK / 5点</span></div>
+                <div class="field-grid">
+                  <div class="field">
+                    <label for="hbdRight">右</label>
+                    <select id="hbdRight"><option value="ok">OK</option><option value="ng">NG</option></select>
+                  </div>
+                  <div class="field">
+                    <label for="hbdLeft">左</label>
+                    <select id="hbdLeft"><option value="ok">OK</option><option value="ng">NG</option></select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="panel">
+            <summary class="panel-head">
+              <div>
+                <h2>3. 体幹機能</h2>
+                <p>骨盤固定、push-up、呼吸を確認します</p>
+              </div>
+              <span class="score-pill">15点</span>
+            </summary>
+            <div class="panel-body grid">
+              <div class="item-card">
+                <div class="item-title">a-SLR骨盤固定 <span class="hint">5点</span></div>
+                <div class="field-grid">
+                  <div class="field"><label for="pelvisRight">右</label><select id="pelvisRight"><option value="ok">OK</option><option value="ng">NG</option></select></div>
+                  <div class="field"><label for="pelvisLeft">左</label><select id="pelvisLeft"><option value="ok">OK</option><option value="ng">NG</option></select></div>
+                </div>
+              </div>
+              <div class="item-card field">
+                <div class="item-title">push-up <span class="hint">5点</span></div>
+                <select id="pushup"><option value="5">額レベルでできる</option><option value="3">鎖骨レベルでできる</option><option value="1">できない</option></select>
+              </div>
+              <div class="item-card field">
+                <div class="item-title">呼吸 <span class="hint">5点</span></div>
+                <select id="breathing"><option value="5">呼気6秒できる</option><option value="3">4秒以上6秒未満</option><option value="1">できない</option></select>
+              </div>
+            </div>
+          </details>
+
+          <details class="panel">
+            <summary class="panel-head">
+              <div>
+                <h2>4. 協調運動</h2>
+                <p>しゃがみ込み、片脚屈伸、垂直跳びを評価します</p>
+              </div>
+              <span class="score-pill">15点</span>
+            </summary>
+            <div class="panel-body grid">
+              <div class="item-card">
+                <div class="item-title">手をあげてのしゃがみ込み <span class="hint">5点</span></div>
+                <div class="field-grid">
+                  <div class="field">
+                    <label for="coordSquat">評価</label>
+                    <select id="coordSquat">
+                      <option value="5">できる</option>
+                      <option value="4">手が下がるができる</option>
+                      <option value="2">臀部が膝下の高さまで下がるが制限あり</option>
+                      <option value="1">できない</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="coordSquatReason">制限理由</label>
+                    <select id="coordSquatReason"><option value="none">制限なし</option><option value="rom">可動域制限</option><option value="coordination">協調性制限</option></select>
+                  </div>
+                </div>
+              </div>
+              <div class="item-card">
+                <div class="item-title">片脚屈伸 <span class="hint">5点</span></div>
+                <div class="field-grid">
+                  <div class="field"><label for="coordSingleRight">右</label><select id="coordSingleRight" class="single-leg"><option value="can">できる</option><option value="below">臀部が膝下まで下がる</option><option value="posture">片脚しゃがみ込み姿勢はできる</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="coordSingleLeft">左</label><select id="coordSingleLeft" class="single-leg"><option value="can">できる</option><option value="below">臀部が膝下まで下がる</option><option value="posture">片脚しゃがみ込み姿勢はできる</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="coordSingleReason">できない場合の理由</label><select id="coordSingleReason"><option value="rom">可動域制限</option><option value="coordination">協調性制限</option></select></div>
+                </div>
+              </div>
+              <div class="item-card field">
+                <div class="item-title">垂直跳び <span class="hint">5点</span></div>
+                <select id="verticalJump"><option value="5">年齢平均＋α</option><option value="3">年齢平均</option><option value="1">平均未満</option></select>
+              </div>
+            </div>
+          </details>
+
+          <details class="panel">
+            <summary class="panel-head">
+              <div>
+                <h2>5. 筋力</h2>
+                <p>片脚屈伸を中心に、必要時は20cm段差起立を追加します</p>
+              </div>
+              <span class="score-pill">10点</span>
+            </summary>
+            <div class="panel-body grid">
+              <div class="item-card">
+                <div class="item-title">片脚屈伸 <span class="hint">10点</span></div>
+                <div class="field-grid">
+                  <div class="field"><label for="strengthSingleRight">右</label><select id="strengthSingleRight"><option value="can">できる</option><option value="below">臀部が膝下まで下がる</option><option value="posture">片脚しゃがみ込み姿勢はできる</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="strengthSingleLeft">左</label><select id="strengthSingleLeft"><option value="can">できる</option><option value="below">臀部が膝下まで下がる</option><option value="posture">片脚しゃがみ込み姿勢はできる</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="strengthSquat">しゃがみ込み</label><select id="strengthSquat"><option value="can">できる</option><option value="cannot">できない</option></select></div>
+                </div>
+              </div>
+              <div class="item-card" id="stepTestCard">
+                <div class="item-title">20cm段差からの起立 <span class="hint">条件該当時に使用</span></div>
+                <div class="field-grid">
+                  <div class="field"><label for="stepRight">右</label><select id="stepRight"><option value="can">できる</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="stepLeft">左</label><select id="stepLeft"><option value="can">できる</option><option value="cannot">できない</option></select></div>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="panel">
+            <summary class="panel-head">
+              <div>
+                <h2>6. バランス</h2>
+                <p>タンデム立位と片脚立位を左右別に評価します</p>
+              </div>
+              <span class="score-pill">10点</span>
+            </summary>
+            <div class="panel-body grid">
+              <div class="item-card">
+                <div class="item-title">タンデム立位 <span class="hint">5点</span></div>
+                <div class="field-grid">
+                  <div class="field"><label for="tandemRight">右前</label><select id="tandemRight"><option value="closed">閉眼20秒</option><option value="open">開眼20秒</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="tandemLeft">左前</label><select id="tandemLeft"><option value="closed">閉眼20秒</option><option value="open">開眼20秒</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="centerOfGravity">重心位置</label><select id="centerOfGravity"><option>真ん中</option><option>前</option><option>後</option></select></div>
+                </div>
+              </div>
+              <div class="item-card">
+                <div class="item-title">片脚立位 <span class="hint">手は腰 / 対側股関節90度以上 / 5点</span></div>
+                <div class="field-grid">
+                  <div class="field"><label for="singleBalanceRight">右軸</label><select id="singleBalanceRight"><option value="perfect">30秒完全にできる</option><option value="posterior">骨盤後傾位でできる</option><option value="legdrop">足が下がるができる</option><option value="good15">15〜29秒良い姿勢でできる</option><option value="comp15">15〜29秒、骨盤後傾または足が下がる</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="singleBalanceLeft">左軸</label><select id="singleBalanceLeft"><option value="perfect">30秒完全にできる</option><option value="posterior">骨盤後傾位でできる</option><option value="legdrop">足が下がるができる</option><option value="good15">15〜29秒良い姿勢でできる</option><option value="comp15">15〜29秒、骨盤後傾または足が下がる</option><option value="cannot">できない</option></select></div>
+                  <div class="field"><label for="singleBalance15">15秒以上できたか</label><select id="singleBalance15"><option>両側できた</option><option>片側できた</option><option>できなかった</option></select></div>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <div class="panel">
+            <div class="panel-body field">
+              <label for="staffMemo">スタッフメモ</label>
+              <textarea id="staffMemo" placeholder="痛み、左右差、フォームの特徴、次回確認したいことなど"></textarea>
+            </div>
+          </div>
+
+          <button class="btn" type="submit">結果を作成する</button>
+        </form>
+
+        <aside class="side">
+          <section class="panel result-panel" id="report">
+            <div class="total">
+              <div class="total-number"><span id="totalScore">70</span></div>
+              <div>
+                <p class="brand-kicker">Total Score</p>
+                <h2>総合結果</h2>
+                <p id="overallText">入力内容に応じて結果が自動更新されます。</p>
+              </div>
+            </div>
+
+            <div class="radar-wrap">
+              <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="6分類レーダーチャート"></svg>
+            </div>
+
+            <div class="score-list" id="scoreList"></div>
+          </section>
+
+          <section class="comment-box">
+            <h3>基本情報・成長データ</h3>
+            <p id="growthSummary"></p>
+          </section>
+
+          <section class="comment-box">
+            <h3>医師評価</h3>
+            <p id="doctorSummary"></p>
+            <ul id="doctorCommentList"></ul>
+          </section>
+
+          <section class="comment-box">
+            <h3>弱い項目</h3>
+            <div class="weak-list" id="weakList"></div>
+          </section>
+
+          <section class="comment-box">
+            <h3>保護者向けコメント</h3>
+            <p id="parentComment"></p>
+          </section>
+
+          <section class="comment-box">
+            <h3>トレーナー向け改善ポイント</h3>
+            <ul id="trainerPoints"></ul>
+          </section>
+
+          <section class="comment-box report-only">
+            <h3>選手情報</h3>
+            <p id="printInfo"></p>
+          </section>
+
+          <button class="btn" type="button" id="printReport">PDFレポートとして保存</button>
+        </aside>
+      </div>
     </main>
+
+    <script>
+      const categories = [
+        { key: "rom", label: "可動域", max: 10 },
+        { key: "flexibility", label: "柔軟性", max: 10 },
+        { key: "core", label: "体幹機能", max: 15 },
+        { key: "coordination", label: "協調運動", max: 15 },
+        { key: "strength", label: "筋力", max: 10 },
+        { key: "balance", label: "バランス", max: 10 }
+      ];
+
+      const categoryAdvice = {
+        rom: "胸椎・足関節・股関節の可動域を確認し、しゃがみ込みや回旋動作の準備を整えましょう。",
+        flexibility: "太もも前後の柔軟性を整え、骨盤や腰に余計な負担がかからない状態を目指しましょう。",
+        core: "骨盤を安定させる体幹機能と呼吸を整えることで、動作の土台が安定しやすくなります。",
+        coordination: "しゃがみ込み・片脚動作・ジャンプの動き方を確認し、力をスムーズに使える身体づくりを行いましょう。",
+        strength: "片脚で支える力を高め、走る・止まる・切り返す動作の安定につなげましょう。",
+        balance: "左右差や姿勢保持を確認し、成長期の重心変化に対応できるバランスを育てましょう。"
+      };
+
+      const $ = (id) => document.getElementById(id);
+      const value = (id) => $(id).value;
+      const numberValue = (id) => Number(value(id));
+
+      function escapeHtml(text) {
+        return String(text)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function selectedEchoFindings() {
+        return [...document.querySelectorAll("#echoFindings input:checked")].map((input) => input.value);
+      }
+
+      function growthDataSummary() {
+        const items = [
+          value("athleteId") && `選手ID: ${value("athleteId")}`,
+          value("athleteName") && `名前: ${value("athleteName")}`,
+          value("age") && `年齢: ${value("age")}歳`,
+          value("sport") && `競技: ${value("sport")}`,
+          value("height") && `身長: ${value("height")}cm`,
+          value("weight") && `体重: ${value("weight")}kg`,
+          value("heightChange6") && `6ヶ月身長変化: +${value("heightChange6")}cm`,
+          value("heightChange12") && `1年身長変化: +${value("heightChange12")}cm`
+        ].filter(Boolean);
+        return items.length ? items.join(" / ") : "基本情報・成長データは未入力です。";
+      }
+
+      function doctorAssessmentSummary() {
+        const findings = selectedEchoFindings();
+        return [
+          `成熟タイプ: ${value("maturityType")}`,
+          `成長フェーズ: ${value("growthPhase")}`,
+          `成長ピーク: ${value("growthPeak")}`,
+          `エコー所見: ${findings.length ? findings.join("、") : "未選択"}`
+        ].join(" / ");
+      }
+
+      function collectReportData(results, total) {
+        return {
+          basic: {
+            athleteId: value("athleteId"),
+            athleteName: value("athleteName"),
+            age: value("age"),
+            sport: value("sport")
+          },
+          growth: {
+            height: value("height"),
+            weight: value("weight"),
+            heightChange6: value("heightChange6"),
+            heightChange12: value("heightChange12")
+          },
+          doctorAssessment: {
+            maturityType: value("maturityType"),
+            growthPhase: value("growthPhase"),
+            growthPeak: value("growthPeak"),
+            echoFindings: selectedEchoFindings(),
+            parentComment: value("doctorParentComment"),
+            expertComment: value("doctorExpertComment")
+          },
+          physicalFunction: {
+            total,
+            categories: results
+          }
+        };
+      }
+
+      function pairOkScore(right, left) {
+        const okCount = [right, left].filter((item) => item === "ok").length;
+        if (okCount === 2) return 5;
+        if (okCount === 1) return 3;
+        return 1;
+      }
+
+      function scoreASLR(right, left) {
+        const pair = [right, left].sort().join("-");
+        if (right === "90" && left === "90") return 5;
+        if ((right === "90" && left === "mid") || (right === "mid" && left === "90")) return 4;
+        if (right === "mid" && left === "mid") return 3;
+        if ((right === "mid" && left === "low") || (right === "low" && left === "mid")) return 2;
+        if (right === "low" && left === "low") return 1;
+        if (pair.includes("90") && pair.includes("low")) return 2;
+        return 1;
+      }
+
+      function scoreCoordSingle(right, left, reason) {
+        if (right === "can" && left === "can") return 5;
+        if (right === "below" && left === "below") return 4;
+        if (right === "below" || left === "below") return 3;
+        if (right === "cannot" || left === "cannot") return reason === "rom" ? 2 : 1;
+        return 1;
+      }
+
+      function scoreStrengthSingle(right, left) {
+        const values = [right, left];
+        if (right === "can" && left === "can") return 10;
+        if ((right === "can" && left === "below") || (right === "below" && left === "can")) return 8;
+        if (right === "below" && left === "below") return 6;
+        if (right === "below" || left === "below") return 4;
+        return null;
+      }
+
+      function scoreStrength() {
+        const right = value("strengthSingleRight");
+        const left = value("strengthSingleLeft");
+        const direct = scoreStrengthSingle(right, left);
+        const needsStep = right === "cannot" && left === "cannot" && value("strengthSquat") === "cannot";
+        $("stepTestCard").style.display = needsStep ? "block" : "none";
+        if (direct !== null) return direct;
+        if (!needsStep) return 1;
+        const stepCount = [value("stepRight"), value("stepLeft")].filter((item) => item === "can").length;
+        if (stepCount === 2) return 3;
+        if (stepCount === 1) return 2;
+        return 1;
+      }
+
+      function scoreTandem(right, left) {
+        if (right === "closed" && left === "closed") return 5;
+        if ((right === "closed" || right === "open") && (left === "closed" || left === "open")) return 3;
+        return 1;
+      }
+
+      function singleBalanceSideScore(side) {
+        const map = { perfect: 5, posterior: 4, legdrop: 4, good15: 3, comp15: 2, cannot: 1 };
+        return map[side] || 1;
+      }
+
+      function scoreSingleBalance(right, left) {
+        if (right === "perfect" && left === "perfect") return 5;
+        return Math.min(singleBalanceSideScore(right), singleBalanceSideScore(left));
+      }
+
+      function level(score, max) {
+        if (max === 10) {
+          if (score >= 9) return 5;
+          if (score >= 7) return 4;
+          if (score >= 5) return 3;
+          if (score >= 3) return 2;
+          return 1;
+        }
+        if (score >= 13) return 5;
+        if (score >= 10) return 4;
+        if (score >= 7) return 3;
+        if (score >= 4) return 2;
+        return 1;
+      }
+
+      function calculateScores() {
+        const scores = {
+          rom: numberValue("thoracicRotation") + numberValue("romOverheadSquat"),
+          flexibility: scoreASLR(value("aslrRight"), value("aslrLeft")) + pairOkScore(value("hbdRight"), value("hbdLeft")),
+          core: pairOkScore(value("pelvisRight"), value("pelvisLeft")) + numberValue("pushup") + numberValue("breathing"),
+          coordination: numberValue("coordSquat") + scoreCoordSingle(value("coordSingleRight"), value("coordSingleLeft"), value("coordSingleReason")) + numberValue("verticalJump"),
+          strength: scoreStrength(),
+          balance: scoreTandem(value("tandemRight"), value("tandemLeft")) + scoreSingleBalance(value("singleBalanceRight"), value("singleBalanceLeft"))
+        };
+        return categories.map((cat) => ({ ...cat, score: scores[cat.key], level: level(scores[cat.key], cat.max) }));
+      }
+
+      function overallComment(total) {
+        if (total >= 60) return "全体として身体機能の土台は良好です。成長期の変化に合わせて、今の良い状態を定期的に確認しましょう。";
+        if (total >= 48) return "大きな問題は少ない一方で、いくつか整えておきたい項目があります。痛みが出る前に動き方や回復習慣を見直すと安心です。";
+        if (total >= 35) return "複数の項目でサポートしたいポイントがあります。無理に練習量を増やすより、身体の使い方と回復を整えることが大切です。";
+        return "優先して個別に確認したい状態です。必要に応じて医師評価やJoynityでの個別サポートにつなげましょう。";
+      }
+
+      function renderScoreList(results) {
+        $("scoreList").innerHTML = results.map((item) => {
+          const percent = Math.round((item.score / item.max) * 100);
+          return `
+            <div class="score-row">
+              <span>${item.label}</span>
+              <div class="bar"><span style="width:${percent}%"></span></div>
+              <strong>${item.score}/${item.max} <span class="level-badge">Lv.${item.level}</span></strong>
+            </div>
+          `;
+        }).join("");
+      }
+
+      function renderRadar(results) {
+        const svg = $("radar");
+        const center = { x: 160, y: 150 };
+        const radius = 100;
+        const axes = results.map((item, index) => {
+          const angle = -Math.PI / 2 + index * (Math.PI * 2 / results.length);
+          return { ...item, angle, x: center.x + Math.cos(angle) * radius, y: center.y + Math.sin(angle) * radius };
+        });
+        const rings = [0.2, 0.4, 0.6, 0.8, 1].map((ratio) => {
+          const points = axes.map((axis) => `${center.x + Math.cos(axis.angle) * radius * ratio},${center.y + Math.sin(axis.angle) * radius * ratio}`).join(" ");
+          return `<polygon points="${points}" fill="none" stroke="#d9e8e3" stroke-width="1" />`;
+        }).join("");
+        const axisLines = axes.map((axis) => `<line x1="${center.x}" y1="${center.y}" x2="${axis.x}" y2="${axis.y}" stroke="#d9e8e3" />`).join("");
+        const dataPoints = axes.map((axis) => {
+          const ratio = axis.score / axis.max;
+          return `${center.x + Math.cos(axis.angle) * radius * ratio},${center.y + Math.sin(axis.angle) * radius * ratio}`;
+        }).join(" ");
+        const labels = axes.map((axis) => {
+          const lx = center.x + Math.cos(axis.angle) * 127;
+          const ly = center.y + Math.sin(axis.angle) * 127;
+          return `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" fill="#176b5b" font-size="13" font-weight="700">${axis.label}</text>`;
+        }).join("");
+        svg.innerHTML = `${rings}${axisLines}<polygon points="${dataPoints}" fill="rgba(122,188,166,.34)" stroke="#2f8b72" stroke-width="3" />${labels}`;
+      }
+
+      function updateReport() {
+        const results = calculateScores();
+        const total = results.reduce((sum, item) => sum + item.score, 0);
+        const weak = results.filter((item) => item.level <= 3).sort((a, b) => a.level - b.level || (a.score / a.max) - (b.score / b.max));
+        const weakest = weak.slice(0, 3);
+        const good = results.filter((item) => item.level >= 4).map((item) => item.label);
+
+        $("totalScore").textContent = total;
+        $("overallText").textContent = overallComment(total);
+        renderScoreList(results);
+        renderRadar(results);
+        $("weakList").innerHTML = weakest.length ? weakest.map((item) => `<span class="tag">${item.label} Lv.${item.level}</span>`).join("") : `<span class="tag">大きな弱点は少ない</span>`;
+
+        const weakLabels = weakest.map((item) => item.label).join("・");
+        const goodText = good.length ? `強みは${good.join("・")}です。` : "まずは身体の土台づくりから整えていきましょう。";
+        $("parentComment").textContent = `${goodText} ${weakest.length ? `${weakLabels}は今のうちに整えたいポイントです。` : "現在の良い状態を維持しながら、成長に合わせて定期的に確認しましょう。"} 評価は良し悪しを決めるものではなく、安心して競技を続けるための現在地です。`;
+
+        $("trainerPoints").innerHTML = (weakest.length ? weakest : results.slice().sort((a, b) => a.level - b.level).slice(0, 3))
+          .map((item) => `<li><strong>${item.label}</strong>: ${categoryAdvice[item.key]}</li>`)
+          .join("");
+
+        $("growthSummary").textContent = growthDataSummary();
+        $("doctorSummary").textContent = doctorAssessmentSummary();
+        const doctorComments = [
+          value("doctorParentComment") && `<li><strong>保護者向け:</strong> ${escapeHtml(value("doctorParentComment"))}</li>`,
+          value("doctorExpertComment") && `<li><strong>専門家向け:</strong> ${escapeHtml(value("doctorExpertComment"))}</li>`
+        ].filter(Boolean);
+        $("doctorCommentList").innerHTML = doctorComments.length ? doctorComments.join("") : "<li>医師コメントは未入力です。</li>";
+
+        const info = [
+          value("athleteId") && `ID: ${value("athleteId")}`,
+          value("athleteName") && `名前: ${value("athleteName")}`,
+          value("age") && `年齢: ${value("age")}歳`,
+          value("sport") && `競技: ${value("sport")}`
+        ].filter(Boolean).join(" / ");
+        $("printInfo").textContent = info || "選手情報未入力";
+        window.joynityLatestReportData = collectReportData(results, total);
+      }
+
+      function bindEvents() {
+        document.querySelectorAll("select, input, textarea").forEach((el) => {
+          el.addEventListener("change", updateReport);
+          el.addEventListener("input", updateReport);
+        });
+        $("assessmentForm").addEventListener("submit", (event) => {
+          event.preventDefault();
+          updateReport();
+          $("report").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        $("printReport").addEventListener("click", () => {
+          updateReport();
+          window.print();
+        });
+        $("printTop").addEventListener("click", () => {
+          updateReport();
+          window.print();
+        });
+        $("makeReportTop").addEventListener("click", () => {
+          updateReport();
+          $("report").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      }
+
+      bindEvents();
+      updateReport();
+    </script>
   </body>
 </html>
