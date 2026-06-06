@@ -406,6 +406,80 @@
         margin: 4px 0;
       }
 
+      .parent-report {
+        display: grid;
+        gap: 14px;
+      }
+
+      .report-hero {
+        border-radius: 18px;
+        background: linear-gradient(135deg, #eaf8f4, #ffffff);
+        border: 1px solid var(--line);
+        padding: 18px;
+      }
+
+      .report-hero strong {
+        display: block;
+        color: var(--brand-dark);
+        font-size: 1.1rem;
+        line-height: 1.45;
+      }
+
+      .mini-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .mini-card {
+        border: 1px solid #dbe9e5;
+        border-radius: 14px;
+        background: #fff;
+        padding: 12px;
+      }
+
+      .mini-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+
+      .mini-card strong {
+        display: block;
+        color: var(--brand-dark);
+        font-size: 1rem;
+      }
+
+      .action-list {
+        margin: 8px 0 0;
+        padding-left: 1.3em;
+      }
+
+      .action-list li {
+        margin: 6px 0;
+        font-weight: 800;
+      }
+
+      .detail-panel {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+        overflow: hidden;
+      }
+
+      .detail-panel summary {
+        padding: 14px 16px;
+        color: var(--brand-dark);
+        font-weight: 900;
+      }
+
+      .detail-content {
+        border-top: 1px solid var(--line);
+        padding: 14px 16px;
+        color: var(--muted);
+      }
+
       .weak-list {
         display: flex;
         flex-wrap: wrap;
@@ -466,6 +540,10 @@
 
         .score-row {
           grid-template-columns: 82px 1fr;
+        }
+
+        .mini-grid {
+          grid-template-columns: 1fr;
         }
 
         .score-row strong {
@@ -573,6 +651,16 @@
               <div class="field"><label for="weight">体重 kg</label><input id="weight" name="weight" type="number" min="15" max="120" step="0.1" placeholder="例 38.2" /></div>
               <div class="field"><label for="heightChange6">6ヶ月の身長変化 cm</label><input id="heightChange6" name="heightChange6" type="number" step="0.1" placeholder="例 3.2" /></div>
               <div class="field"><label for="heightChange12">1年間の身長変化 cm</label><input id="heightChange12" name="heightChange12" type="number" step="0.1" placeholder="例 6.8" /></div>
+              <div class="field"><label for="currentPain">現在気になる部位・痛み</label><input id="currentPain" name="currentPain" placeholder="例 膝前面、踵、なし" /></div>
+              <div class="field"><label for="sleepHours">平均睡眠時間</label><input id="sleepHours" name="sleepHours" type="number" min="4" max="12" step="0.5" placeholder="例 8" /></div>
+              <div class="field">
+                <label for="snackHabit">練習後の補食</label>
+                <select id="snackHabit">
+                  <option>できている</option>
+                  <option>時々できている</option>
+                  <option>不足しやすい</option>
+                </select>
+              </div>
             </div>
           </details>
 
@@ -624,15 +712,23 @@
               </div>
 
               <div class="item-card doctor-card">
-                <div class="item-title">医師コメント <span class="hint">最大1000文字目安</span></div>
+                <div class="item-title">ドクター評価の要約 <span class="hint">親向けレポートは要約のみ表示</span></div>
                 <div class="field-grid">
                   <div class="field">
-                    <label for="doctorParentComment">保護者向けコメント</label>
+                    <label for="echoKeyPoint">エコー評価の要点</label>
+                    <textarea id="echoKeyPoint" maxlength="500" placeholder="例 膝前面への負担に注意。状態を見ながら運動量を調整。"></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="exerciseAttention">運動時の注意点</label>
+                    <textarea id="exerciseAttention" maxlength="500" placeholder="例 痛みが強い日はジャンプ・切り返しを控え、練習後の状態を確認。"></textarea>
+                  </div>
+                  <div class="field">
+                    <label for="doctorParentComment">医師コメントの要約</label>
                     <textarea id="doctorParentComment" maxlength="1000" placeholder="保護者に伝える成長段階、注意点、安心材料など"></textarea>
                   </div>
                   <div class="field">
-                    <label for="doctorExpertComment">専門家向けコメント</label>
-                    <textarea id="doctorExpertComment" maxlength="1000" placeholder="医師・スタッフ間で共有する所見や再評価ポイントなど"></textarea>
+                    <label for="doctorExpertComment">詳細医学情報・専門家向けメモ</label>
+                    <textarea id="doctorExpertComment" maxlength="1000" placeholder="医学的所見、エビデンス、詳細説明など。親向け1枚レポートには表示しすぎない情報です。"></textarea>
                   </div>
                 </div>
               </div>
@@ -852,56 +948,82 @@
             </div>
           </div>
 
+          <details class="panel">
+            <summary class="panel-head">
+              <div>
+                <h2>継続フォロー・医師共有</h2>
+                <p>再評価時に、医師へJoynityでの変化を返すための記録です</p>
+              </div>
+              <span class="score-pill">Follow</span>
+            </summary>
+            <div class="panel-body field-grid">
+              <div class="field"><label for="actionStatus">アクションプラン実施状況</label><textarea id="actionStatus" placeholder="例 睡眠は週4日改善、補食は練習後に継続"></textarea></div>
+              <div class="field"><label for="joynityIntervention">Joynity介入内容</label><textarea id="joynityIntervention" placeholder="例 股関節・足関節モビリティ、片脚支持、着地動作の調整"></textarea></div>
+              <div class="field"><label for="doctorCheckItems">次回医師に確認したい項目</label><textarea id="doctorCheckItems" placeholder="例 膝前面の痛み変化、成長ステージ、運動量の許容範囲"></textarea></div>
+            </div>
+          </details>
+
           <button class="btn" type="submit">結果を作成する</button>
         </form>
 
         <aside class="side">
           <section class="panel result-panel" id="report">
-            <div class="total">
-              <div class="total-number"><span id="totalScore">70</span></div>
-              <div>
-                <p class="brand-kicker">Total Score</p>
-                <h2>総合結果</h2>
-                <p id="overallText">入力内容に応じて結果が自動更新されます。</p>
+            <div class="parent-report">
+              <div class="report-hero">
+                <p class="brand-kicker">Parent Summary</p>
+                <strong id="oneLineSummary">入力内容に応じて、親向けの総合コメントを作成します。</strong>
               </div>
+
+              <div class="mini-grid">
+                <div class="mini-card"><span>成長ステージ</span><strong id="stageBadge">-</strong></div>
+                <div class="mini-card"><span>成長ピーク状況</span><strong id="peakBadge">-</strong></div>
+                <div class="mini-card"><span>身体機能スコア</span><strong><span id="totalScore">70</span>/70点</strong></div>
+              </div>
+
+              <div class="comment-box">
+                <h3>注意リスク</h3>
+                <div class="weak-list" id="weakList"></div>
+              </div>
+
+              <div class="comment-box">
+                <h3>医師評価の要点</h3>
+                <p id="doctorSummary"></p>
+              </div>
+
+              <div class="comment-box">
+                <h3>Joynity評価の要点</h3>
+                <p id="joynitySummary"></p>
+              </div>
+
+              <div class="comment-box">
+                <h3>現在の身体状態</h3>
+                <p id="currentBodyState"></p>
+              </div>
+
+              <div class="comment-box">
+                <h3>今月のアクションプラン</h3>
+                <p><strong id="priorityTheme"></strong></p>
+                <ol class="action-list" id="topActions"></ol>
+                <p id="homeAction"></p>
+                <p id="practiceAction"></p>
+                <p id="joynitySupport"></p>
+                <p id="nextCheck"></p>
+              </div>
+
+              <details class="detail-panel">
+                <summary>詳細を見る（スタッフ・医師共有）</summary>
+                <div class="detail-content">
+                  <p id="growthSummary"></p>
+                  <ul id="doctorCommentList"></ul>
+                  <div class="radar-wrap">
+                    <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="6分類レーダーチャート"></svg>
+                  </div>
+                  <div class="score-list" id="scoreList"></div>
+                  <h3>医師向けフォロー情報</h3>
+                  <ul id="doctorFeedbackList"></ul>
+                </div>
+              </details>
             </div>
-
-            <div class="radar-wrap">
-              <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="6分類レーダーチャート"></svg>
-            </div>
-
-            <div class="score-list" id="scoreList"></div>
-          </section>
-
-          <section class="comment-box">
-            <h3>基本情報・成長データ</h3>
-            <p id="growthSummary"></p>
-          </section>
-
-          <section class="comment-box">
-            <h3>医師評価</h3>
-            <p id="doctorSummary"></p>
-            <ul id="doctorCommentList"></ul>
-          </section>
-
-          <section class="comment-box">
-            <h3>弱い項目</h3>
-            <div class="weak-list" id="weakList"></div>
-          </section>
-
-          <section class="comment-box">
-            <h3>保護者向けコメント</h3>
-            <p id="parentComment"></p>
-          </section>
-
-          <section class="comment-box">
-            <h3>トレーナー向け改善ポイント</h3>
-            <ul id="trainerPoints"></ul>
-          </section>
-
-          <section class="comment-box report-only">
-            <h3>選手情報</h3>
-            <p id="printInfo"></p>
           </section>
 
           <button class="btn" type="button" id="printReport">PDFレポートとして保存</button>
@@ -998,6 +1120,59 @@
         ];
       }
 
+      function doctorKeyPointSummary() {
+        const typed = value("doctorParentComment").trim();
+        if (typed) return typed;
+        if (value("growthPhase").includes("成長加速期") || value("growthPeak") === "ピーク中") {
+          return "身長が伸びやすい時期のため、身体への負担を確認しながら運動量とコンディションを整えていきます。";
+        }
+        if (value("growthPeak") === "ピーク前") {
+          return "これから身体が大きく変化する可能性があるため、基本動作と回復習慣を今のうちに整えていきます。";
+        }
+        return "成長段階を確認しながら、現在の身体機能に合わせて安心して競技を続けられる状態を目指します。";
+      }
+
+      function simpleDoctorSummary() {
+        const echo = value("echoKeyPoint").trim();
+        const attention = value("exerciseAttention").trim();
+        return [
+          doctorKeyPointSummary(),
+          echo && `エコー評価の要点: ${echo}`,
+          attention && `運動時の注意点: ${attention}`
+        ].filter(Boolean).join(" ");
+      }
+
+      function categoryMeaning(item) {
+        const meaning = {
+          rom: "股関節・足関節・胸椎の動き",
+          flexibility: "太もも前後の柔軟性",
+          core: "骨盤と体幹の安定",
+          coordination: "しゃがむ・片脚で支える・跳ぶ動作のつながり",
+          strength: "片脚で支える力",
+          balance: "姿勢を保つ力"
+        };
+        return meaning[item.key];
+      }
+
+      function buildActionPlan(weakest) {
+        const first = weakest[0];
+        const themeByKey = {
+          rom: "股関節・足関節の動きを整える",
+          flexibility: "成長期に合わせた柔軟性づくり",
+          core: "体幹と骨盤の安定づくり",
+          coordination: "膝や踵に負担が集中しにくい動きづくり",
+          strength: "片脚で支える力の強化",
+          balance: "左右差を整えるバランスづくり"
+        };
+        const theme = first ? themeByKey[first.key] : "良い状態を維持するコンディショニング";
+        const actions = [
+          value("sleepHours") && Number(value("sleepHours")) < 8 ? "睡眠時間を30分増やす" : "就寝時間を固定して回復リズムを整える",
+          value("snackHabit") === "不足しやすい" ? "練習後30〜60分以内に補食をとる" : "練習後の補食を継続する",
+          first ? `${first.label}を整える3分メニューを行う` : "練習前後のケアを継続する"
+        ];
+        return { theme, actions };
+      }
+
       function collectReportData(results, total) {
         return {
           basic: {
@@ -1010,14 +1185,24 @@
             height: value("height"),
             weight: value("weight"),
             heightChange6: value("heightChange6"),
-            heightChange12: value("heightChange12")
+            heightChange12: value("heightChange12"),
+            currentPain: value("currentPain"),
+            sleepHours: value("sleepHours"),
+            snackHabit: value("snackHabit")
           },
           doctorAssessment: {
             maturityType: value("maturityType"),
             growthPhase: value("growthPhase"),
             growthPeak: value("growthPeak"),
+            echoKeyPoint: value("echoKeyPoint"),
+            exerciseAttention: value("exerciseAttention"),
             parentComment: value("doctorParentComment"),
             expertComment: value("doctorExpertComment")
+          },
+          followUp: {
+            actionStatus: value("actionStatus"),
+            joynityIntervention: value("joynityIntervention"),
+            doctorCheckItems: value("doctorCheckItems")
           },
           physicalFunction: {
             total,
@@ -1170,29 +1355,48 @@
         const weak = results.filter((item) => item.level <= 3).sort((a, b) => a.level - b.level || (a.score / a.max) - (b.score / b.max));
         const weakest = weak.slice(0, 3);
         const good = results.filter((item) => item.level >= 4).map((item) => item.label);
+        const actionPlan = buildActionPlan(weakest);
+        const weakLabels = weakest.map((item) => item.label).join("・");
+        const improvementLabels = weakest.length ? weakest.map((item) => categoryMeaning(item)).join("、") : "大きな偏りは少ない状態";
+        const attentionTarget = value("currentPain").trim() || (value("growthPhase").includes("成長加速期") ? "膝・踵・腰など成長期に負担が出やすい部位" : "練習で使う関節や筋肉");
 
         $("totalScore").textContent = total;
-        $("overallText").textContent = overallComment(total);
+        $("stageBadge").textContent = value("growthPhase");
+        $("peakBadge").textContent = value("growthPeak");
+        $("oneLineSummary").textContent = `${value("growthPhase")}の身体変化に合わせて、${weakest.length ? `${weakLabels}を中心に` : "現在の良い状態を維持しながら"}コンディションを整える時期です。`;
         renderScoreList(results);
         renderRadar(results);
-        $("weakList").innerHTML = weakest.length ? weakest.map((item) => `<span class="tag">${item.label} Lv.${item.level}</span>`).join("") : `<span class="tag">大きな弱点は少ない</span>`;
+        $("weakList").innerHTML = weakest.length ? weakest.map((item) => `<span class="tag">${item.label} Lv.${item.level}</span>`).join("") : `<span class="tag">大きな注意リスクは少ない</span>`;
 
-        const weakLabels = weakest.map((item) => item.label).join("・");
         const goodText = good.length ? `強みは${good.join("・")}です。` : "まずは身体の土台づくりから整えていきましょう。";
-        $("parentComment").textContent = `${goodText} ${weakest.length ? `${weakLabels}は今のうちに整えたいポイントです。` : "現在の良い状態を維持しながら、成長に合わせて定期的に確認しましょう。"} 評価は良し悪しを決めるものではなく、安心して競技を続けるための現在地です。`;
-
-        $("trainerPoints").innerHTML = (weakest.length ? weakest : results.slice().sort((a, b) => a.level - b.level).slice(0, 3))
-          .map((item) => `<li><strong>${item.label}</strong>: ${categoryAdvice[item.key]}</li>`)
-          .join("");
-
+        $("doctorSummary").textContent = simpleDoctorSummary();
+        $("joynitySummary").textContent = `身体機能スコアは${total}/70点です。${goodText} 改善優先は${weakest.length ? weakLabels : "現状維持と定期確認"}です。`;
+        $("currentBodyState").textContent = `${value("growthPhase")}という成長段階に対して、身体がどの程度適応できているかをJoynity評価で確認しました。${weakest.length ? `${improvementLabels}を整えることで、${attentionTarget}へ負担が集中しにくい状態を目指します。` : "現在は大きな偏りが少ないため、成長に合わせて良い状態を維持しましょう。"}`;
+        $("priorityTheme").textContent = `今月の最優先テーマ: ${actionPlan.theme}`;
+        $("topActions").innerHTML = actionPlan.actions.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+        $("homeAction").textContent = `家庭でできること: ${value("sleepHours") && Number(value("sleepHours")) < 8 ? "就寝時間を少し早め、睡眠時間を確保しましょう。" : "睡眠と補食のリズムを固定し、練習後の回復を支えましょう。"}`;
+        $("practiceAction").textContent = `練習で気をつけること: ${value("exerciseAttention").trim() || "痛みや違和感がある状態でジャンプ・ダッシュ・切り返しを繰り返しすぎないようにしましょう。"}`;
+        $("joynitySupport").textContent = `Joynityでサポートすること: ${value("joynityIntervention").trim() || (weakest.length ? `${weakLabels}を中心に、負担が集中しにくい動きづくりをサポートします。` : "良い状態を維持するための動作確認とコンディショニングを継続します。")}`;
+        $("nextCheck").textContent = `次回チェック目安: ${value("growthPhase").includes("成長加速期") || weakest.length >= 2 ? "2〜3ヶ月後" : "3〜4ヶ月後"}に、身長変化・痛み・睡眠・補食・身体機能スコアを確認しましょう。`;
         $("growthSummary").textContent = growthDataSummary();
-        $("doctorSummary").textContent = doctorAssessmentSummary();
         const doctorComments = [
+          `<li><strong>ドクター評価:</strong> ${escapeHtml(doctorAssessmentSummary())}</li>`,
           ...doctorAssessmentDescriptions().map((text) => `<li>${escapeHtml(text)}</li>`),
-          value("doctorParentComment") && `<li><strong>保護者向け:</strong> ${escapeHtml(value("doctorParentComment"))}</li>`,
-          value("doctorExpertComment") && `<li><strong>専門家向け:</strong> ${escapeHtml(value("doctorExpertComment"))}</li>`
+          value("echoKeyPoint") && `<li><strong>エコー評価の要点:</strong> ${escapeHtml(value("echoKeyPoint"))}</li>`,
+          value("doctorParentComment") && `<li><strong>医師コメント要約:</strong> ${escapeHtml(value("doctorParentComment"))}</li>`,
+          value("doctorExpertComment") && `<li><strong>詳細医学情報:</strong> ${escapeHtml(value("doctorExpertComment"))}</li>`
         ].filter(Boolean);
         $("doctorCommentList").innerHTML = doctorComments.length ? doctorComments.join("") : "<li>医師コメントは未入力です。</li>";
+        $("doctorFeedbackList").innerHTML = [
+          `身長変化: ${value("heightChange6") || "-"}cm / 6ヶ月、${value("heightChange12") || "-"}cm / 1年`,
+          `痛みの変化: ${value("currentPain") || "未入力"}`,
+          `睡眠時間: ${value("sleepHours") || "未入力"}時間`,
+          `補食習慣: ${value("snackHabit")}`,
+          `身体機能スコア: ${total}/70点`,
+          `アクションプラン実施状況: ${value("actionStatus") || "未入力"}`,
+          `Joynity介入内容: ${value("joynityIntervention") || "未入力"}`,
+          `次回医師に確認したい項目: ${value("doctorCheckItems") || "未入力"}`
+        ].map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 
         const info = [
           value("athleteId") && `ID: ${value("athleteId")}`,
