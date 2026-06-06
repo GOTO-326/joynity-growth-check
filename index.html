@@ -425,6 +425,13 @@
         line-height: 1.45;
       }
 
+      .print-meta {
+        margin: 10px 0 0;
+        color: var(--muted);
+        font-size: 0.86rem;
+        font-weight: 800;
+      }
+
       .mini-grid {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -478,6 +485,35 @@
         border-top: 1px solid var(--line);
         padding: 14px 16px;
         color: var(--muted);
+      }
+
+      .brand-footer {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #ffffff;
+        padding: 16px;
+        text-align: center;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .brand-footer strong {
+        display: block;
+        color: var(--brand-dark);
+        font-size: 1rem;
+      }
+
+      .timeline-bars {
+        display: grid;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .timeline-row {
+        display: grid;
+        grid-template-columns: 110px 1fr auto;
+        gap: 8px;
+        align-items: center;
       }
 
       .weak-list {
@@ -658,6 +694,38 @@
                 <select id="snackHabit">
                   <option>できている</option>
                   <option>時々できている</option>
+                  <option>不足しやすい</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="selfCareHabit">セルフケア</label>
+                <select id="selfCareHabit">
+                  <option>できている</option>
+                  <option>時々できている</option>
+                  <option>不足しやすい</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="hydrationHabit">水分</label>
+                <select id="hydrationHabit">
+                  <option>できている</option>
+                  <option>時々不足</option>
+                  <option>不足しやすい</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="exerciseHabit">運動習慣</label>
+                <select id="exerciseHabit">
+                  <option>適切</option>
+                  <option>やや不安定</option>
+                  <option>不足または過多</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="painManagement">痛み管理</label>
+                <select id="painManagement">
+                  <option>できている</option>
+                  <option>時々確認</option>
                   <option>不足しやすい</option>
                 </select>
               </div>
@@ -951,10 +1019,10 @@
           <details class="panel">
             <summary class="panel-head">
               <div>
-                <h2>継続フォロー・医師共有</h2>
+                <h2>Growth Timeline</h2>
                 <p>再評価時に、医師へJoynityでの変化を返すための記録です</p>
               </div>
-              <span class="score-pill">Follow</span>
+              <span class="score-pill">Timeline</span>
             </summary>
             <div class="panel-body field-grid">
               <div class="field"><label for="actionStatus">アクションプラン実施状況</label><textarea id="actionStatus" placeholder="例 睡眠は週4日改善、補食は練習後に継続"></textarea></div>
@@ -970,14 +1038,15 @@
           <section class="panel result-panel" id="report">
             <div class="parent-report">
               <div class="report-hero">
-                <p class="brand-kicker">Parent Summary</p>
+                <p class="brand-kicker">Growth Action Summary</p>
                 <strong id="oneLineSummary">入力内容に応じて、親向けの総合コメントを作成します。</strong>
+                <p class="print-meta" id="printInfo">選手情報未入力</p>
               </div>
 
               <div class="mini-grid">
                 <div class="mini-card"><span>成長ステージ</span><strong id="stageBadge">-</strong></div>
-                <div class="mini-card"><span>成長ピーク状況</span><strong id="peakBadge">-</strong></div>
-                <div class="mini-card"><span>身体機能スコア</span><strong><span id="totalScore">70</span>/70点</strong></div>
+                <div class="mini-card"><span>Growth Adaptation Score</span><strong><span id="totalScore">70</span>/70点</strong></div>
+                <div class="mini-card"><span>Habit Score</span><strong><span id="habitScore">100</span>/100点</strong></div>
               </div>
 
               <div class="comment-box">
@@ -991,7 +1060,7 @@
               </div>
 
               <div class="comment-box">
-                <h3>Joynity評価の要点</h3>
+                <h3>成長適応レポート</h3>
                 <p id="joynitySummary"></p>
               </div>
 
@@ -1008,6 +1077,7 @@
                 <p id="practiceAction"></p>
                 <p id="joynitySupport"></p>
                 <p id="nextCheck"></p>
+                <div class="weak-list" id="nextCheckGoals"></div>
               </div>
 
               <details class="detail-panel">
@@ -1019,10 +1089,19 @@
                     <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="6分類レーダーチャート"></svg>
                   </div>
                   <div class="score-list" id="scoreList"></div>
+                  <h3>Growth Timeline</h3>
+                  <div class="timeline-bars" id="timelineBars"></div>
                   <h3>医師向けフォロー情報</h3>
                   <ul id="doctorFeedbackList"></ul>
                 </div>
               </details>
+
+              <div class="brand-footer">
+                <strong>Growth Management System</strong>
+                医師評価 × 身体機能評価 × 行動変容<br />
+                成長期の身体を継続的にサポートします<br />
+                Joynity Conditioning Studio
+              </div>
             </div>
           </section>
 
@@ -1164,13 +1243,50 @@
           strength: "片脚で支える力の強化",
           balance: "左右差を整えるバランスづくり"
         };
-        const theme = first ? themeByKey[first.key] : "良い状態を維持するコンディショニング";
+        const stageTheme = value("growthPhase").includes("成長準備期")
+          ? "成長に備えた身体の土台づくり"
+          : value("growthPhase").includes("成長加速期")
+            ? "成長期に合わせた負担管理"
+            : value("growthPhase").includes("成長安定期")
+              ? "筋力・パワーにつながる身体づくり"
+              : "";
+        const theme = first ? themeByKey[first.key] : stageTheme || "良い状態を維持するコンディショニング";
         const actions = [
-          value("sleepHours") && Number(value("sleepHours")) < 8 ? "睡眠時間を30分増やす" : "就寝時間を固定して回復リズムを整える",
-          value("snackHabit") === "不足しやすい" ? "練習後30〜60分以内に補食をとる" : "練習後の補食を継続する",
-          first ? `${first.label}を整える3分メニューを行う` : "練習前後のケアを継続する"
+          value("sleepHours") && Number(value("sleepHours")) < 8.5 ? "睡眠8.5時間以上を目指す" : "就寝時間を固定して回復リズムを整える",
+          value("snackHabit") === "不足しやすい" || value("snackHabit") === "時々できている" ? "練習後30分以内に補食をとる" : "練習後の補食を継続する",
+          first ? `${first.label}を整える指定エクササイズを週3回行う` : "基本動作を週3回確認する"
         ];
         return { theme, actions };
+      }
+
+      function habitScore() {
+        const sleep = Number(value("sleepHours"));
+        const sleepScore = !sleep ? 10 : sleep >= 8.5 ? 20 : sleep >= 7.5 ? 14 : 8;
+        const snackScore = { "できている": 15, "時々できている": 10, "不足しやすい": 5 }[value("snackHabit")] || 10;
+        const selfCareScore = { "できている": 15, "時々できている": 10, "不足しやすい": 5 }[value("selfCareHabit")] || 10;
+        const hydrationScore = { "できている": 15, "時々不足": 10, "不足しやすい": 5 }[value("hydrationHabit")] || 10;
+        const exerciseScore = { "適切": 15, "やや不安定": 10, "不足または過多": 5 }[value("exerciseHabit")] || 10;
+        const painScore = { "できている": 15, "時々確認": 10, "不足しやすい": 5 }[value("painManagement")] || 10;
+        return sleepScore + snackScore + selfCareScore + hydrationScore + exerciseScore + painScore;
+      }
+
+      function habitWeaknesses() {
+        const items = [];
+        const sleep = Number(value("sleepHours"));
+        if (!sleep || sleep < 8.5) items.push("睡眠");
+        if (value("snackHabit") !== "できている") items.push("補食");
+        if (value("selfCareHabit") !== "できている") items.push("セルフケア");
+        if (value("hydrationHabit") !== "できている") items.push("水分");
+        if (value("exerciseHabit") !== "適切") items.push("運動習慣");
+        if (value("painManagement") !== "できている") items.push("痛み管理");
+        return items.slice(0, 3);
+      }
+
+      function adaptationText(total) {
+        if (total >= 60) return "現在の成長段階に対して、身体は良好に適応しています。";
+        if (total >= 48) return "現在の成長段階に対して、おおむね適応していますが、一部整えたい項目があります。";
+        if (total >= 35) return "現在の成長段階に対して、身体が適応途中です。優先項目を絞って整えると安心です。";
+        return "現在の成長段階に対して、個別にサポートしながら整えたい状態です。";
       }
 
       function collectReportData(results, total) {
@@ -1188,7 +1304,11 @@
             heightChange12: value("heightChange12"),
             currentPain: value("currentPain"),
             sleepHours: value("sleepHours"),
-            snackHabit: value("snackHabit")
+            snackHabit: value("snackHabit"),
+            selfCareHabit: value("selfCareHabit"),
+            hydrationHabit: value("hydrationHabit"),
+            exerciseHabit: value("exerciseHabit"),
+            painManagement: value("painManagement")
           },
           doctorAssessment: {
             maturityType: value("maturityType"),
@@ -1206,6 +1326,7 @@
           },
           physicalFunction: {
             total,
+            habitScore: habitScore(),
             categories: results
           }
         };
@@ -1359,25 +1480,28 @@
         const weakLabels = weakest.map((item) => item.label).join("・");
         const improvementLabels = weakest.length ? weakest.map((item) => categoryMeaning(item)).join("、") : "大きな偏りは少ない状態";
         const attentionTarget = value("currentPain").trim() || (value("growthPhase").includes("成長加速期") ? "膝・踵・腰など成長期に負担が出やすい部位" : "練習で使う関節や筋肉");
+        const habit = habitScore();
+        const habitWeak = habitWeaknesses();
 
         $("totalScore").textContent = total;
+        $("habitScore").textContent = habit;
         $("stageBadge").textContent = value("growthPhase");
-        $("peakBadge").textContent = value("growthPeak");
-        $("oneLineSummary").textContent = `${value("growthPhase")}の身体変化に合わせて、${weakest.length ? `${weakLabels}を中心に` : "現在の良い状態を維持しながら"}コンディションを整える時期です。`;
+        $("oneLineSummary").textContent = `現在は「${value("growthPhase")}」です。${adaptationText(total)} 今月は${actionPlan.theme}を中心に、家庭と練習で実践しやすい習慣を整えます。`;
         renderScoreList(results);
         renderRadar(results);
         $("weakList").innerHTML = weakest.length ? weakest.map((item) => `<span class="tag">${item.label} Lv.${item.level}</span>`).join("") : `<span class="tag">大きな注意リスクは少ない</span>`;
 
         const goodText = good.length ? `強みは${good.join("・")}です。` : "まずは身体の土台づくりから整えていきましょう。";
         $("doctorSummary").textContent = simpleDoctorSummary();
-        $("joynitySummary").textContent = `身体機能スコアは${total}/70点です。${goodText} 改善優先は${weakest.length ? weakLabels : "現状維持と定期確認"}です。`;
-        $("currentBodyState").textContent = `${value("growthPhase")}という成長段階に対して、身体がどの程度適応できているかをJoynity評価で確認しました。${weakest.length ? `${improvementLabels}を整えることで、${attentionTarget}へ負担が集中しにくい状態を目指します。` : "現在は大きな偏りが少ないため、成長に合わせて良い状態を維持しましょう。"}`;
+        $("joynitySummary").textContent = `Growth Adaptation Scoreは${total}/70点、Habit Scoreは${habit}/100点です。${goodText} 改善優先は${weakest.length ? weakLabels : "現状維持と定期確認"}、習慣面では${habitWeak.length ? habitWeak.join("・") : "良い習慣の継続"}を確認します。`;
+        $("currentBodyState").textContent = `${value("growthPhase")}に対して、身体が適応できているかをJoynity評価で確認しました。${weakest.length ? `${improvementLabels}を整えることで、${attentionTarget}へ負担が集中しにくい状態を目指します。` : "現在は大きな左右差や機能低下は少ない状態です。今後の成長による変化に備え、定期的な確認を行いましょう。"}`;
         $("priorityTheme").textContent = `今月の最優先テーマ: ${actionPlan.theme}`;
         $("topActions").innerHTML = actionPlan.actions.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
         $("homeAction").textContent = `家庭でできること: ${value("sleepHours") && Number(value("sleepHours")) < 8 ? "就寝時間を少し早め、睡眠時間を確保しましょう。" : "睡眠と補食のリズムを固定し、練習後の回復を支えましょう。"}`;
         $("practiceAction").textContent = `練習で気をつけること: ${value("exerciseAttention").trim() || "痛みや違和感がある状態でジャンプ・ダッシュ・切り返しを繰り返しすぎないようにしましょう。"}`;
         $("joynitySupport").textContent = `Joynityでサポートすること: ${value("joynityIntervention").trim() || (weakest.length ? `${weakLabels}を中心に、負担が集中しにくい動きづくりをサポートします。` : "良い状態を維持するための動作確認とコンディショニングを継続します。")}`;
-        $("nextCheck").textContent = `次回チェック目安: ${value("growthPhase").includes("成長加速期") || weakest.length >= 2 ? "2〜3ヶ月後" : "3〜4ヶ月後"}に、身長変化・痛み・睡眠・補食・身体機能スコアを確認しましょう。`;
+        $("nextCheck").textContent = `次回チェック目標: ${value("growthPhase").includes("成長加速期") || weakest.length >= 2 ? "2〜3ヶ月後" : "3〜4ヶ月後"}に、達成率と身体の変化を確認しましょう。`;
+        $("nextCheckGoals").innerHTML = ["睡眠改善", "補食継続", "セルフケア継続", "痛み管理"].map((item) => `<span class="tag">□ ${item}</span>`).join("");
         $("growthSummary").textContent = growthDataSummary();
         const doctorComments = [
           `<li><strong>ドクター評価:</strong> ${escapeHtml(doctorAssessmentSummary())}</li>`,
@@ -1393,10 +1517,21 @@
           `睡眠時間: ${value("sleepHours") || "未入力"}時間`,
           `補食習慣: ${value("snackHabit")}`,
           `身体機能スコア: ${total}/70点`,
+          `習慣スコア: ${habit}/100点`,
           `アクションプラン実施状況: ${value("actionStatus") || "未入力"}`,
           `Joynity介入内容: ${value("joynityIntervention") || "未入力"}`,
           `次回医師に確認したい項目: ${value("doctorCheckItems") || "未入力"}`
         ].map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+        $("timelineBars").innerHTML = [
+          ["身長", value("height") ? `${value("height")}cm` : "-"],
+          ["体重", value("weight") ? `${value("weight")}kg` : "-"],
+          ["成長速度", value("heightChange12") ? `+${value("heightChange12")}cm/年` : "-"],
+          ["睡眠", value("sleepHours") ? `${value("sleepHours")}時間` : "-"],
+          ["補食", value("snackHabit")],
+          ["痛み", value("currentPain") || "-"],
+          ["身体機能", `${total}/70`],
+          ["習慣", `${habit}/100`]
+        ].map(([label, val]) => `<div class="timeline-row"><span>${escapeHtml(label)}</span><div class="bar"><span style="width:${label === "身体機能" ? Math.round(total / 70 * 100) : label === "習慣" ? habit : 55}%"></span></div><strong>${escapeHtml(val)}</strong></div>`).join("");
 
         const info = [
           value("athleteId") && `ID: ${value("athleteId")}`,
@@ -1404,7 +1539,8 @@
           value("age") && `年齢: ${value("age")}歳`,
           value("sport") && `競技: ${value("sport")}`
         ].filter(Boolean).join(" / ");
-        $("printInfo").textContent = info || "選手情報未入力";
+        const printInfo = $("printInfo");
+        if (printInfo) printInfo.textContent = info || "選手情報未入力";
         window.joynityLatestReportData = collectReportData(results, total);
       }
 
