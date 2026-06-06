@@ -516,6 +516,66 @@
         align-items: center;
       }
 
+      .timeline-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+        font-size: 0.86rem;
+      }
+
+      .timeline-table th,
+      .timeline-table td {
+        border-bottom: 1px solid var(--line);
+        padding: 8px 6px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      .timeline-table th {
+        color: var(--brand-dark);
+        background: #f3fbf8;
+      }
+
+      .timeline-graph {
+        display: grid;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .timeline-dot-row {
+        display: grid;
+        grid-template-columns: 74px 1fr;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .timeline-track {
+        min-height: 26px;
+        border-radius: 999px;
+        background: #edf5f2;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .timeline-dot {
+        position: absolute;
+        top: 5px;
+        width: 16px;
+        height: 16px;
+        border-radius: 999px;
+        background: var(--brand);
+        transform: translateX(-50%);
+      }
+
+      .comparison-box {
+        border: 1px dashed #b9d8cf;
+        border-radius: 14px;
+        padding: 12px;
+        background: #f8fffd;
+        color: var(--muted);
+        font-weight: 800;
+      }
+
       .weak-list {
         display: flex;
         flex-wrap: wrap;
@@ -683,50 +743,50 @@
               <span class="score-pill">Growth</span>
             </summary>
             <div class="panel-body field-grid">
+              <div class="field"><label for="evaluationDate">評価日</label><input id="evaluationDate" name="evaluationDate" type="date" /></div>
               <div class="field"><label for="height">身長 cm</label><input id="height" name="height" type="number" min="80" max="220" step="0.1" placeholder="例 145.5" /></div>
               <div class="field"><label for="weight">体重 kg</label><input id="weight" name="weight" type="number" min="15" max="120" step="0.1" placeholder="例 38.2" /></div>
-              <div class="field"><label for="heightChange6">6ヶ月の身長変化 cm</label><input id="heightChange6" name="heightChange6" type="number" step="0.1" placeholder="例 3.2" /></div>
-              <div class="field"><label for="heightChange12">1年間の身長変化 cm</label><input id="heightChange12" name="heightChange12" type="number" step="0.1" placeholder="例 6.8" /></div>
               <div class="field"><label for="currentPain">現在気になる部位・痛み</label><input id="currentPain" name="currentPain" placeholder="例 膝前面、踵、なし" /></div>
               <div class="field"><label for="sleepHours">平均睡眠時間</label><input id="sleepHours" name="sleepHours" type="number" min="4" max="12" step="0.5" placeholder="例 8" /></div>
+              <div class="comparison-box" id="growthComparison">初回評価では身長・体重のみ入力します。再評価時は過去CSVを読み込むと成長速度を自動算出します。</div>
               <div class="field">
                 <label for="snackHabit">練習後の補食</label>
                 <select id="snackHabit">
-                  <option>できている</option>
-                  <option>時々できている</option>
-                  <option>不足しやすい</option>
+                  <option>週4回以上</option>
+                  <option>週2〜3回</option>
+                  <option>週0〜1回</option>
                 </select>
               </div>
               <div class="field">
                 <label for="selfCareHabit">セルフケア</label>
                 <select id="selfCareHabit">
-                  <option>できている</option>
-                  <option>時々できている</option>
-                  <option>不足しやすい</option>
+                  <option>週4回以上</option>
+                  <option>週2〜3回</option>
+                  <option>週0〜1回</option>
                 </select>
               </div>
               <div class="field">
                 <label for="hydrationHabit">水分</label>
                 <select id="hydrationHabit">
-                  <option>できている</option>
-                  <option>時々不足</option>
-                  <option>不足しやすい</option>
+                  <option>十分</option>
+                  <option>普通</option>
+                  <option>不足</option>
                 </select>
               </div>
               <div class="field">
                 <label for="exerciseHabit">運動習慣</label>
                 <select id="exerciseHabit">
                   <option>適切</option>
-                  <option>やや不安定</option>
-                  <option>不足または過多</option>
+                  <option>不足</option>
+                  <option>過多</option>
                 </select>
               </div>
               <div class="field">
                 <label for="painManagement">痛み管理</label>
                 <select id="painManagement">
-                  <option>できている</option>
-                  <option>時々確認</option>
-                  <option>不足しやすい</option>
+                  <option>なし</option>
+                  <option>月1〜2回</option>
+                  <option>毎週ある</option>
                 </select>
               </div>
             </div>
@@ -1025,6 +1085,16 @@
               <span class="score-pill">Timeline</span>
             </summary>
             <div class="panel-body field-grid">
+              <div class="field">
+                <label for="timelineCsv">過去評価CSVを読み込む</label>
+                <input id="timelineCsv" type="file" accept=".csv,text/csv" />
+                <p class="hint">同じ選手IDの過去データを読み込み、前回比較とGrowth Timelineを自動作成します。</p>
+              </div>
+              <div class="field">
+                <label>今回データのCSV保存</label>
+                <button class="btn secondary" type="button" id="downloadCsv">今回評価CSVをダウンロード</button>
+                <p class="hint">クラウド保存・localStorage保存は行いません。CSVは院内・チーム内で安全に保管してください。</p>
+              </div>
               <div class="field"><label for="actionStatus">アクションプラン実施状況</label><textarea id="actionStatus" placeholder="例 睡眠は週4日改善、補食は練習後に継続"></textarea></div>
               <div class="field"><label for="joynityIntervention">Joynity介入内容</label><textarea id="joynityIntervention" placeholder="例 股関節・足関節モビリティ、片脚支持、着地動作の調整"></textarea></div>
               <div class="field"><label for="doctorCheckItems">次回医師に確認したい項目</label><textarea id="doctorCheckItems" placeholder="例 膝前面の痛み変化、成長ステージ、運動量の許容範囲"></textarea></div>
@@ -1055,6 +1125,17 @@
               </div>
 
               <div class="comment-box">
+                <h3>今月のアクションプラン</h3>
+                <p><strong id="priorityTheme"></strong></p>
+                <ol class="action-list" id="topActions"></ol>
+                <p id="homeAction"></p>
+                <p id="practiceAction"></p>
+                <p id="joynitySupport"></p>
+                <p id="nextCheck"></p>
+                <div class="weak-list" id="nextCheckGoals"></div>
+              </div>
+
+              <div class="comment-box">
                 <h3>医師評価の要点</h3>
                 <p id="doctorSummary"></p>
               </div>
@@ -1069,17 +1150,6 @@
                 <p id="currentBodyState"></p>
               </div>
 
-              <div class="comment-box">
-                <h3>今月のアクションプラン</h3>
-                <p><strong id="priorityTheme"></strong></p>
-                <ol class="action-list" id="topActions"></ol>
-                <p id="homeAction"></p>
-                <p id="practiceAction"></p>
-                <p id="joynitySupport"></p>
-                <p id="nextCheck"></p>
-                <div class="weak-list" id="nextCheckGoals"></div>
-              </div>
-
               <details class="detail-panel">
                 <summary>詳細を見る（スタッフ・医師共有）</summary>
                 <div class="detail-content">
@@ -1091,6 +1161,8 @@
                   <div class="score-list" id="scoreList"></div>
                   <h3>Growth Timeline</h3>
                   <div class="timeline-bars" id="timelineBars"></div>
+                  <div id="timelineTable"></div>
+                  <div class="timeline-graph" id="timelineGraph"></div>
                   <h3>医師向けフォロー情報</h3>
                   <ul id="doctorFeedbackList"></ul>
                 </div>
@@ -1119,6 +1191,8 @@
         { key: "strength", label: "筋力", max: 10 },
         { key: "balance", label: "バランス", max: 10 }
       ];
+
+      let timelineRecords = [];
 
       const categoryAdvice = {
         rom: "胸椎・足関節・股関節の可動域を確認し、しゃがみ込みや回旋動作の準備を整えましょう。",
@@ -1163,22 +1237,136 @@
           .replace(/'/g, "&#039;");
       }
 
+      function todayString() {
+        return new Date().toISOString().slice(0, 10);
+      }
+
+      function numOrNull(input) {
+        const num = Number(input);
+        return Number.isFinite(num) ? num : null;
+      }
+
+      function parseDate(valueText) {
+        const time = new Date(valueText).getTime();
+        return Number.isFinite(time) ? time : null;
+      }
+
+      function csvEscape(text) {
+        const safe = text == null ? "" : String(text);
+        return `"${safe.replace(/"/g, '""')}"`;
+      }
+
+      function parseCsv(text) {
+        const rows = [];
+        let row = [];
+        let cell = "";
+        let quote = false;
+        for (let i = 0; i < text.length; i += 1) {
+          const char = text[i];
+          const next = text[i + 1];
+          if (char === '"' && quote && next === '"') {
+            cell += '"';
+            i += 1;
+          } else if (char === '"') {
+            quote = !quote;
+          } else if (char === "," && !quote) {
+            row.push(cell);
+            cell = "";
+          } else if ((char === "\n" || char === "\r") && !quote) {
+            if (char === "\r" && next === "\n") i += 1;
+            row.push(cell);
+            if (row.some((item) => item.trim() !== "")) rows.push(row);
+            row = [];
+            cell = "";
+          } else {
+            cell += char;
+          }
+        }
+        row.push(cell);
+        if (row.some((item) => item.trim() !== "")) rows.push(row);
+        if (rows.length < 2) return [];
+        const headers = rows[0].map((item) => item.trim());
+        return rows.slice(1).map((items) => {
+          const record = {};
+          headers.forEach((header, index) => {
+            record[header] = items[index] || "";
+          });
+          return record;
+        });
+      }
+
+      function currentTimelineRecord(results, total, habit) {
+        return {
+          evaluationDate: value("evaluationDate") || todayString(),
+          athleteId: value("athleteId"),
+          height: value("height"),
+          weight: value("weight"),
+          growthPhase: value("growthPhase"),
+          growthPeak: value("growthPeak"),
+          growthAdaptationScore: total,
+          habitScore: habit,
+          pain: value("currentPain") || "なし",
+          snackHabit: value("snackHabit"),
+          sleepHours: value("sleepHours"),
+          actionStatus: value("actionStatus"),
+          rom: results.find((item) => item.key === "rom")?.score || "",
+          flexibility: results.find((item) => item.key === "flexibility")?.score || "",
+          core: results.find((item) => item.key === "core")?.score || "",
+          coordination: results.find((item) => item.key === "coordination")?.score || "",
+          strength: results.find((item) => item.key === "strength")?.score || "",
+          balance: results.find((item) => item.key === "balance")?.score || ""
+        };
+      }
+
+      function allTimelineRecords(current) {
+        const id = current.athleteId;
+        return [...timelineRecords, current]
+          .filter((record) => !id || !record.athleteId || record.athleteId === id)
+          .sort((a, b) => (parseDate(a.evaluationDate) || 0) - (parseDate(b.evaluationDate) || 0));
+      }
+
+      function previousTimelineRecord(current) {
+        const currentTime = parseDate(current.evaluationDate) || Date.now();
+        const records = timelineRecords
+          .filter((record) => (!current.athleteId || record.athleteId === current.athleteId) && parseDate(record.evaluationDate) !== null)
+          .filter((record) => (parseDate(record.evaluationDate) || 0) < currentTime)
+          .sort((a, b) => (parseDate(b.evaluationDate) || 0) - (parseDate(a.evaluationDate) || 0));
+        return records[0] || null;
+      }
+
+      function growthVelocity(current, previous) {
+        if (!previous) return null;
+        const currentHeight = numOrNull(current.height);
+        const previousHeight = numOrNull(previous.height);
+        const currentTime = parseDate(current.evaluationDate);
+        const previousTime = parseDate(previous.evaluationDate);
+        if (currentHeight === null || previousHeight === null || currentTime === null || previousTime === null || currentTime <= previousTime) return null;
+        const diffCm = currentHeight - previousHeight;
+        const days = (currentTime - previousTime) / 86400000;
+        const annual = diffCm / days * 365;
+        return { diffCm, annual, previousHeight, currentHeight };
+      }
+
       function updateGrowthDescriptions() {
         $("maturityDescription").textContent = growthDescriptions.maturityType[value("maturityType")];
         $("growthPhaseDescription").textContent = growthDescriptions.growthPhase[value("growthPhase")];
         $("growthPeakDescription").textContent = growthDescriptions.growthPeak[value("growthPeak")];
       }
 
-      function growthDataSummary() {
+      function growthDataSummary(current, previous) {
+        const velocity = current && previous ? growthVelocity(current, previous) : null;
         const items = [
+          value("evaluationDate") && `評価日: ${value("evaluationDate")}`,
           value("athleteId") && `選手ID: ${value("athleteId")}`,
           value("athleteName") && `名前: ${value("athleteName")}`,
           value("age") && `年齢: ${value("age")}歳`,
           value("sport") && `競技: ${value("sport")}`,
           value("height") && `身長: ${value("height")}cm`,
           value("weight") && `体重: ${value("weight")}kg`,
-          value("heightChange6") && `6ヶ月身長変化: +${value("heightChange6")}cm`,
-          value("heightChange12") && `1年身長変化: +${value("heightChange12")}cm`
+          velocity && `前回: ${velocity.previousHeight.toFixed(1)}cm`,
+          velocity && `今回: ${velocity.currentHeight.toFixed(1)}cm`,
+          velocity && `身長変化: ${velocity.diffCm >= 0 ? "+" : ""}${velocity.diffCm.toFixed(1)}cm`,
+          velocity && `年間換算: ${velocity.annual >= 0 ? "+" : ""}${velocity.annual.toFixed(1)}cm/年`
         ].filter(Boolean);
         return items.length ? items.join(" / ") : "基本情報・成長データは未入力です。";
       }
@@ -1233,60 +1421,78 @@
         return meaning[item.key];
       }
 
-      function buildActionPlan(weakest) {
-        const first = weakest[0];
-        const themeByKey = {
-          rom: "股関節・足関節の動きを整える",
-          flexibility: "成長期に合わせた柔軟性づくり",
-          core: "体幹と骨盤の安定づくり",
-          coordination: "膝や踵に負担が集中しにくい動きづくり",
-          strength: "片脚で支える力の強化",
-          balance: "左右差を整えるバランスづくり"
-        };
-        const stageTheme = value("growthPhase").includes("成長準備期")
-          ? "成長に備えた身体の土台づくり"
-          : value("growthPhase").includes("成長加速期")
-            ? "成長期に合わせた負担管理"
-            : value("growthPhase").includes("成長安定期")
-              ? "筋力・パワーにつながる身体づくり"
-              : "";
-        const theme = first ? themeByKey[first.key] : stageTheme || "良い状態を維持するコンディショニング";
-        const actions = [
-          value("sleepHours") && Number(value("sleepHours")) < 8.5 ? "睡眠8.5時間以上を目指す" : "就寝時間を固定して回復リズムを整える",
-          value("snackHabit") === "不足しやすい" || value("snackHabit") === "時々できている" ? "練習後30分以内に補食をとる" : "練習後の補食を継続する",
-          first ? `${first.label}を整える指定エクササイズを週3回行う` : "基本動作を週3回確認する"
+      function habitComponents() {
+        const sleep = Number(value("sleepHours"));
+        return [
+          { key: "sleep", label: "睡眠", score: !sleep ? 5 : sleep >= 9 ? 15 : sleep >= 8 ? 10 : sleep >= 7 ? 5 : 0, max: 15 },
+          { key: "snack", label: "補食", score: { "週4回以上": 10, "週2〜3回": 5, "週0〜1回": 0 }[value("snackHabit")] ?? 5, max: 10 },
+          { key: "selfCare", label: "セルフケア", score: { "週4回以上": 10, "週2〜3回": 5, "週0〜1回": 0 }[value("selfCareHabit")] ?? 5, max: 10 },
+          { key: "hydration", label: "水分", score: { "十分": 10, "普通": 5, "不足": 0 }[value("hydrationHabit")] ?? 5, max: 10 },
+          { key: "pain", label: "痛み管理", score: { "なし": 10, "月1〜2回": 5, "毎週ある": 0 }[value("painManagement")] ?? 5, max: 10 },
+          { key: "exercise", label: "運動量", score: { "適切": 10, "不足": 0, "過多": 0 }[value("exerciseHabit")] ?? 0, max: 10 }
         ];
-        return { theme, actions };
       }
 
       function habitScore() {
-        const sleep = Number(value("sleepHours"));
-        const sleepScore = !sleep ? 10 : sleep >= 8.5 ? 20 : sleep >= 7.5 ? 14 : 8;
-        const snackScore = { "できている": 15, "時々できている": 10, "不足しやすい": 5 }[value("snackHabit")] || 10;
-        const selfCareScore = { "できている": 15, "時々できている": 10, "不足しやすい": 5 }[value("selfCareHabit")] || 10;
-        const hydrationScore = { "できている": 15, "時々不足": 10, "不足しやすい": 5 }[value("hydrationHabit")] || 10;
-        const exerciseScore = { "適切": 15, "やや不安定": 10, "不足または過多": 5 }[value("exerciseHabit")] || 10;
-        const painScore = { "できている": 15, "時々確認": 10, "不足しやすい": 5 }[value("painManagement")] || 10;
-        return sleepScore + snackScore + selfCareScore + hydrationScore + exerciseScore + painScore;
+        const total = habitComponents().reduce((sum, item) => sum + item.score, 0);
+        return Math.round(total / 65 * 100);
       }
 
       function habitWeaknesses() {
-        const items = [];
-        const sleep = Number(value("sleepHours"));
-        if (!sleep || sleep < 8.5) items.push("睡眠");
-        if (value("snackHabit") !== "できている") items.push("補食");
-        if (value("selfCareHabit") !== "できている") items.push("セルフケア");
-        if (value("hydrationHabit") !== "できている") items.push("水分");
-        if (value("exerciseHabit") !== "適切") items.push("運動習慣");
-        if (value("painManagement") !== "できている") items.push("痛み管理");
-        return items.slice(0, 3);
+        return habitComponents()
+          .filter((item) => item.score < item.max)
+          .sort((a, b) => (a.score / a.max) - (b.score / b.max))
+          .map((item) => item.label)
+          .slice(0, 3);
+      }
+
+      function prioritizedIssues(weakest) {
+        const physicalIssues = weakest.map((item) => ({ type: "physical", key: item.key, label: item.label, severity: 1 - item.score / item.max }));
+        const habitIssues = habitComponents()
+          .filter((item) => item.score < item.max)
+          .map((item) => ({ type: "habit", key: item.key, label: item.label, severity: 1 - item.score / item.max }));
+        return [...habitIssues, ...physicalIssues].sort((a, b) => b.severity - a.severity).slice(0, 3);
+      }
+
+      function buildActionPlan(weakest) {
+        const issues = prioritizedIssues(weakest);
+        const actionMap = {
+          sleep: { theme: "回復力向上", action: "睡眠時間を8.5時間以上に近づける", home: "就寝時間を15〜30分早め、寝る前のスマホ時間を短くしましょう。", practice: "疲労が強い日は強度を上げすぎず、練習後の回復を優先しましょう。" },
+          snack: { theme: "エネルギー確保", action: "練習後30分以内に補食をとる", home: "おにぎり・バナナ・牛乳・ヨーグルトなど、すぐ食べられる補食を準備しましょう。", practice: "練習後に補食をとるタイミングを固定しましょう。" },
+          selfCare: { theme: "セルフケア習慣づくり", action: "セルフケアを週4回以上行う", home: "入浴後や就寝前に、短時間のストレッチやケアを習慣にしましょう。", practice: "練習後に使った部位を確認し、痛みや張りを残しすぎないようにしましょう。" },
+          hydration: { theme: "水分補給の安定", action: "水分を十分に補給する", home: "水筒の量を決め、飲めた量を見える化しましょう。", practice: "練習前・練習中・練習後で分けて水分をとりましょう。" },
+          pain: { theme: "痛みの早期確認", action: "痛みの有無を週1回確認する", home: "痛みが続く部位やタイミングをメモし、無理を重ねないようにしましょう。", practice: "痛みがある状態でジャンプ・ダッシュ・切り返しを繰り返しすぎないようにしましょう。" },
+          exercise: { theme: value("exerciseHabit") === "過多" ? "運動量の調整" : "運動習慣の安定", action: value("exerciseHabit") === "過多" ? "練習量と休養のバランスを確認する" : "適切な運動習慣を作る", home: "疲労感と睡眠の状態を見ながら運動量を調整しましょう。", practice: "練習量・自主練・休養日をチームで共有しましょう。" },
+          rom: { theme: "可動域改善", action: "股関節・足関節・胸椎の動きを週3回整える", home: "短時間のモビリティを継続しましょう。", practice: "しゃがみ込みや方向転換前に可動域を確認しましょう。" },
+          flexibility: { theme: "可動域改善", action: "太もも前後の柔軟性を週3回整える", home: "入浴後に太もも前後のケアを行いましょう。", practice: "張りが強い日はダッシュやジャンプの量を確認しましょう。" },
+          core: { theme: "姿勢安定化", action: "体幹と骨盤の安定エクササイズを週3回行う", home: "呼吸と体幹をセットで確認しましょう。", practice: "姿勢が崩れたまま強い動きを繰り返さないようにしましょう。" },
+          coordination: { theme: "基本動作の再学習", action: "しゃがむ・片脚支持・着地を週3回確認する", home: "鏡や動画で片脚姿勢を確認しましょう。", practice: "ジャンプ・切り返し時の膝や体幹の安定を確認しましょう。" },
+          strength: { theme: "片脚支持力の向上", action: "片脚で支えるトレーニングを週3回行う", home: "左右差を確認しながら無理なく行いましょう。", practice: "切り返しや着地で片脚に負担が集中しすぎないようにしましょう。" },
+          balance: { theme: "バランス安定化", action: "片脚立位と重心コントロールを週3回行う", home: "安全な場所で片脚バランスを確認しましょう。", practice: "疲労時のふらつきや左右差を確認しましょう。" }
+        };
+        const first = issues[0];
+        const selected = first ? actionMap[first.key] : null;
+        const stageTheme = value("growthPhase").includes("成長準備期") ? "成長に備えた身体の土台づくり" : value("growthPhase").includes("成長加速期") ? "成長期に合わせた負担管理" : value("growthPhase").includes("成長安定期") ? "筋力・パワーにつながる身体づくり" : "良い状態を維持するコンディショニング";
+        const actions = issues.map((issue) => actionMap[issue.key]?.action || `${issue.label}を週3回確認する`);
+        while (actions.length < 3) actions.push(actions.length === 0 ? "睡眠・補食・セルフケアのリズムを整える" : actions.length === 1 ? "基本動作を週3回確認する" : "痛みの有無を週1回確認する");
+        return { theme: selected?.theme || stageTheme, actions: actions.slice(0, 3), home: selected?.home || "睡眠と補食のリズムを固定し、家庭で回復を支えましょう。", practice: selected?.practice || "痛みや違和感がある状態で強い動きを繰り返しすぎないようにしましょう。" };
+      }
+
+      function adaptationGrade(total) {
+        if (total >= 70) return "A";
+        if (total >= 55) return "B";
+        if (total >= 40) return "C";
+        return "D";
       }
 
       function adaptationText(total) {
-        if (total >= 60) return "現在の成長段階に対して、身体は良好に適応しています。";
-        if (total >= 48) return "現在の成長段階に対して、おおむね適応していますが、一部整えたい項目があります。";
-        if (total >= 35) return "現在の成長段階に対して、身体が適応途中です。優先項目を絞って整えると安心です。";
-        return "現在の成長段階に対して、個別にサポートしながら整えたい状態です。";
+        const stage = value("growthPhase");
+        const habitWeak = habitWeaknesses();
+        const habitText = habitWeak.length ? `${habitWeak.join("と")}を整えていきましょう。` : "現在の良い習慣を継続していきましょう。";
+        if (total >= 70) return `${stage}に対する身体適応は良好です。現在大きな左右差や機能低下は認めません。今後の成長変化に備え、${habitText}`;
+        if (total >= 55) return `${stage}に対する身体適応はおおむね良好です。一部整えておきたい項目があるため、${habitText}`;
+        if (total >= 40) return `${stage}に対して身体が適応途中です。優先項目を絞り、家庭と練習で取り組みやすい行動から整えていきましょう。`;
+        return `${stage}に対して個別サポートを優先したい状態です。痛みや疲労を確認しながら、医師評価とJoynity支援を連携して進めましょう。`;
       }
 
       function collectReportData(results, total) {
@@ -1298,10 +1504,9 @@
             sport: value("sport")
           },
           growth: {
+            evaluationDate: value("evaluationDate"),
             height: value("height"),
             weight: value("weight"),
-            heightChange6: value("heightChange6"),
-            heightChange12: value("heightChange12"),
             currentPain: value("currentPain"),
             sleepHours: value("sleepHours"),
             snackHabit: value("snackHabit"),
@@ -1469,6 +1674,76 @@
         svg.innerHTML = `${rings}${axisLines}<polygon points="${dataPoints}" fill="rgba(122,188,166,.34)" stroke="#2f8b72" stroke-width="3" />${labels}`;
       }
 
+      function updateGrowthComparison(current, previous) {
+        const velocity = growthVelocity(current, previous);
+        if (!velocity) {
+          $("growthComparison").textContent = "初回評価では身長・体重のみ入力します。再評価時は過去CSVを読み込むと、前回比較と年間換算の成長速度を自動算出します。";
+          return;
+        }
+        $("growthComparison").textContent = `前回 ${velocity.previousHeight.toFixed(1)}cm / 今回 ${velocity.currentHeight.toFixed(1)}cm / ${velocity.diffCm >= 0 ? "+" : ""}${velocity.diffCm.toFixed(1)}cm / 年間換算 ${velocity.annual >= 0 ? "+" : ""}${velocity.annual.toFixed(1)}cm/年`;
+      }
+
+      function renderTimeline(records) {
+        $("timelineTable").innerHTML = `
+          <table class="timeline-table">
+            <thead>
+              <tr><th>評価日</th><th>身長</th><th>体重</th><th>成長ステージ</th><th>Growth Adaptation</th><th>Habit</th><th>痛み</th></tr>
+            </thead>
+            <tbody>
+              ${records.map((record) => `
+                <tr>
+                  <td>${escapeHtml(record.evaluationDate || "-")}</td>
+                  <td>${escapeHtml(record.height || "-")}cm</td>
+                  <td>${escapeHtml(record.weight || "-")}kg</td>
+                  <td>${escapeHtml(record.growthPhase || "-")}</td>
+                  <td>${escapeHtml(record.growthAdaptationScore || "-")}/70</td>
+                  <td>${escapeHtml(record.habitScore || "-")}/100</td>
+                  <td>${escapeHtml(record.pain || "-")}</td>
+                </tr>
+              `).join("")}
+            </tbody>
+          </table>
+        `;
+        const metrics = [
+          { label: "身長", key: "height", max: 180 },
+          { label: "体重", key: "weight", max: 90 },
+          { label: "適応", key: "growthAdaptationScore", max: 70 },
+          { label: "習慣", key: "habitScore", max: 100 }
+        ];
+        $("timelineGraph").innerHTML = metrics.map((metric) => `
+          <div class="timeline-dot-row">
+            <strong>${metric.label}</strong>
+            <div class="timeline-track">
+              ${records.map((record) => {
+                const val = numOrNull(record[metric.key]);
+                const left = val === null ? 0 : Math.max(4, Math.min(96, val / metric.max * 100));
+                return `<span class="timeline-dot" title="${escapeHtml(record.evaluationDate || "")}: ${escapeHtml(record[metric.key] || "-")}" style="left:${left}%"></span>`;
+              }).join("")}
+            </div>
+          </div>
+        `).join("");
+      }
+
+      function makeCsv(records) {
+        const headers = ["evaluationDate", "athleteId", "height", "weight", "growthPhase", "growthPeak", "growthAdaptationScore", "habitScore", "pain", "snackHabit", "sleepHours", "actionStatus", "rom", "flexibility", "core", "coordination", "strength", "balance"];
+        return [headers.join(","), ...records.map((record) => headers.map((header) => csvEscape(record[header])).join(","))].join("\n");
+      }
+
+      function downloadCurrentCsv() {
+        const results = calculateScores();
+        const total = results.reduce((sum, item) => sum + item.score, 0);
+        const habit = habitScore();
+        const current = currentTimelineRecord(results, total, habit);
+        const csv = makeCsv(allTimelineRecords(current));
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `joynity-growth-timeline-${current.athleteId || "athlete"}-${current.evaluationDate}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
       function updateReport() {
         updateGrowthDescriptions();
         const results = calculateScores();
@@ -1482,27 +1757,32 @@
         const attentionTarget = value("currentPain").trim() || (value("growthPhase").includes("成長加速期") ? "膝・踵・腰など成長期に負担が出やすい部位" : "練習で使う関節や筋肉");
         const habit = habitScore();
         const habitWeak = habitWeaknesses();
+        const currentRecord = currentTimelineRecord(results, total, habit);
+        const previousRecord = previousTimelineRecord(currentRecord);
+        const velocity = growthVelocity(currentRecord, previousRecord);
+        const records = allTimelineRecords(currentRecord);
 
         $("totalScore").textContent = total;
         $("habitScore").textContent = habit;
         $("stageBadge").textContent = value("growthPhase");
-        $("oneLineSummary").textContent = `現在は「${value("growthPhase")}」です。${adaptationText(total)} 今月は${actionPlan.theme}を中心に、家庭と練習で実践しやすい習慣を整えます。`;
+        $("oneLineSummary").textContent = `現在は「${value("growthPhase")}」です。成長適応度${adaptationGrade(total)}。${adaptationText(total)} 今月の重点テーマは${actionPlan.theme}です。`;
         renderScoreList(results);
         renderRadar(results);
         $("weakList").innerHTML = weakest.length ? weakest.map((item) => `<span class="tag">${item.label} Lv.${item.level}</span>`).join("") : `<span class="tag">大きな注意リスクは少ない</span>`;
 
         const goodText = good.length ? `強みは${good.join("・")}です。` : "まずは身体の土台づくりから整えていきましょう。";
         $("doctorSummary").textContent = simpleDoctorSummary();
-        $("joynitySummary").textContent = `Growth Adaptation Scoreは${total}/70点、Habit Scoreは${habit}/100点です。${goodText} 改善優先は${weakest.length ? weakLabels : "現状維持と定期確認"}、習慣面では${habitWeak.length ? habitWeak.join("・") : "良い習慣の継続"}を確認します。`;
+        $("joynitySummary").textContent = `Growth Adaptation Scoreは${total}/70点（成長適応度${adaptationGrade(total)}）、Habit Scoreは${habit}/100点です。${goodText} 改善優先は${weakest.length ? weakLabels : "現状維持と定期確認"}、習慣面では${habitWeak.length ? habitWeak.join("・") : "良い習慣の継続"}を確認します。`;
         $("currentBodyState").textContent = `${value("growthPhase")}に対して、身体が適応できているかをJoynity評価で確認しました。${weakest.length ? `${improvementLabels}を整えることで、${attentionTarget}へ負担が集中しにくい状態を目指します。` : "現在は大きな左右差や機能低下は少ない状態です。今後の成長による変化に備え、定期的な確認を行いましょう。"}`;
         $("priorityTheme").textContent = `今月の最優先テーマ: ${actionPlan.theme}`;
         $("topActions").innerHTML = actionPlan.actions.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
-        $("homeAction").textContent = `家庭でできること: ${value("sleepHours") && Number(value("sleepHours")) < 8 ? "就寝時間を少し早め、睡眠時間を確保しましょう。" : "睡眠と補食のリズムを固定し、練習後の回復を支えましょう。"}`;
-        $("practiceAction").textContent = `練習で気をつけること: ${value("exerciseAttention").trim() || "痛みや違和感がある状態でジャンプ・ダッシュ・切り返しを繰り返しすぎないようにしましょう。"}`;
+        $("homeAction").textContent = `家庭でできること: ${actionPlan.home}`;
+        $("practiceAction").textContent = `練習で気をつけること: ${value("exerciseAttention").trim() || actionPlan.practice}`;
         $("joynitySupport").textContent = `Joynityでサポートすること: ${value("joynityIntervention").trim() || (weakest.length ? `${weakLabels}を中心に、負担が集中しにくい動きづくりをサポートします。` : "良い状態を維持するための動作確認とコンディショニングを継続します。")}`;
         $("nextCheck").textContent = `次回チェック目標: ${value("growthPhase").includes("成長加速期") || weakest.length >= 2 ? "2〜3ヶ月後" : "3〜4ヶ月後"}に、達成率と身体の変化を確認しましょう。`;
-        $("nextCheckGoals").innerHTML = ["睡眠改善", "補食継続", "セルフケア継続", "痛み管理"].map((item) => `<span class="tag">□ ${item}</span>`).join("");
-        $("growthSummary").textContent = growthDataSummary();
+        $("nextCheckGoals").innerHTML = [...habitWeak, ...weakest.map((item) => item.label)].slice(0, 4).map((item) => `<span class="tag">□ ${item}</span>`).join("") || `<span class="tag">□ 良い状態の継続</span>`;
+        updateGrowthComparison(currentRecord, previousRecord);
+        $("growthSummary").textContent = growthDataSummary(currentRecord, previousRecord);
         const doctorComments = [
           `<li><strong>ドクター評価:</strong> ${escapeHtml(doctorAssessmentSummary())}</li>`,
           ...doctorAssessmentDescriptions().map((text) => `<li>${escapeHtml(text)}</li>`),
@@ -1512,11 +1792,11 @@
         ].filter(Boolean);
         $("doctorCommentList").innerHTML = doctorComments.length ? doctorComments.join("") : "<li>医師コメントは未入力です。</li>";
         $("doctorFeedbackList").innerHTML = [
-          `身長変化: ${value("heightChange6") || "-"}cm / 6ヶ月、${value("heightChange12") || "-"}cm / 1年`,
+          `身長変化: ${velocity ? `${velocity.diffCm >= 0 ? "+" : ""}${velocity.diffCm.toFixed(1)}cm、年間換算 ${velocity.annual >= 0 ? "+" : ""}${velocity.annual.toFixed(1)}cm/年` : "過去CSV未読込"}`,
           `痛みの変化: ${value("currentPain") || "未入力"}`,
           `睡眠時間: ${value("sleepHours") || "未入力"}時間`,
           `補食習慣: ${value("snackHabit")}`,
-          `身体機能スコア: ${total}/70点`,
+          `Growth Adaptation Score: ${total}/70点（${adaptationGrade(total)}）`,
           `習慣スコア: ${habit}/100点`,
           `アクションプラン実施状況: ${value("actionStatus") || "未入力"}`,
           `Joynity介入内容: ${value("joynityIntervention") || "未入力"}`,
@@ -1525,13 +1805,14 @@
         $("timelineBars").innerHTML = [
           ["身長", value("height") ? `${value("height")}cm` : "-"],
           ["体重", value("weight") ? `${value("weight")}kg` : "-"],
-          ["成長速度", value("heightChange12") ? `+${value("heightChange12")}cm/年` : "-"],
+          ["成長速度", velocity ? `${velocity.annual >= 0 ? "+" : ""}${velocity.annual.toFixed(1)}cm/年` : "過去CSV読込で算出"],
           ["睡眠", value("sleepHours") ? `${value("sleepHours")}時間` : "-"],
           ["補食", value("snackHabit")],
           ["痛み", value("currentPain") || "-"],
           ["身体機能", `${total}/70`],
           ["習慣", `${habit}/100`]
         ].map(([label, val]) => `<div class="timeline-row"><span>${escapeHtml(label)}</span><div class="bar"><span style="width:${label === "身体機能" ? Math.round(total / 70 * 100) : label === "習慣" ? habit : 55}%"></span></div><strong>${escapeHtml(val)}</strong></div>`).join("");
+        renderTimeline(records);
 
         const info = [
           value("athleteId") && `ID: ${value("athleteId")}`,
@@ -1542,12 +1823,24 @@
         const printInfo = $("printInfo");
         if (printInfo) printInfo.textContent = info || "選手情報未入力";
         window.joynityLatestReportData = collectReportData(results, total);
+        window.joynityLatestTimelineRecord = currentRecord;
       }
 
       function bindEvents() {
         document.querySelectorAll("select, input, textarea").forEach((el) => {
           el.addEventListener("change", updateReport);
           el.addEventListener("input", updateReport);
+        });
+        $("timelineCsv").addEventListener("change", async (event) => {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+          const text = await file.text();
+          timelineRecords = parseCsv(text);
+          updateReport();
+        });
+        $("downloadCsv").addEventListener("click", () => {
+          updateReport();
+          downloadCurrentCsv();
         });
         $("assessmentForm").addEventListener("submit", (event) => {
           event.preventDefault();
@@ -1568,6 +1861,7 @@
         });
       }
 
+      if (!$("evaluationDate").value) $("evaluationDate").value = todayString();
       bindEvents();
       updateGrowthDescriptions();
       updateReport();
