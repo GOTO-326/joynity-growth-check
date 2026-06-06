@@ -438,6 +438,79 @@
         gap: 10px;
       }
 
+      .doctor-summary-grid,
+      .score-summary-grid,
+      .next-check-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .score-summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .summary-card {
+        border: 1px solid #dbe9e5;
+        border-radius: 14px;
+        background: #fff;
+        padding: 12px;
+      }
+
+      .summary-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 900;
+      }
+
+      .summary-card strong {
+        display: block;
+        margin-top: 4px;
+        color: var(--brand-dark);
+        font-size: 1.05rem;
+      }
+
+      .score-grade {
+        font-size: 2.1rem;
+        line-height: 1;
+        color: var(--brand-dark);
+      }
+
+      .score-label {
+        color: var(--muted);
+        font-weight: 900;
+      }
+
+      .insight-layout {
+        display: grid;
+        grid-template-columns: minmax(220px, 1fr) minmax(180px, 0.8fr);
+        gap: 12px;
+        align-items: center;
+      }
+
+      .growth-points {
+        display: grid;
+        gap: 8px;
+      }
+
+      .growth-point {
+        border: 1px solid #dbe9e5;
+        border-radius: 12px;
+        padding: 10px 12px;
+        background: #fbfffd;
+        color: var(--brand-dark);
+        font-weight: 900;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .compact-copy {
+        margin: 0;
+        line-height: 1.65;
+      }
+
       .mini-card {
         border: 1px solid #dbe9e5;
         border-radius: 14px;
@@ -567,6 +640,25 @@
         transform: translateX(-50%);
       }
 
+      .timeline-sequence {
+        display: grid;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .timeline-event {
+        display: grid;
+        grid-template-columns: 86px 1fr;
+        gap: 10px;
+        align-items: start;
+        border-left: 3px solid #b9d8cf;
+        padding: 8px 0 8px 12px;
+      }
+
+      .timeline-event strong {
+        color: var(--brand-dark);
+      }
+
       .comparison-box {
         border: 1px dashed #b9d8cf;
         border-radius: 14px;
@@ -639,6 +731,13 @@
         }
 
         .mini-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .doctor-summary-grid,
+        .score-summary-grid,
+        .next-check-grid,
+        .insight-layout {
           grid-template-columns: 1fr;
         }
 
@@ -752,24 +851,30 @@
               <div class="field">
                 <label for="snackHabit">練習後の補食</label>
                 <select id="snackHabit">
-                  <option>週4回以上</option>
-                  <option>週2〜3回</option>
-                  <option>週0〜1回</option>
+                  <option>週5回以上</option>
+                  <option>週3〜4回</option>
+                  <option>週1〜2回</option>
+                  <option>月数回</option>
+                  <option>なし</option>
                 </select>
               </div>
               <div class="field">
                 <label for="selfCareHabit">セルフケア</label>
                 <select id="selfCareHabit">
-                  <option>週4回以上</option>
-                  <option>週2〜3回</option>
-                  <option>週0〜1回</option>
+                  <option>週5回以上</option>
+                  <option>週3〜4回</option>
+                  <option>週1〜2回</option>
+                  <option>月数回</option>
+                  <option>なし</option>
                 </select>
               </div>
               <div class="field">
                 <label for="hydrationHabit">水分</label>
                 <select id="hydrationHabit">
-                  <option>十分</option>
-                  <option>普通</option>
+                  <option>練習中定期摂取</option>
+                  <option>ほぼ摂取</option>
+                  <option>時々不足</option>
+                  <option>不足気味</option>
                   <option>不足</option>
                 </select>
               </div>
@@ -786,7 +891,9 @@
                 <select id="painManagement">
                   <option>なし</option>
                   <option>月1〜2回</option>
-                  <option>毎週ある</option>
+                  <option>週1回</option>
+                  <option>週2〜3回</option>
+                  <option>頻繁</option>
                 </select>
               </div>
             </div>
@@ -1113,10 +1220,32 @@
                 <p class="print-meta" id="printInfo">選手情報未入力</p>
               </div>
 
-              <div class="mini-grid">
-                <div class="mini-card"><span>成長ステージ</span><strong id="stageBadge">-</strong></div>
-                <div class="mini-card"><span>Growth Adaptation Score</span><strong><span id="totalScore">70</span>/70点</strong></div>
-                <div class="mini-card"><span>Habit Score</span><strong><span id="habitScore">100</span>/100点</strong></div>
+              <div class="comment-box">
+                <h3>医師評価サマリー</h3>
+                <div class="doctor-summary-grid">
+                  <div class="summary-card"><span>成長ステージ</span><strong id="doctorStageCard">-</strong></div>
+                  <div class="summary-card"><span>成長リスク</span><strong id="doctorRiskCard">-</strong></div>
+                  <div class="summary-card"><span>運動制限</span><strong id="exerciseLimitCard">-</strong></div>
+                  <div class="summary-card"><span>エコー評価</span><strong id="echoCard">-</strong></div>
+                </div>
+              </div>
+
+              <div class="comment-box">
+                <h3>成長予測</h3>
+                <p class="compact-copy" id="growthPrediction"></p>
+              </div>
+
+              <div class="score-summary-grid">
+                <div class="summary-card">
+                  <span>Growth Adaptation Score</span>
+                  <strong><span id="totalScore">70</span>/70点</strong>
+                  <div><span class="score-grade" id="adaptationGrade">A</span> <span class="score-label" id="adaptationLabel">Excellent</span></div>
+                </div>
+                <div class="summary-card">
+                  <span>Habit Score</span>
+                  <strong><span id="habitScore">100</span>/100点</strong>
+                  <div><span class="score-grade" id="habitGrade">A</span> <span class="score-label" id="habitLabel">Excellent</span></div>
+                </div>
               </div>
 
               <div class="comment-box">
@@ -1125,19 +1254,22 @@
               </div>
 
               <div class="comment-box">
-                <h3>今月のアクションプラン</h3>
-                <p><strong id="priorityTheme"></strong></p>
-                <ol class="action-list" id="topActions"></ol>
-                <p id="homeAction"></p>
-                <p id="practiceAction"></p>
-                <p id="joynitySupport"></p>
-                <p id="nextCheck"></p>
-                <div class="weak-list" id="nextCheckGoals"></div>
+                <h3>レーダーチャート</h3>
+                <div class="insight-layout">
+                  <div class="radar-wrap">
+                    <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="前回と今回の6分類レーダーチャート"></svg>
+                  </div>
+                  <div>
+                    <h3>今回の成長ポイント</h3>
+                    <div class="growth-points" id="growthPoints"></div>
+                  </div>
+                </div>
               </div>
 
               <div class="comment-box">
-                <h3>医師評価の要点</h3>
-                <p id="doctorSummary"></p>
+                <h3>今月のアクションプラン</h3>
+                <p><strong id="priorityTheme"></strong></p>
+                <ol class="action-list" id="topActions"></ol>
               </div>
 
               <div class="comment-box">
@@ -1147,22 +1279,40 @@
 
               <div class="comment-box">
                 <h3>現在の身体状態</h3>
-                <p id="currentBodyState"></p>
+                <p class="compact-copy" id="currentBodyState"></p>
+              </div>
+
+              <div class="comment-box">
+                <h3>次回チェック項目</h3>
+                <div class="next-check-grid">
+                  <div class="summary-card"><span>次回確認予定</span><strong id="nextCheckTiming">3〜4ヶ月後</strong></div>
+                  <div class="summary-card"><span>身長変化</span><strong>確認</strong></div>
+                  <div class="summary-card"><span>Habit Score</span><strong>確認</strong></div>
+                  <div class="summary-card"><span>身体機能・痛み・成長ステージ</span><strong>確認</strong></div>
+                </div>
+                <div class="weak-list" id="nextCheckGoals"></div>
+              </div>
+
+              <div class="comment-box">
+                <h3>Growth Timeline</h3>
+                <div class="timeline-sequence" id="timelineSequence"></div>
+                <div class="timeline-graph" id="timelineGraph"></div>
               </div>
 
               <details class="detail-panel">
                 <summary>詳細を見る（スタッフ・医師共有）</summary>
                 <div class="detail-content">
+                  <p id="doctorSummary"></p>
+                  <p id="homeAction"></p>
+                  <p id="practiceAction"></p>
+                  <p id="joynitySupport"></p>
+                  <p id="nextCheck"></p>
                   <p id="growthSummary"></p>
                   <ul id="doctorCommentList"></ul>
-                  <div class="radar-wrap">
-                    <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="6分類レーダーチャート"></svg>
-                  </div>
                   <div class="score-list" id="scoreList"></div>
                   <h3>Growth Timeline</h3>
                   <div class="timeline-bars" id="timelineBars"></div>
                   <div id="timelineTable"></div>
-                  <div class="timeline-graph" id="timelineGraph"></div>
                   <h3>医師向けフォロー情報</h3>
                   <ul id="doctorFeedbackList"></ul>
                 </div>
@@ -1424,18 +1574,17 @@
       function habitComponents() {
         const sleep = Number(value("sleepHours"));
         return [
-          { key: "sleep", label: "睡眠", score: !sleep ? 5 : sleep >= 9 ? 15 : sleep >= 8 ? 10 : sleep >= 7 ? 5 : 0, max: 15 },
-          { key: "snack", label: "補食", score: { "週4回以上": 10, "週2〜3回": 5, "週0〜1回": 0 }[value("snackHabit")] ?? 5, max: 10 },
-          { key: "selfCare", label: "セルフケア", score: { "週4回以上": 10, "週2〜3回": 5, "週0〜1回": 0 }[value("selfCareHabit")] ?? 5, max: 10 },
-          { key: "hydration", label: "水分", score: { "十分": 10, "普通": 5, "不足": 0 }[value("hydrationHabit")] ?? 5, max: 10 },
-          { key: "pain", label: "痛み管理", score: { "なし": 10, "月1〜2回": 5, "毎週ある": 0 }[value("painManagement")] ?? 5, max: 10 },
-          { key: "exercise", label: "運動量", score: { "適切": 10, "不足": 0, "過多": 0 }[value("exerciseHabit")] ?? 0, max: 10 }
+          { key: "sleep", label: "睡眠", score: !sleep ? 3 : sleep >= 8.5 ? 5 : sleep >= 8 ? 4 : sleep >= 7 ? 3 : sleep >= 6 ? 2 : 1, max: 5 },
+          { key: "snack", label: "補食", score: { "週5回以上": 5, "週3〜4回": 4, "週1〜2回": 3, "月数回": 2, "なし": 1 }[value("snackHabit")] ?? 3, max: 5 },
+          { key: "selfCare", label: "セルフケア", score: { "週5回以上": 5, "週3〜4回": 4, "週1〜2回": 3, "月数回": 2, "なし": 1 }[value("selfCareHabit")] ?? 3, max: 5 },
+          { key: "hydration", label: "水分", score: { "練習中定期摂取": 5, "ほぼ摂取": 4, "時々不足": 3, "不足気味": 2, "不足": 1 }[value("hydrationHabit")] ?? 3, max: 5 },
+          { key: "pain", label: "痛み", score: { "なし": 5, "月1〜2回": 4, "週1回": 3, "週2〜3回": 2, "頻繁": 1 }[value("painManagement")] ?? 3, max: 5 }
         ];
       }
 
       function habitScore() {
         const total = habitComponents().reduce((sum, item) => sum + item.score, 0);
-        return Math.round(total / 65 * 100);
+        return Math.round(total / 25 * 100);
       }
 
       function habitWeaknesses() {
@@ -1459,7 +1608,7 @@
         const actionMap = {
           sleep: { theme: "回復力向上", action: "睡眠時間を8.5時間以上に近づける", home: "就寝時間を15〜30分早め、寝る前のスマホ時間を短くしましょう。", practice: "疲労が強い日は強度を上げすぎず、練習後の回復を優先しましょう。" },
           snack: { theme: "エネルギー確保", action: "練習後30分以内に補食をとる", home: "おにぎり・バナナ・牛乳・ヨーグルトなど、すぐ食べられる補食を準備しましょう。", practice: "練習後に補食をとるタイミングを固定しましょう。" },
-          selfCare: { theme: "セルフケア習慣づくり", action: "セルフケアを週4回以上行う", home: "入浴後や就寝前に、短時間のストレッチやケアを習慣にしましょう。", practice: "練習後に使った部位を確認し、痛みや張りを残しすぎないようにしましょう。" },
+          selfCare: { theme: "セルフケア習慣づくり", action: "セルフケアを週5回以上行う", home: "入浴後や就寝前に、短時間のストレッチやケアを習慣にしましょう。", practice: "練習後に使った部位を確認し、痛みや張りを残しすぎないようにしましょう。" },
           hydration: { theme: "水分補給の安定", action: "水分を十分に補給する", home: "水筒の量を決め、飲めた量を見える化しましょう。", practice: "練習前・練習中・練習後で分けて水分をとりましょう。" },
           pain: { theme: "痛みの早期確認", action: "痛みの有無を週1回確認する", home: "痛みが続く部位やタイミングをメモし、無理を重ねないようにしましょう。", practice: "痛みがある状態でジャンプ・ダッシュ・切り返しを繰り返しすぎないようにしましょう。" },
           exercise: { theme: value("exerciseHabit") === "過多" ? "運動量の調整" : "運動習慣の安定", action: value("exerciseHabit") === "過多" ? "練習量と休養のバランスを確認する" : "適切な運動習慣を作る", home: "疲労感と睡眠の状態を見ながら運動量を調整しましょう。", practice: "練習量・自主練・休養日をチームで共有しましょう。" },
@@ -1483,6 +1632,51 @@
         if (total >= 55) return "B";
         if (total >= 40) return "C";
         return "D";
+      }
+
+      function adaptationLabel(total) {
+        return { A: "Excellent", B: "Good", C: "Fair", D: "Needs Support" }[adaptationGrade(total)];
+      }
+
+      function habitLevel(score) {
+        if (score >= 90) return { grade: "A", label: "Excellent" };
+        if (score >= 80) return { grade: "B", label: "Good" };
+        if (score >= 70) return { grade: "C", label: "Fair" };
+        return { grade: "D", label: "Needs Improvement" };
+      }
+
+      function doctorRiskLevel() {
+        const echo = value("echoKeyPoint").trim();
+        if (echo) return "要確認";
+        if (value("growthPhase").includes("成長加速期") || value("growthPeak") === "ピーク中") return "中";
+        return "低";
+      }
+
+      function exerciseLimitLevel() {
+        const attention = value("exerciseAttention").trim();
+        if (!attention) return "なし";
+        if (/中止|禁止|制限|控/.test(attention)) return "調整あり";
+        return "注意あり";
+      }
+
+      function echoSummaryLevel() {
+        const echo = value("echoKeyPoint").trim();
+        if (!echo) return "異常なし";
+        if (/なし|異常なし|所見なし/.test(echo)) return "異常なし";
+        return "要点あり";
+      }
+
+      function growthPredictionText() {
+        if (value("growthPhase").includes("成長準備期") || value("growthPeak") === "ピーク前") {
+          return "今後6〜18ヶ月以内に身長増加が加速する可能性があります。オスグッド・シーバー病・腰痛などが増えやすい時期に備え、睡眠・補食・回復習慣を整えていきましょう。";
+        }
+        if (value("growthPhase").includes("成長加速期") || value("growthPeak") === "ピーク中") {
+          return "現在は身長変化が大きくなりやすい時期です。膝・踵・腰への負担を確認しながら、柔軟性・回復・練習量のバランスを整えていきましょう。";
+        }
+        if (value("growthPhase").includes("成長安定期") || value("growthPeak") === "ピーク後") {
+          return "身長の伸びが落ち着き、筋力や競技動作を高めやすい時期です。身体のサイズ変化に合わせて、筋力・姿勢・動作の質を確認していきましょう。";
+        }
+        return "成長段階は判定保留です。身長・体重・身体機能・痛みの変化を継続して確認し、次回評価で成長の流れを整理しましょう。";
       }
 
       function adaptationText(total) {
@@ -1649,7 +1843,12 @@
         }).join("");
       }
 
-      function renderRadar(results) {
+      function previousCategoryResults(previous) {
+        if (!previous) return null;
+        return categories.map((cat) => ({ ...cat, score: numOrNull(previous[cat.key]) ?? 0 }));
+      }
+
+      function renderRadar(results, previousResults) {
         const svg = $("radar");
         const center = { x: 160, y: 150 };
         const radius = 100;
@@ -1666,12 +1865,33 @@
           const ratio = axis.score / axis.max;
           return `${center.x + Math.cos(axis.angle) * radius * ratio},${center.y + Math.sin(axis.angle) * radius * ratio}`;
         }).join(" ");
+        const previousPoints = previousResults ? axes.map((axis, index) => {
+          const previous = previousResults[index];
+          const ratio = (previous?.score || 0) / axis.max;
+          return `${center.x + Math.cos(axis.angle) * radius * ratio},${center.y + Math.sin(axis.angle) * radius * ratio}`;
+        }).join(" ") : "";
         const labels = axes.map((axis) => {
           const lx = center.x + Math.cos(axis.angle) * 127;
           const ly = center.y + Math.sin(axis.angle) * 127;
           return `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" fill="#176b5b" font-size="13" font-weight="700">${axis.label}</text>`;
         }).join("");
-        svg.innerHTML = `${rings}${axisLines}<polygon points="${dataPoints}" fill="rgba(122,188,166,.34)" stroke="#2f8b72" stroke-width="3" />${labels}`;
+        const previousShape = previousPoints ? `<polygon points="${previousPoints}" fill="rgba(151,163,184,.18)" stroke="#94a3b8" stroke-width="3" />` : "";
+        const legend = `<text x="22" y="286" fill="#94a3b8" font-size="12" font-weight="800">前回</text><line x1="54" y1="282" x2="82" y2="282" stroke="#94a3b8" stroke-width="3" /><text x="110" y="286" fill="#176b5b" font-size="12" font-weight="800">今回</text><line x1="142" y1="282" x2="170" y2="282" stroke="#2f8b72" stroke-width="3" />`;
+        svg.innerHTML = `${rings}${axisLines}${previousShape}<polygon points="${dataPoints}" fill="rgba(122,188,166,.34)" stroke="#2f8b72" stroke-width="3" />${labels}${legend}`;
+      }
+
+      function renderGrowthPoints(results, previousResults) {
+        if (!previousResults) {
+          $("growthPoints").innerHTML = `<div class="growth-point"><span>初回評価</span><strong>次回から比較</strong></div>`;
+          return;
+        }
+        const improvements = results.map((item, index) => ({
+          label: item.label,
+          diff: item.score - (previousResults[index]?.score || 0)
+        })).filter((item) => item.diff > 0).sort((a, b) => b.diff - a.diff).slice(0, 3);
+        $("growthPoints").innerHTML = improvements.length
+          ? improvements.map((item) => `<div class="growth-point"><span>${escapeHtml(item.label)}</span><strong>+${item.diff}</strong></div>`).join("")
+          : `<div class="growth-point"><span>維持</span><strong>大きな低下なし</strong></div>`;
       }
 
       function updateGrowthComparison(current, previous) {
@@ -1722,6 +1942,16 @@
             </div>
           </div>
         `).join("");
+        $("timelineSequence").innerHTML = records.map((record) => {
+          const date = record.evaluationDate ? record.evaluationDate.slice(0, 7).replace("-", "/") : "-";
+          const stageNote = record.growthPhase && record.growthPhase.includes("PHV") ? `<br /><strong>${escapeHtml(record.growthPhase)}</strong>` : "";
+          return `
+            <div class="timeline-event">
+              <strong>${escapeHtml(date)}</strong>
+              <div>${escapeHtml(record.height || "-")}cm / Habit${escapeHtml(record.habitScore || "-")} / 身体${escapeHtml(record.growthAdaptationScore || "-")}${stageNote}</div>
+            </div>
+          `;
+        }).join("");
       }
 
       function makeCsv(records) {
@@ -1761,26 +1991,41 @@
         const previousRecord = previousTimelineRecord(currentRecord);
         const velocity = growthVelocity(currentRecord, previousRecord);
         const records = allTimelineRecords(currentRecord);
+        const previousResults = previousCategoryResults(previousRecord);
+        const habitLevelInfo = habitLevel(habit);
+        const nextTiming = value("growthPhase").includes("成長加速期") || weakest.length >= 2 ? "2〜3ヶ月後" : "3〜4ヶ月後";
 
         $("totalScore").textContent = total;
         $("habitScore").textContent = habit;
-        $("stageBadge").textContent = value("growthPhase");
-        $("oneLineSummary").textContent = `現在は「${value("growthPhase")}」です。成長適応度${adaptationGrade(total)}。${adaptationText(total)} 今月の重点テーマは${actionPlan.theme}です。`;
+        $("adaptationGrade").textContent = adaptationGrade(total);
+        $("adaptationLabel").textContent = adaptationLabel(total);
+        $("habitGrade").textContent = habitLevelInfo.grade;
+        $("habitLabel").textContent = habitLevelInfo.label;
+        $("doctorStageCard").textContent = value("growthPhase").replace("成長準備期（", "").replace("成長加速期（", "").replace("成長安定期（", "").replace("）", "");
+        $("doctorRiskCard").textContent = doctorRiskLevel();
+        $("exerciseLimitCard").textContent = exerciseLimitLevel();
+        $("echoCard").textContent = echoSummaryLevel();
+        $("growthPrediction").textContent = growthPredictionText();
+        $("oneLineSummary").textContent = `現在は「${value("growthPhase")}」です。${adaptationText(total)} 今月は${actionPlan.theme}に取り組みます。`;
         renderScoreList(results);
-        renderRadar(results);
+        renderRadar(results, previousResults);
+        renderGrowthPoints(results, previousResults);
         $("weakList").innerHTML = weakest.length ? weakest.map((item) => `<span class="tag">${item.label} Lv.${item.level}</span>`).join("") : `<span class="tag">大きな注意リスクは少ない</span>`;
 
         const goodText = good.length ? `強みは${good.join("・")}です。` : "まずは身体の土台づくりから整えていきましょう。";
         $("doctorSummary").textContent = simpleDoctorSummary();
         $("joynitySummary").textContent = `Growth Adaptation Scoreは${total}/70点（成長適応度${adaptationGrade(total)}）、Habit Scoreは${habit}/100点です。${goodText} 改善優先は${weakest.length ? weakLabels : "現状維持と定期確認"}、習慣面では${habitWeak.length ? habitWeak.join("・") : "良い習慣の継続"}を確認します。`;
-        $("currentBodyState").textContent = `${value("growthPhase")}に対して、身体が適応できているかをJoynity評価で確認しました。${weakest.length ? `${improvementLabels}を整えることで、${attentionTarget}へ負担が集中しにくい状態を目指します。` : "現在は大きな左右差や機能低下は少ない状態です。今後の成長による変化に備え、定期的な確認を行いましょう。"}`;
+        $("currentBodyState").textContent = weakest.length
+          ? `現在は${value("growthPhase")}に対して、${improvementLabels}を整えたい状態です。${attentionTarget}へ負担が集中しにくい身体づくりを進めましょう。`
+          : "現在は成長段階に対して良好な適応がみられます。大きな左右差や機能低下は認めません。今後の成長変化に備え定期確認を行いましょう。";
         $("priorityTheme").textContent = `今月の最優先テーマ: ${actionPlan.theme}`;
         $("topActions").innerHTML = actionPlan.actions.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
         $("homeAction").textContent = `家庭でできること: ${actionPlan.home}`;
         $("practiceAction").textContent = `練習で気をつけること: ${value("exerciseAttention").trim() || actionPlan.practice}`;
         $("joynitySupport").textContent = `Joynityでサポートすること: ${value("joynityIntervention").trim() || (weakest.length ? `${weakLabels}を中心に、負担が集中しにくい動きづくりをサポートします。` : "良い状態を維持するための動作確認とコンディショニングを継続します。")}`;
-        $("nextCheck").textContent = `次回チェック目標: ${value("growthPhase").includes("成長加速期") || weakest.length >= 2 ? "2〜3ヶ月後" : "3〜4ヶ月後"}に、達成率と身体の変化を確認しましょう。`;
-        $("nextCheckGoals").innerHTML = [...habitWeak, ...weakest.map((item) => item.label)].slice(0, 4).map((item) => `<span class="tag">□ ${item}</span>`).join("") || `<span class="tag">□ 良い状態の継続</span>`;
+        $("nextCheck").textContent = `次回チェック目標: ${nextTiming}に、達成率と身体の変化を確認しましょう。`;
+        $("nextCheckTiming").textContent = nextTiming;
+        $("nextCheckGoals").innerHTML = ["身長変化", "Habit Score", "身体機能スコア", "痛み", "成長ステージ"].map((item) => `<span class="tag">☑ ${item}</span>`).join("");
         updateGrowthComparison(currentRecord, previousRecord);
         $("growthSummary").textContent = growthDataSummary(currentRecord, previousRecord);
         const doctorComments = [
