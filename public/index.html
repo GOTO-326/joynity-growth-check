@@ -813,6 +813,7 @@
           <p class="hero-copy">成長期アスリートの身体機能を6分類で評価し、点数化・コメント・レポート出力まで行うブラウザ完結型チェックツールです。</p>
         </div>
         <div class="hero-actions">
+          <a class="btn secondary" href="intake/">事前入力ページ</a>
           <button class="btn" type="button" id="makeReportTop">結果を作成</button>
           <button class="btn secondary" type="button" id="printTop">PDF保存</button>
         </div>
@@ -839,6 +840,7 @@
               <div class="field"><label for="athleteId">選手ID</label><input id="athleteId" name="athleteId" placeholder="例 JY-001" /></div>
               <div class="field"><label for="athleteName">名前・イニシャル</label><input id="athleteName" name="athleteName" placeholder="例 T.K" /></div>
               <div class="field"><label for="age">年齢</label><input id="age" name="age" type="number" min="5" max="20" placeholder="例 11" /></div>
+              <div class="field"><label for="schoolGrade">学年</label><input id="schoolGrade" name="schoolGrade" placeholder="例 小学5年 / 中学1年" /></div>
               <div class="field"><label for="sport">競技</label><input id="sport" name="sport" placeholder="例 サッカー" /></div>
             </div>
           </details>
@@ -1245,6 +1247,15 @@
             </summary>
             <div class="panel-body field-grid">
               <div class="field">
+                <label for="intakeCsv">事前入力CSVを読み込む</label>
+                <input id="intakeCsv" type="file" accept=".csv,text/csv" />
+                <p class="hint">/intake で保護者・選手が作成したCSVを読み込むと、基本情報・症状・生活習慣がフォームへ反映されます。</p>
+              </div>
+              <div class="field">
+                <label>事前入力内容</label>
+                <div class="comparison-box" id="intakeSummary">事前入力CSVは未読込です。</div>
+              </div>
+              <div class="field">
                 <label for="timelineCsv">過去評価CSVを読み込む</label>
                 <input id="timelineCsv" type="file" accept=".csv,text/csv" />
                 <p class="hint">同じ選手IDの過去データを読み込み、前回比較とGrowth Timelineを自動作成します。</p>
@@ -1572,6 +1583,7 @@
           value("athleteId") && `選手ID: ${value("athleteId")}`,
           value("athleteName") && `名前: ${value("athleteName")}`,
           value("age") && `年齢: ${value("age")}歳`,
+          value("schoolGrade") && `学年: ${value("schoolGrade")}`,
           value("sport") && `競技: ${value("sport")}`,
           value("height") && `身長: ${value("height")}cm`,
           value("weight") && `体重: ${value("weight")}kg`,
@@ -1810,6 +1822,7 @@
             athleteId: value("athleteId"),
             athleteName: value("athleteName"),
             age: value("age"),
+            schoolGrade: value("schoolGrade"),
             sport: value("sport")
           },
           growth: {
@@ -2093,6 +2106,53 @@
         URL.revokeObjectURL(url);
       }
 
+      function setFieldValue(id, val) {
+        const el = $(id);
+        if (!el || val == null || val === "") return;
+        el.value = val;
+      }
+
+      function applyIntakeRecord(record) {
+        const map = {
+          athleteId: "athleteId",
+          athleteName: "athleteName",
+          age: "age",
+          schoolGrade: "schoolGrade",
+          sport: "sport",
+          height: "height",
+          weight: "weight",
+          currentPain: "currentPain",
+          symptomArea: "symptomArea",
+          symptomFrequency: "symptomFrequency",
+          symptomTiming: "symptomTiming",
+          symptomImpact: "symptomImpact",
+          sleepHours: "sleepHours",
+          snackHabit: "snackHabit",
+          selfCareHabit: "selfCareHabit",
+          hydrationHabit: "hydrationHabit"
+        };
+        Object.entries(map).forEach(([csvKey, fieldId]) => setFieldValue(fieldId, record[csvKey]));
+        const notes = [
+          record.parentConcern && `保護者が気になること: ${record.parentConcern}`,
+          record.athleteConcern && `選手本人が困っていること: ${record.athleteConcern}`,
+          record.submittedAt && `事前入力日時: ${record.submittedAt}`
+        ].filter(Boolean).join("\n");
+        if (notes) {
+          const existing = value("staffMemo").trim();
+          $("staffMemo").value = existing ? `${existing}\n\n${notes}` : notes;
+        }
+        $("intakeSummary").textContent = [
+          record.athleteId && `ID: ${record.athleteId}`,
+          record.athleteName && `名前: ${record.athleteName}`,
+          record.schoolGrade && `学年: ${record.schoolGrade}`,
+          record.sport && `競技: ${record.sport}`,
+          record.symptomArea && `症状: ${record.symptomArea}`,
+          record.parentConcern && `保護者: ${record.parentConcern}`,
+          record.athleteConcern && `本人: ${record.athleteConcern}`
+        ].filter(Boolean).join(" / ") || "事前入力CSVを読み込みました。";
+        updateReport();
+      }
+
       function updateReport() {
         updateGrowthDescriptions();
         const results = calculateScores();
@@ -2189,6 +2249,7 @@
           value("athleteId") && `ID: ${value("athleteId")}`,
           value("athleteName") && `名前: ${value("athleteName")}`,
           value("age") && `年齢: ${value("age")}歳`,
+          value("schoolGrade") && `学年: ${value("schoolGrade")}`,
           value("sport") && `競技: ${value("sport")}`
         ].filter(Boolean).join(" / ");
         const printInfo = $("printInfo");
@@ -2208,6 +2269,18 @@
           const text = await file.text();
           timelineRecords = parseCsv(text);
           updateReport();
+        });
+        $("intakeCsv").addEventListener("change", async (event) => {
+          const file = event.target.files && event.target.files[0];
+          if (!file) return;
+          const records = parseCsv(await file.text());
+          if (!records.length) {
+            $("intakeSummary").textContent = "CSVを読み込めませんでした。/intakeで作成したCSVか確認してください。";
+            return;
+          }
+          const targetId = value("athleteId");
+          const record = records.find((item) => targetId && item.athleteId === targetId) || records[records.length - 1];
+          applyIntakeRecord(record);
         });
         $("downloadCsv").addEventListener("click", () => {
           updateReport();

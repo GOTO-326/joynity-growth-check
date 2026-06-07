@@ -4,6 +4,10 @@
     {
       "source": "/",
       "destination": "/index.html"
+    },
+    {
+      "source": "/intake",
+      "destination": "/intake/index.html"
     }
   ],
   "headers": [

@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Joynity Growth Check 事前入力</title>
+    <style>
+      :root {
+        --brand: #7abca6;
+        --brand-dark: #176b5b;
+        --line: #d9e8e3;
+        --text: #1f3935;
+        --muted: #667b76;
+        --bg: #f4fbf8;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.65;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #ffffff 0%, #effaf6 100%);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .hero-inner,
+      .shell {
+        width: min(760px, calc(100% - 28px));
+        margin: 0 auto;
+      }
+
+      .hero-inner {
+        padding: 26px 0 22px;
+      }
+
+      .brand-kicker {
+        margin: 0 0 6px;
+        color: var(--brand-dark);
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2 {
+        margin: 0;
+        line-height: 1.25;
+      }
+
+      h1 {
+        color: var(--brand-dark);
+        font-size: clamp(1.9rem, 8vw, 3rem);
+      }
+
+      .hero-copy,
+      .hint {
+        color: var(--muted);
+      }
+
+      .shell {
+        padding: 22px 0 42px;
+      }
+
+      .notice,
+      .panel,
+      .result {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        background: white;
+        padding: 16px;
+      }
+
+      .notice {
+        margin-bottom: 14px;
+        font-size: 0.92rem;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .field-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .field {
+        display: grid;
+        gap: 6px;
+      }
+
+      label {
+        color: var(--brand-dark);
+        font-weight: 800;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 11px 12px;
+        background: #fbfffd;
+        color: var(--text);
+      }
+
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+
+      .btn-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 999px;
+        padding: 12px 18px;
+        min-height: 44px;
+        background: var(--brand);
+        color: white;
+        font-weight: 800;
+        cursor: pointer;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn.secondary {
+        background: white;
+        color: var(--brand-dark);
+        border: 1px solid var(--line);
+      }
+
+      .result {
+        display: none;
+        margin-top: 14px;
+        color: var(--muted);
+      }
+
+      .result.show {
+        display: block;
+      }
+
+      .result strong {
+        color: var(--brand-dark);
+      }
+
+      @media (max-width: 640px) {
+        .field-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="hero-inner">
+        <p class="brand-kicker">Joynity Conditioning Studio</p>
+        <h1>Growth Check 事前入力</h1>
+        <p class="hero-copy">評価当日前に、基本情報・症状・生活習慣を入力するためのページです。</p>
+      </div>
+    </header>
+
+    <main class="shell">
+      <div class="notice">
+        このページはクラウド保存・データベース保存を行いません。入力後にCSVを作成し、スタッフへ共有してください。
+      </div>
+
+      <form class="grid" id="intakeForm">
+        <section class="panel grid">
+          <h2>基本情報</h2>
+          <div class="field-grid">
+            <div class="field"><label for="athleteId">選手ID</label><input id="athleteId" required placeholder="例 JY-001" /></div>
+            <div class="field"><label for="athleteName">名前またはイニシャル</label><input id="athleteName" placeholder="例 T.K" /></div>
+            <div class="field"><label for="age">年齢</label><input id="age" type="number" min="5" max="20" placeholder="例 11" /></div>
+            <div class="field"><label for="schoolGrade">学年</label><input id="schoolGrade" placeholder="例 小学5年 / 中学1年" /></div>
+            <div class="field"><label for="sport">競技</label><input id="sport" placeholder="例 サッカー" /></div>
+            <div class="field"><label for="height">身長 cm</label><input id="height" type="number" min="80" max="220" step="0.1" placeholder="例 145.5" /></div>
+            <div class="field"><label for="weight">体重 kg</label><input id="weight" type="number" min="15" max="120" step="0.1" placeholder="例 38.2" /></div>
+          </div>
+        </section>
+
+        <section class="panel grid">
+          <h2>症状</h2>
+          <div class="field-grid">
+            <div class="field"><label for="currentPain">現在気になる痛みの部位</label><input id="currentPain" placeholder="例 膝前面、踵、なし" /></div>
+            <div class="field">
+              <label for="symptomArea">症状部位</label>
+              <select id="symptomArea">
+                <option>なし</option><option>膝前面</option><option>踵</option><option>腰</option><option>股関節</option><option>足首</option><option>肩・肘</option><option>その他</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="symptomFrequency">痛みの頻度</label>
+              <select id="symptomFrequency">
+                <option>なし</option><option>月1〜2回</option><option>週1回</option><option>週2〜3回</option><option>毎回</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="symptomTiming">痛みが出るタイミング</label>
+              <select id="symptomTiming">
+                <option>なし</option><option>練習後</option><option>練習中</option><option>翌朝</option><option>常時</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="symptomImpact">練習への影響</label>
+              <select id="symptomImpact">
+                <option>なし</option><option>練習はできる</option><option>一部メニューを控える</option><option>休むことがある</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel grid">
+          <h2>生活習慣</h2>
+          <div class="field-grid">
+            <div class="field"><label for="sleepHours">平均睡眠時間</label><input id="sleepHours" type="number" min="4" max="12" step="0.5" placeholder="例 8" /></div>
+            <div class="field">
+              <label for="snackHabit">練習後の補食頻度</label>
+              <select id="snackHabit"><option>週5回以上</option><option>週3〜4回</option><option>週1〜2回</option><option>月数回</option><option>なし</option></select>
+            </div>
+            <div class="field">
+              <label for="selfCareHabit">セルフケア頻度</label>
+              <select id="selfCareHabit"><option>週5回以上</option><option>週3〜4回</option><option>週1〜2回</option><option>月数回</option><option>なし</option></select>
+            </div>
+            <div class="field">
+              <label for="hydrationHabit">水分摂取状況</label>
+              <select id="hydrationHabit"><option>練習中定期摂取</option><option>ほぼ摂取</option><option>時々不足</option><option>不足気味</option><option>不足</option></select>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel grid">
+          <h2>気になること</h2>
+          <div class="field"><label for="parentConcern">保護者が気になること</label><textarea id="parentConcern" placeholder="例 最近疲れやすい、膝を気にしている"></textarea></div>
+          <div class="field"><label for="athleteConcern">選手本人が困っていること</label><textarea id="athleteConcern" placeholder="例 走ると踵が気になる、練習後に眠い"></textarea></div>
+        </section>
+
+        <div class="btn-row">
+          <button class="btn" type="submit">送信する（CSV作成）</button>
+          <a class="btn secondary" href="/">スタッフ評価画面へ</a>
+        </div>
+      </form>
+
+      <div class="result" id="resultBox">
+        <strong>事前入力CSVを作成しました。</strong><br />
+        ダウンロードされたCSVをスタッフへ共有してください。スタッフは評価画面の「事前入力CSVを読み込む」から確認できます。
+      </div>
+    </main>
+
+    <script>
+      const fields = [
+        "athleteId", "athleteName", "age", "schoolGrade", "sport", "height", "weight", "currentPain",
+        "symptomArea", "symptomFrequency", "symptomTiming", "symptomImpact", "sleepHours", "snackHabit",
+        "selfCareHabit", "hydrationHabit", "parentConcern", "athleteConcern"
+      ];
+
+      const $ = (id) => document.getElementById(id);
+
+      function csvEscape(text) {
+        const safe = text == null ? "" : String(text);
+        return `"${safe.replace(/"/g, '""')}"`;
+      }
+
+      function downloadCsv(record) {
+        const headers = [...fields, "submittedAt"];
+        const csv = [headers.join(","), headers.map((key) => csvEscape(record[key])).join(",")].join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `joynity-intake-${record.athleteId || "athlete"}-${record.submittedAt.slice(0, 10)}.csv`;
+        link.click();
+        URL.revokeObjectURL(url);
+      }
+
+      $("intakeForm").addEventListener("submit", (event) => {
+        event.preventDefault();
+        const record = Object.fromEntries(fields.map((id) => [id, $(id).value.trim()]));
+        record.submittedAt = new Date().toISOString();
+        downloadCsv(record);
+        $("resultBox").classList.add("show");
+        $("resultBox").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    </script>
+  </body>
+</html>
