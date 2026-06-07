@@ -860,44 +860,51 @@
               <div class="field"><label for="currentPain">現在気になる部位・痛み</label><input id="currentPain" name="currentPain" placeholder="例 膝前面、踵、なし" /></div>
               <div class="field">
                 <label for="symptomArea">症状部位</label>
-                <select id="symptomArea">
+                <select id="symptomArea" multiple size="5">
                   <option>なし</option>
                   <option>膝前面</option>
                   <option>踵</option>
                   <option>腰</option>
                   <option>股関節</option>
-                  <option>足首</option>
                   <option>肩・肘</option>
+                  <option>足首</option>
                   <option>その他</option>
                 </select>
+                <p class="hint">複数ある場合は複数選択してください。</p>
               </div>
               <div class="field">
                 <label for="symptomFrequency">症状頻度</label>
                 <select id="symptomFrequency">
                   <option>なし</option>
-                  <option>月1〜2回</option>
-                  <option>週1回</option>
+                  <option>月1回程度</option>
+                  <option>週1回程度</option>
                   <option>週2〜3回</option>
-                  <option>毎回</option>
+                  <option>毎日</option>
                 </select>
               </div>
               <div class="field">
                 <label for="symptomTiming">症状が出るタイミング</label>
-                <select id="symptomTiming">
+                <select id="symptomTiming" multiple size="5">
                   <option>なし</option>
-                  <option>練習後</option>
-                  <option>練習中</option>
+                  <option>運動中</option>
+                  <option>運動後</option>
                   <option>翌朝</option>
-                  <option>常時</option>
+                  <option>ダッシュ時</option>
+                  <option>ジャンプ時</option>
+                  <option>切り返し時</option>
+                  <option>長時間歩いた後</option>
+                  <option>押すと痛い</option>
                 </select>
+                <p class="hint">複数ある場合は複数選択してください。</p>
               </div>
               <div class="field">
                 <label for="symptomImpact">練習への影響</label>
                 <select id="symptomImpact">
                   <option>なし</option>
-                  <option>練習はできる</option>
-                  <option>一部メニューを控える</option>
-                  <option>休むことがある</option>
+                  <option>少し気になるが練習可能</option>
+                  <option>一部の動作を避けている</option>
+                  <option>練習量を減らしている</option>
+                  <option>休む必要がある</option>
                 </select>
               </div>
               <div class="field"><label for="sleepHours">平均睡眠時間</label><input id="sleepHours" name="sleepHours" type="number" min="4" max="12" step="0.5" placeholder="例 8" /></div>
@@ -925,29 +932,32 @@
               <div class="field">
                 <label for="hydrationHabit">水分</label>
                 <select id="hydrationHabit">
-                  <option>練習中定期摂取</option>
-                  <option>ほぼ摂取</option>
-                  <option>時々不足</option>
-                  <option>不足気味</option>
-                  <option>不足</option>
+                  <option>水分を持参していないことがある</option>
+                  <option>喉が渇いた時だけ飲む</option>
+                  <option>練習中に数回飲む</option>
+                  <option>練習中に定期的に飲む</option>
+                  <option>暑い日や長時間練習では量を意識して増やしている</option>
                 </select>
               </div>
               <div class="field">
-                <label for="exerciseHabit">運動習慣</label>
+                <label for="exerciseHabit">自主トレ・セルフケア以外の運動習慣</label>
                 <select id="exerciseHabit">
-                  <option>適切</option>
-                  <option>不足</option>
-                  <option>過多</option>
+                  <option>ほとんどない</option>
+                  <option>週1〜2回</option>
+                  <option>週3〜4回</option>
+                  <option>週5回以上</option>
+                  <option>競技練習が多く休養日が少ない</option>
                 </select>
               </div>
               <div class="field">
-                <label for="painManagement">痛み管理</label>
+                <label for="painManagement">痛みがある時の対応</label>
                 <select id="painManagement">
-                  <option>なし</option>
-                  <option>月1〜2回</option>
-                  <option>週1回</option>
-                  <option>週2〜3回</option>
-                  <option>頻繁</option>
+                  <option>痛みはない</option>
+                  <option>痛みがあってもそのまま練習している</option>
+                  <option>痛みがある時は練習量を調整している</option>
+                  <option>コーチや保護者に相談している</option>
+                  <option>医療機関を受診している</option>
+                  <option>どう対応すればよいかわからない</option>
                 </select>
               </div>
             </div>
@@ -1284,93 +1294,82 @@
               </div>
 
               <div class="comment-box">
-                <h3>医師評価サマリー</h3>
+                <h3 id="locationTitle">現在地</h3>
                 <div class="doctor-summary-grid">
                   <div class="summary-card"><span>成長ステージ</span><strong id="doctorStageCard">-</strong></div>
-                  <div class="summary-card"><span>PHV状況</span><strong id="phvStatusCard">-</strong></div>
-                  <div class="summary-card"><span>運動制限</span><strong id="exerciseLimitCard">-</strong></div>
-                  <div class="summary-card"><span>エコー評価</span><strong id="echoCard">-</strong></div>
+                  <div class="summary-card"><span>成長ピークまで</span><strong id="growthPeakGuide">-</strong></div>
+                  <div class="summary-card"><span>現在の安心度</span><strong id="safetyCard">-</strong></div>
+                  <div class="summary-card"><span>注意レベル</span><strong id="attentionLevelCard">-</strong></div>
                 </div>
               </div>
 
               <div class="comment-box">
-                <h3>成長予測</h3>
-                <p class="compact-copy" id="growthPrediction"></p>
-              </div>
-
-              <div class="score-summary-grid">
-                <div class="summary-card">
-                  <span>Growth Adaptation Score</span>
-                  <strong><span id="totalScore">70</span>/70点</strong>
-                  <div><span class="score-grade" id="adaptationGrade">A</span> <span class="score-label" id="adaptationLabel">Excellent</span></div>
-                </div>
-                <div class="summary-card">
-                  <span>Habit Score</span>
-                  <strong><span id="habitScore">100</span>/100点</strong>
-                  <div><span class="score-grade" id="habitGrade">A</span> <span class="score-label" id="habitLabel">Excellent</span></div>
-                </div>
-              </div>
-
-              <div class="comment-box">
-                <h3>注意リスク</h3>
-                <div class="weak-list" id="weakList"></div>
-              </div>
-
-              <div class="comment-box">
-                <h3>起こりやすい負担</h3>
-                <p class="compact-copy" id="burdenSummary"></p>
-              </div>
-
-              <div class="comment-box">
-                <h3>レーダーチャート</h3>
-                <div class="insight-layout">
-                  <div class="radar-wrap">
-                    <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="前回と今回の6分類レーダーチャート"></svg>
-                  </div>
-                  <div>
-                    <h3>今回の成長ポイント</h3>
-                    <div class="growth-points" id="growthPoints"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="comment-box">
-                <h3>今月のアクションプラン</h3>
-                <p><strong id="priorityTheme"></strong></p>
-                <ol class="action-list" id="topActions"></ol>
-              </div>
-
-              <div class="comment-box">
-                <h3>成長適応レポート</h3>
-                <p id="joynitySummary"></p>
-              </div>
-
-              <div class="comment-box">
-                <h3>現在の身体状態</h3>
+                <h3>今の状態</h3>
                 <p class="compact-copy" id="currentBodyState"></p>
               </div>
 
               <div class="comment-box">
-                <h3>次回チェック項目</h3>
+                <h3>起こりやすい症状</h3>
+                <div class="weak-list" id="likelySymptoms"></div>
+                <p class="compact-copy" id="burdenSummary"></p>
+              </div>
+
+              <div class="comment-box">
+                <h3>今やるべきこと</h3>
+                <ol class="action-list" id="topActions"></ol>
+              </div>
+
+              <div class="comment-box">
+                <h3>次回チェック</h3>
                 <div class="next-check-grid">
-                  <div class="summary-card"><span>次回確認予定</span><strong id="nextCheckTiming">3〜4ヶ月後</strong></div>
+                  <div class="summary-card"><span>次回チェック目安</span><strong id="nextCheckTiming">3〜4ヶ月後</strong></div>
                   <div class="summary-card"><span>身長変化</span><strong>確認</strong></div>
-                  <div class="summary-card"><span>Habit Score</span><strong>確認</strong></div>
-                  <div class="summary-card"><span>身体機能・痛み・成長ステージ</span><strong>確認</strong></div>
+                  <div class="summary-card"><span>痛みの有無</span><strong>確認</strong></div>
+                  <div class="summary-card"><span>睡眠・補食・身体機能</span><strong>確認</strong></div>
                 </div>
                 <div class="weak-list" id="nextCheckGoals"></div>
               </div>
 
-              <div class="comment-box">
-                <h3>Growth Timeline</h3>
-                <div class="timeline-sequence" id="timelineSequence"></div>
-                <div class="timeline-graph" id="timelineGraph"></div>
-              </div>
-
               <details class="detail-panel">
-                <summary>詳細を見る（スタッフ・医師共有）</summary>
+                <summary>詳細を見る（スコア・レーダー・Growth Timeline）</summary>
                 <div class="detail-content">
+                  <h3>医師評価サマリー</h3>
+                  <div class="doctor-summary-grid">
+                    <div class="summary-card"><span>成長ステージ</span><strong id="detailDoctorStageCard">-</strong></div>
+                    <div class="summary-card"><span>PHV状況</span><strong id="phvStatusCard">-</strong></div>
+                    <div class="summary-card"><span>運動制限</span><strong id="exerciseLimitCard">-</strong></div>
+                    <div class="summary-card"><span>エコー評価</span><strong id="echoCard">-</strong></div>
+                  </div>
+                  <h3>成長予測</h3>
+                  <p class="compact-copy" id="growthPrediction"></p>
+                  <div class="score-summary-grid">
+                    <div class="summary-card">
+                      <span>Growth Adaptation Score</span>
+                      <strong><span id="totalScore">70</span>/70点</strong>
+                      <div><span class="score-grade" id="adaptationGrade">A</span> <span class="score-label" id="adaptationLabel">Excellent</span></div>
+                    </div>
+                    <div class="summary-card">
+                      <span>Habit Score</span>
+                      <strong><span id="habitScore">100</span>/100点</strong>
+                      <div><span class="score-grade" id="habitGrade">A</span> <span class="score-label" id="habitLabel">Excellent</span></div>
+                    </div>
+                  </div>
+                  <h3>レーダーチャート</h3>
+                  <div class="insight-layout">
+                    <div class="radar-wrap">
+                      <svg id="radar" viewBox="0 0 320 300" role="img" aria-label="前回と今回の6分類レーダーチャート"></svg>
+                    </div>
+                    <div>
+                      <h3>今回の成長ポイント</h3>
+                      <div class="growth-points" id="growthPoints"></div>
+                    </div>
+                  </div>
+                  <h3>成長適応レポート</h3>
+                  <p id="joynitySummary"></p>
+                  <h3>注意項目</h3>
+                  <div class="weak-list" id="weakList"></div>
                   <p id="doctorSummary"></p>
+                  <p><strong id="priorityTheme"></strong></p>
                   <p id="homeAction"></p>
                   <p id="practiceAction"></p>
                   <p id="joynitySupport"></p>
@@ -1382,6 +1381,8 @@
                   <h3>Growth Timeline</h3>
                   <div class="timeline-bars" id="timelineBars"></div>
                   <div id="timelineTable"></div>
+                  <div class="timeline-sequence" id="timelineSequence"></div>
+                  <div class="timeline-graph" id="timelineGraph"></div>
                   <h3>医師向けフォロー情報</h3>
                   <ul id="doctorFeedbackList"></ul>
                 </div>
@@ -1446,6 +1447,13 @@
       const $ = (id) => document.getElementById(id);
       const value = (id) => $(id).value;
       const numberValue = (id) => Number(value(id));
+      const multiValue = (id) => {
+        const el = $(id);
+        if (!el) return [];
+        if (el.multiple) return [...el.selectedOptions].map((option) => option.value).filter((item) => item && item !== "なし");
+        const val = el.value;
+        return val && val !== "なし" ? [val] : [];
+      };
 
       function escapeHtml(text) {
         return String(text)
@@ -1525,9 +1533,9 @@
           growthAdaptationScore: total,
           habitScore: habit,
           pain: value("currentPain") || "なし",
-          symptomArea: value("symptomArea"),
+          symptomArea: multiValue("symptomArea").join("・") || "なし",
           symptomFrequency: value("symptomFrequency"),
-          symptomTiming: value("symptomTiming"),
+          symptomTiming: multiValue("symptomTiming").join("・") || "なし",
           symptomImpact: value("symptomImpact"),
           snackHabit: value("snackHabit"),
           sleepHours: value("sleepHours"),
@@ -1646,22 +1654,24 @@
       }
 
       function symptomScore() {
-        const frequency = { "なし": 0, "月1〜2回": 1, "週1回": 2, "週2〜3回": 3, "毎回": 4 }[value("symptomFrequency")] || 0;
-        const timing = { "なし": 0, "練習後": 1, "練習中": 2, "翌朝": 2, "常時": 3 }[value("symptomTiming")] || 0;
-        const impact = { "なし": 0, "練習はできる": 1, "一部メニューを控える": 2, "休むことがある": 3 }[value("symptomImpact")] || 0;
+        const frequency = { "なし": 0, "月1回程度": 1, "週1回程度": 2, "週2〜3回": 3, "毎日": 4 }[value("symptomFrequency")] || 0;
+        const timings = multiValue("symptomTiming");
+        const timing = timings.reduce((max, item) => Math.max(max, { "運動後": 1, "運動中": 2, "翌朝": 2, "ダッシュ時": 2, "ジャンプ時": 2, "切り返し時": 2, "長時間歩いた後": 2, "押すと痛い": 2 }[item] || 0), 0);
+        const impact = { "なし": 0, "少し気になるが練習可能": 1, "一部の動作を避けている": 2, "練習量を減らしている": 3, "休む必要がある": 4 }[value("symptomImpact")] || 0;
         return frequency + timing + impact;
       }
 
       function symptomLevel() {
         const score = symptomScore();
-        if (score >= 7) return "個別確認";
+        if (score >= 8) return "個別確認";
         if (score >= 4) return "要チェック";
         if (score >= 1) return "経過確認";
         return "症状なし";
       }
 
       function symptomTarget() {
-        if (value("symptomArea") !== "なし") return value("symptomArea");
+        const areas = multiValue("symptomArea");
+        if (areas.length) return areas.join("・");
         const text = value("currentPain").trim();
         return text && !/なし|無し|ない/.test(text) ? text : "";
       }
@@ -1694,9 +1704,9 @@
         const burdens = likelyBurdenAreas(weakest);
         const level = symptomLevel();
         const symptom = symptomTarget();
-        const symptomText = symptom ? `現在の症状は「${symptom}」、症状レベルは「${level}」です。` : `現在の症状レベルは「${level}」です。`;
-        const burdenText = burdens.length ? `起こりやすい負担は、${burdens.join("、")}です。` : "現時点で大きな負担集中は少ない状態です。";
-        return `${stageLoadKeyword()}です。${symptomText}${burdenText}痛みを診断するものではなく、成長段階に合わせて身体機能と生活習慣を整えるための説明です。`;
+        const symptomText = symptom ? `現在は「${symptom}」を注意して見ていきたい状態です。` : "現時点では大きな痛みの入力はありません。";
+        const burdenText = burdens.length ? `${burdens.join("、")}が起こりやすいポイントです。` : "現時点では大きな負担集中は少ない状態です。";
+        return `${symptomText}${burdenText}痛みが続く場合は医師に相談しましょう。`;
       }
 
       function habitComponents() {
@@ -1705,8 +1715,8 @@
           { key: "sleep", label: "睡眠", score: !sleep ? 3 : sleep >= 8.5 ? 5 : sleep >= 8 ? 4 : sleep >= 7 ? 3 : sleep >= 6 ? 2 : 1, max: 5 },
           { key: "snack", label: "補食", score: { "週5回以上": 5, "週3〜4回": 4, "週1〜2回": 3, "月数回": 2, "なし": 1 }[value("snackHabit")] ?? 3, max: 5 },
           { key: "selfCare", label: "セルフケア", score: { "週5回以上": 5, "週3〜4回": 4, "週1〜2回": 3, "月数回": 2, "なし": 1 }[value("selfCareHabit")] ?? 3, max: 5 },
-          { key: "hydration", label: "水分", score: { "練習中定期摂取": 5, "ほぼ摂取": 4, "時々不足": 3, "不足気味": 2, "不足": 1 }[value("hydrationHabit")] ?? 3, max: 5 },
-          { key: "pain", label: "痛み", score: { "なし": 5, "月1〜2回": 4, "週1回": 3, "週2〜3回": 2, "頻繁": 1 }[value("painManagement")] ?? 3, max: 5 }
+          { key: "hydration", label: "水分", score: { "暑い日や長時間練習では量を意識して増やしている": 5, "練習中に定期的に飲む": 4, "練習中に数回飲む": 3, "喉が渇いた時だけ飲む": 2, "水分を持参していないことがある": 1 }[value("hydrationHabit")] ?? 3, max: 5 },
+          { key: "pain", label: "痛み対応", score: { "痛みはない": 5, "医療機関を受診している": 5, "コーチや保護者に相談している": 4, "痛みがある時は練習量を調整している": 4, "どう対応すればよいかわからない": 2, "痛みがあってもそのまま練習している": 1 }[value("painManagement")] ?? 3, max: 5 }
         ];
       }
 
@@ -1741,7 +1751,7 @@
           hydration: { theme: "水分補給の安定", action: "水分を十分に補給する", home: "水筒の量を決め、飲めた量を見える化しましょう。", practice: "練習前・練習中・練習後で分けて水分をとりましょう。" },
           pain: { theme: "痛みの早期確認", action: "痛みの有無を週1回確認する", home: "痛みが続く部位やタイミングをメモし、無理を重ねないようにしましょう。", practice: "痛みがある状態でジャンプ・ダッシュ・切り返しを繰り返しすぎないようにしましょう。" },
           symptom: { theme: "症状の見える化", action: "症状の部位・頻度・タイミングを毎週記録する", home: "痛みが出た日、場所、練習内容を短くメモしましょう。", practice: "症状が強い日はジャンプ・ダッシュ・切り返し量を確認しましょう。" },
-          exercise: { theme: value("exerciseHabit") === "過多" ? "運動量の調整" : "運動習慣の安定", action: value("exerciseHabit") === "過多" ? "練習量と休養のバランスを確認する" : "適切な運動習慣を作る", home: "疲労感と睡眠の状態を見ながら運動量を調整しましょう。", practice: "練習量・自主練・休養日をチームで共有しましょう。" },
+          exercise: { theme: value("exerciseHabit") === "競技練習が多く休養日が少ない" ? "練習量と休養の調整" : "運動習慣の安定", action: value("exerciseHabit") === "競技練習が多く休養日が少ない" ? "休養日と疲労感を週1回確認する" : "競技練習以外の運動量を確認する", home: "疲労感と睡眠の状態を見ながら運動量を確認しましょう。", practice: "競技練習量と休養日のバランスをチームで共有しましょう。" },
           rom: { theme: "可動域改善", action: "股関節・足関節・胸椎の動きを週3回整える", home: "短時間のモビリティを継続しましょう。", practice: "しゃがみ込みや方向転換前に可動域を確認しましょう。" },
           flexibility: { theme: "可動域改善", action: "太もも前後の柔軟性を週3回整える", home: "入浴後に太もも前後のケアを行いましょう。", practice: "張りが強い日はダッシュやジャンプの量を確認しましょう。" },
           core: { theme: "姿勢安定化", action: "体幹と骨盤の安定エクササイズを週3回行う", home: "呼吸と体幹をセットで確認しましょう。", practice: "姿勢が崩れたまま強い動きを繰り返さないようにしましょう。" },
@@ -1779,6 +1789,39 @@
         return value("growthPeak");
       }
 
+      function growthPeakGuideText() {
+        if (value("growthPeak") === "ピーク前" || value("growthPhase").includes("成長準備期")) return "これから6〜18ヶ月で身長の伸びが加速する可能性があります";
+        if (value("growthPeak") === "ピーク中" || value("growthPhase").includes("成長加速期")) return "現在、身長の伸びが加速しやすい時期です";
+        if (value("growthPeak") === "ピーク後" || value("growthPhase").includes("成長安定期")) return "身長の伸びは落ち着き、身体づくりを進めやすい時期です";
+        return "継続評価で確認します";
+      }
+
+      function safetyStatus(total) {
+        if (symptomScore() >= 8 || total < 40) return "個別に確認しながら進めたい状態です";
+        if (symptomScore() >= 4 || total < 55) return "注意して見ていきたい状態です";
+        return "安心して見守れる状態です";
+      }
+
+      function attentionLevel(total) {
+        if (symptomScore() >= 8 || total < 40) return "高";
+        if (symptomScore() >= 4 || total < 55 || value("growthPhase").includes("成長加速期")) return "中";
+        return "低";
+      }
+
+      function likelySymptomNames(weakest) {
+        const labelMap = { "膝前面": "膝前面の痛み", "踵": "踵の痛み", "腰": "腰の違和感", "股関節": "股関節の違和感", "肩・肘": "肩・肘の違和感", "足首": "足首の違和感" };
+        const selected = multiValue("symptomArea").filter((item) => item !== "その他").map((item) => labelMap[item] || item);
+        const names = selected.length ? selected : [];
+        const keys = new Set(weakest.map((item) => item.key));
+        if (value("growthPhase").includes("成長加速期") || value("growthPeak") === "ピーク中" || value("growthPeak") === "ピーク前") {
+          names.push("膝前面の痛み", "踵の痛み", "腰の違和感");
+        }
+        if (keys.has("flexibility") || keys.has("strength")) names.push("膝前面の痛み");
+        if (keys.has("rom") || keys.has("balance")) names.push("踵の痛み");
+        if (keys.has("core")) names.push("腰の違和感");
+        return [...new Set(names)].slice(0, 3);
+      }
+
       function exerciseLimitLevel() {
         const attention = value("exerciseAttention").trim();
         if (!attention) return "なし";
@@ -1788,8 +1831,8 @@
 
       function echoSummaryLevel() {
         const echo = value("echoKeyPoint").trim();
-        if (!echo) return "異常なし";
-        if (/なし|異常なし|所見なし/.test(echo)) return "異常なし";
+        if (!echo) return "所見入力なし";
+        if (/なし|異常なし|所見なし/.test(echo)) return "所見入力なし";
         return "要点あり";
       }
 
@@ -1830,9 +1873,9 @@
             height: value("height"),
             weight: value("weight"),
             currentPain: value("currentPain"),
-            symptomArea: value("symptomArea"),
+            symptomArea: multiValue("symptomArea").join("・") || "なし",
             symptomFrequency: value("symptomFrequency"),
-            symptomTiming: value("symptomTiming"),
+            symptomTiming: multiValue("symptomTiming").join("・") || "なし",
             symptomImpact: value("symptomImpact"),
             sleepHours: value("sleepHours"),
             snackHabit: value("snackHabit"),
@@ -2109,6 +2152,13 @@
       function setFieldValue(id, val) {
         const el = $(id);
         if (!el || val == null || val === "") return;
+        if (el.multiple) {
+          const values = String(val).split(/[・;、]/).map((item) => item.trim()).filter(Boolean);
+          [...el.options].forEach((option) => {
+            option.selected = values.includes(option.value);
+          });
+          return;
+        }
         el.value = val;
       }
 
@@ -2180,15 +2230,24 @@
         $("adaptationLabel").textContent = adaptationLabel(total);
         $("habitGrade").textContent = habitLevelInfo.grade;
         $("habitLabel").textContent = habitLevelInfo.label;
+        $("locationTitle").textContent = `${value("athleteName") || value("athleteId") || "選手"}さんの現在地`;
         $("doctorStageCard").textContent = value("growthPhase").replace("成長準備期（", "").replace("成長加速期（", "").replace("成長安定期（", "").replace("）", "");
+        $("detailDoctorStageCard").textContent = $("doctorStageCard").textContent;
+        $("growthPeakGuide").textContent = growthPeakGuideText();
+        $("safetyCard").textContent = safetyStatus(total);
+        $("attentionLevelCard").textContent = attentionLevel(total);
         $("phvStatusCard").textContent = phvStatusText();
         $("exerciseLimitCard").textContent = exerciseLimitLevel();
         $("echoCard").textContent = echoSummaryLevel();
         $("growthPrediction").textContent = growthPredictionText();
-        $("oneLineSummary").textContent = `現在は「${value("growthPhase")}」です。${adaptationText(total)} 今月は${actionPlan.theme}に取り組みます。`;
+        $("oneLineSummary").textContent = `現在は「${value("growthPhase")}」です。${safetyStatus(total)} 今月は${actionPlan.actions[0]}ことから始めましょう。`;
         renderScoreList(results);
         renderRadar(results, previousResults);
         renderGrowthPoints(results, previousResults);
+        const likelySymptoms = likelySymptomNames(weakest);
+        $("likelySymptoms").innerHTML = likelySymptoms.length
+          ? likelySymptoms.map((item) => `<span class="tag">${escapeHtml(item)}</span>`).join("")
+          : `<span class="tag">現時点では大きな症状入力はありません</span>`;
         $("weakList").innerHTML = [
           symptomLevel() !== "症状なし" && `<span class="tag">症状: ${escapeHtml(symptomLevel())}</span>`,
           ...weakest.map((item) => `<span class="tag">${item.label} Lv.${item.level}</span>`),
@@ -2199,9 +2258,9 @@
         const goodText = good.length ? `強みは${good.join("・")}です。` : "まずは身体の土台づくりから整えていきましょう。";
         $("doctorSummary").textContent = simpleDoctorSummary();
         $("joynitySummary").textContent = `Growth Adaptation Scoreは${total}/70点（成長適応度${adaptationGrade(total)}）、Habit Scoreは${habit}/100点です。${goodText} 改善優先は${weakest.length ? weakLabels : "現状維持と定期確認"}、習慣面では${habitWeak.length ? habitWeak.join("・") : "良い習慣の継続"}を確認します。`;
-        $("currentBodyState").textContent = weakest.length
-          ? `現在は${value("growthPhase")}に対して、${improvementLabels}を整えたい状態です。${attentionTarget}へ負担が集中しにくい身体づくりを進めましょう。`
-          : "現在は成長段階に対して良好な適応がみられます。大きな左右差や機能低下は認めません。今後の成長変化に備え定期確認を行いましょう。";
+        $("currentBodyState").textContent = weakest.length || symptomScore() > 0
+          ? `現在、大きな心配は少ない一方で、${improvementLabels}を今のうちに整えると安心です。睡眠・補食・基本動作を確認しましょう。`
+          : "現在、大きな痛みや強い機能低下はみられていません。今後の成長に備えて、睡眠・補食・基本動作を整えておくと安心です。";
         $("priorityTheme").textContent = `今月の最優先テーマ: ${actionPlan.theme}`;
         $("topActions").innerHTML = actionPlan.actions.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
         $("homeAction").textContent = `家庭でできること: ${actionPlan.home}`;
@@ -2209,7 +2268,7 @@
         $("joynitySupport").textContent = `Joynityでサポートすること: ${value("joynityIntervention").trim() || (weakest.length ? `${weakLabels}を中心に、負担が集中しにくい動きづくりをサポートします。` : "良い状態を維持するための動作確認とコンディショニングを継続します。")}`;
         $("nextCheck").textContent = `次回チェック目標: ${nextTiming}に、達成率と身体の変化を確認しましょう。`;
         $("nextCheckTiming").textContent = nextTiming;
-        $("nextCheckGoals").innerHTML = ["身長変化", "Habit Score", "身体機能スコア", "症状", "成長ステージ"].map((item) => `<span class="tag">☑ ${item}</span>`).join("");
+        $("nextCheckGoals").innerHTML = ["身長変化", "痛みの有無", "睡眠・補食の習慣", "身体機能の変化"].map((item) => `<span class="tag">☑ ${item}</span>`).join("");
         $("scoringLogicNote").innerHTML = `評価基準: 医師評価は成長ステージ・PHV・エコー要点の可視化として扱い、障害リスク判定には使用しません。Joynity統合評価は、症状頻度・症状タイミング・練習への影響、身体機能6分類の点数、睡眠・補食・セルフケア・水分・痛み頻度を同じ選択基準で点数化して作成します。`;
         updateGrowthComparison(currentRecord, previousRecord);
         $("growthSummary").textContent = growthDataSummary(currentRecord, previousRecord);
@@ -2224,7 +2283,7 @@
         $("doctorFeedbackList").innerHTML = [
           `身長変化: ${velocity ? `${velocity.diffCm >= 0 ? "+" : ""}${velocity.diffCm.toFixed(1)}cm、年間換算 ${velocity.annual >= 0 ? "+" : ""}${velocity.annual.toFixed(1)}cm/年` : "過去CSV未読込"}`,
           `痛みの変化: ${value("currentPain") || "未入力"}`,
-          `症状情報: ${value("symptomArea")} / ${value("symptomFrequency")} / ${value("symptomTiming")} / ${value("symptomImpact")}`,
+          `症状情報: ${multiValue("symptomArea").join("・") || "なし"} / ${value("symptomFrequency")} / ${multiValue("symptomTiming").join("・") || "なし"} / ${value("symptomImpact")}`,
           `睡眠時間: ${value("sleepHours") || "未入力"}時間`,
           `補食習慣: ${value("snackHabit")}`,
           `Growth Adaptation Score: ${total}/70点（${adaptationGrade(total)}）`,

@@ -210,26 +210,28 @@
             <div class="field"><label for="currentPain">現在気になる痛みの部位</label><input id="currentPain" placeholder="例 膝前面、踵、なし" /></div>
             <div class="field">
               <label for="symptomArea">症状部位</label>
-              <select id="symptomArea">
-                <option>なし</option><option>膝前面</option><option>踵</option><option>腰</option><option>股関節</option><option>足首</option><option>肩・肘</option><option>その他</option>
+              <select id="symptomArea" multiple size="5">
+                <option>なし</option><option>膝前面</option><option>踵</option><option>腰</option><option>股関節</option><option>肩・肘</option><option>足首</option><option>その他</option>
               </select>
+              <p class="hint">複数ある場合は複数選択してください。</p>
             </div>
             <div class="field">
               <label for="symptomFrequency">痛みの頻度</label>
               <select id="symptomFrequency">
-                <option>なし</option><option>月1〜2回</option><option>週1回</option><option>週2〜3回</option><option>毎回</option>
+                <option>なし</option><option>月1回程度</option><option>週1回程度</option><option>週2〜3回</option><option>毎日</option>
               </select>
             </div>
             <div class="field">
               <label for="symptomTiming">痛みが出るタイミング</label>
-              <select id="symptomTiming">
-                <option>なし</option><option>練習後</option><option>練習中</option><option>翌朝</option><option>常時</option>
+              <select id="symptomTiming" multiple size="5">
+                <option>なし</option><option>運動中</option><option>運動後</option><option>翌朝</option><option>ダッシュ時</option><option>ジャンプ時</option><option>切り返し時</option><option>長時間歩いた後</option><option>押すと痛い</option>
               </select>
+              <p class="hint">複数ある場合は複数選択してください。</p>
             </div>
             <div class="field">
               <label for="symptomImpact">練習への影響</label>
               <select id="symptomImpact">
-                <option>なし</option><option>練習はできる</option><option>一部メニューを控える</option><option>休むことがある</option>
+                <option>なし</option><option>少し気になるが練習可能</option><option>一部の動作を避けている</option><option>練習量を減らしている</option><option>休む必要がある</option>
               </select>
             </div>
           </div>
@@ -249,7 +251,7 @@
             </div>
             <div class="field">
               <label for="hydrationHabit">水分摂取状況</label>
-              <select id="hydrationHabit"><option>練習中定期摂取</option><option>ほぼ摂取</option><option>時々不足</option><option>不足気味</option><option>不足</option></select>
+              <select id="hydrationHabit"><option>水分を持参していないことがある</option><option>喉が渇いた時だけ飲む</option><option>練習中に数回飲む</option><option>練習中に定期的に飲む</option><option>暑い日や長時間練習では量を意識して増やしている</option></select>
             </div>
           </div>
         </section>
@@ -280,6 +282,12 @@
       ];
 
       const $ = (id) => document.getElementById(id);
+      const value = (id) => {
+        const el = $(id);
+        if (!el) return "";
+        if (el.multiple) return [...el.selectedOptions].map((option) => option.value).filter((item) => item && item !== "なし").join("・") || "なし";
+        return el.value.trim();
+      };
 
       function csvEscape(text) {
         const safe = text == null ? "" : String(text);
@@ -300,7 +308,7 @@
 
       $("intakeForm").addEventListener("submit", (event) => {
         event.preventDefault();
-        const record = Object.fromEntries(fields.map((id) => [id, $(id).value.trim()]));
+        const record = Object.fromEntries(fields.map((id) => [id, value(id)]));
         record.submittedAt = new Date().toISOString();
         downloadCsv(record);
         $("resultBox").classList.add("show");
